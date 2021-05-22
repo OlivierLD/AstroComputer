@@ -83,6 +83,20 @@ Done with Java!
 $
 ```
 Calculation took 55 ms.
+
+> Another option, just for Java:
+```
+$ ./package.java.sh 
+Packaging the Astro Computer...
+Done.
+-------------------------------------------------
+To run the program:
+cd ./dist
+java -jar astro.jar --now
+-------------------------------------------------
+$
+```
+
 #### From Scala
 ```
 $ java -cp ./build/libs/astro.computer-1.0-all.jar astro.SampleMain
