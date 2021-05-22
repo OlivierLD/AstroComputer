@@ -85,7 +85,7 @@ $
 Calculation took 55 ms.
 #### From Scala
 ```
-$ java -cp ./build/libs/Celestial-Almanac-1.0-all.jar astro.SampleMain
+$ java -cp ./build/libs/astro.computer-1.0-all.jar astro.SampleMain
 Calculations for 2020-03-28 16:50:20 UTC (not now)
 New deltaT: 71.71293632812495
 Calculations done for 2020-03-28 16:50:20 UTC, in 64 ms <<<
