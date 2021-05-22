@@ -2,7 +2,7 @@
 Celestial Computation, in several languages
 
 This was originally started in Java, and later reproduced
-in several other languages than Java.
+in several other languages.
 
 > _Note_:   
 > This is actually an interesting exercise. Those celestial calculations involve **_a lot_** of code (more than **20K** lines of code, for each language presented here).
@@ -34,7 +34,7 @@ in several other languages than Java.
 
 Beside Java, we (will) have
 - [ES6](./ES6/README.md)
-- [C & C++, (Arduino?)](./Arduino.Cpp/README.md)
+- [C & C++, (Arduino?)](./arduino.cpp/README.md)
     > Note: This is **_way too demanding_** for an Arduino (mostly because of the _volume_ of the code, mentioned above), but it works OK for C & C++. 
 - [Python](./Python/README.md)
 - [Golang](./src/main/go/Celest/README.md)
@@ -63,7 +63,7 @@ Here is a quick list of some IDEs I use. They _all_ have a free version.
 From this module's root
 ```
 $ ../gradlew clean shadowJar
-$ java -cp build/libs/Celestial.Almanac-1.0-all.jar celestial.almanac.JavaSample
+$ java -cp build/libs/astro.computer-1.0-all.jar celestial.almanac.JavaSample
 Calculations for 2020-03-28 16:50:20 UTC (not now)
 ...DeltaT set to 71.71293632812495
 Calculations done for 2020-03-28 16:50:20 UTC, in 55 ms <<<
@@ -266,7 +266,7 @@ real	0m0.019s
 user	0m0.016s
 sys	0m0.000s
 
-$ time java -cp build/libs/Celestial.Almanac-1.0-all.jar celestial.almanac.JavaSample
+$ time java -cp build/libs/astro.computer-1.0-all.jar celestial.almanac.JavaSample
 Calculations done for 2020-03-28 16:50:20 UTC
 Sun data:	Decl.:  3°21.50'N, GHA:   71°21.81', RA: 00h 31m 07.20s, sd: 16'01.22", hp:    08.81"
 Moon data:	Decl.: 16°11.39'N, GHA:   25°09.69', RA: 03h 35m 55.70s, sd: 14'54.36", hp: 54'42.28"

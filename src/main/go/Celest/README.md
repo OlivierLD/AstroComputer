@@ -1,5 +1,10 @@
-# How to...
+# Run it now
+```
+$ cd src/main/go/Celest/main
+$ go run .
+```
 
+### How to (scratch-pad)...
 ```
 $ mkdir main
 $ mkdir astro
