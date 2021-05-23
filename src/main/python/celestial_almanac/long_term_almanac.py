@@ -1186,7 +1186,7 @@ class LongTermAlmanac:
     
         # Illumination of the moon's disk
         k = 100 * (1 + math.cos(i)) / 2
-        LongTermAlmanac.illumMoon = round(10 * k) / 10
+        LongTermAlmanac.illumMoon = k          # round(10 * k) / 10
 
         return
 

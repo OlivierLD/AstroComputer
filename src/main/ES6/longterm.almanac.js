@@ -1092,7 +1092,7 @@ function calculateMoon() {
 
 	//Illumination of the moon's disk
 	let k = 100 * (1 + Math.cos(i)) / 2;
-	illumMoon = Math.round(10 * k) / 10;
+	illumMoon = k;    // Math.round(10 * k) / 10;
 }
 
 // Ephemerides of Polaris

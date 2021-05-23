@@ -1037,9 +1037,9 @@ void calculateMoon() {
 	//Phase angle
 	double i = atan2(data->dES * MathUtils::sind(data->LDist), (dEM - data->dES * MathUtils::cosd(data->LDist)));
 
-	//Illumination of the moon's disk
+	//Illumination of the moon's disk in %
 	double k = 100 * (1 + cos(i)) / 2;
-	data->illumMoon = round(10 * k) / 10;
+	data->illumMoon = k;                // round(10 * k) / 10;
 }
 
 // Ephemerides of Polaris
