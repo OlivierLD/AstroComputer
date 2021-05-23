@@ -7,6 +7,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+/**
+ * Another example.
+ * Run the main.
+ */
 public class MoonIllumination {
 
     private final static SimpleDateFormat SDF_UTC = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss 'UTC'");
@@ -19,6 +23,9 @@ public class MoonIllumination {
         boolean now = true;
 
         Calendar date = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC")); // Now
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.SECOND, 0);
+
         if (!now) { // Hard coded date
             date.set(Calendar.YEAR, 2020);
             date.set(Calendar.MONTH, Calendar.MARCH);
