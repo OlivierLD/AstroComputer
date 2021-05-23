@@ -4,6 +4,7 @@ import calc.calculation.AstroComputer;
 import utils.TimeUtil;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -21,6 +22,7 @@ public class MoonIllumination {
     public static void main(String... args) {
 
         boolean now = true;
+        boolean csv = Arrays.stream(args).filter(arg -> "--csv".equals(arg)).findFirst().isPresent();
 
         Calendar date = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC")); // Now
         date.set(Calendar.MINUTE, 0);
@@ -41,7 +43,11 @@ public class MoonIllumination {
 //		System.out.printf(">> deltaT: %f s\n", deltaT);
         AstroComputer.setDeltaT(deltaT);
 
-        Calendar until = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC"));
+        if (csv) {
+            System.out.println("Date\tMoon Illumination (%)");
+        }
+
+        Calendar until = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC")); // End date.
         until.add(Calendar.YEAR, 1);
         while (date.before(until)) {
             // All calculations here
@@ -53,10 +59,13 @@ public class MoonIllumination {
                     date.get(Calendar.MINUTE),
                     date.get(Calendar.SECOND));
             double moonIllum = AstroComputer.getMoonIllum();
-            System.out.println(String.format("Calculations for %s, Moon Illumination: %.02f%%", SDF_UTC.format(date.getTime()), moonIllum));
-
+            if (csv) {
+                System.out.println(String.format("%s\t%05.02f", SDF_UTC.format(date.getTime()), moonIllum));
+            } else {
+                System.out.println(String.format("%s - Moon Illumination: %05.02f%%", SDF_UTC.format(date.getTime()), moonIllum));
+            }
+            // Increment by 1 hour
             date.add(Calendar.HOUR_OF_DAY, 1);
         }
-
     }
 }

@@ -1,23 +1,43 @@
 package calc.calculation;
 
-import calc.*;
-import calc.calculation.nauticalalmanac.*;
+import calc.GeoPoint;
+import calc.GeomUtil;
+import calc.GreatCircle;
+import calc.GreatCirclePoint;
+import calc.GreatCircleWayPoint;
+import calc.calculation.nauticalalmanac.Anomalies;
+import calc.calculation.nauticalalmanac.Context;
+import calc.calculation.nauticalalmanac.Core;
+import calc.calculation.nauticalalmanac.Jupiter;
+import calc.calculation.nauticalalmanac.Mars;
+import calc.calculation.nauticalalmanac.Moon;
+import calc.calculation.nauticalalmanac.Saturn;
+import calc.calculation.nauticalalmanac.Venus;
 import utils.TimeUtil;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 /**
  * Static utilities
- * <p>
- * Provide deltaT as a System variable: -DdeltaT=68.9677
- * See:
- * http://aa.usno.navy.mil/data/docs/celnavtable.php,
- * http://maia.usno.navy.mil/
- * http://maia.usno.navy.mil/ser7/deltat.data
- * <p>
- * https://www.usno.navy.mil/USNO/earth-orientation/eo-products/long-term
+ * <br/>
+ * Use -Dastro.verbose=true for more output.
+ * <br/>
+ * Provide deltaT as a System variable to enforce it: -DdeltaT=68.9677 ,
+ * will be calculated otherwise.
+ * <p/>
+ * @see utils.TimeUtil#getDeltaT(int, int)
+ * @see <a href="http://aa.usno.navy.mil/data/docs/celnavtable.php">http://aa.usno.navy.mil/data/docs/celnavtable.php</a>
+ * @see <a href="http://maia.usno.navy.mil/">http://maia.usno.navy.mil/</a>
+ * @see <a href="http://maia.usno.navy.mil/ser7/deltat.data">http://maia.usno.navy.mil/ser7/deltat.data</a>
+ * @see <a href="https://www.usno.navy.mil/USNO/earth-orientation/eo-products/long-term">https://www.usno.navy.mil/USNO/earth-orientation/eo-products/long-term</a>
  */
 public class AstroComputer {
 
@@ -217,7 +237,7 @@ public class AstroComputer {
     /**
      * Assume that calculate has been invoked already
      *
-     * @return
+     * @return moon phase in degrees [0..360]
      */
     public static synchronized double getMoonPhase() {
         double phase = Context.lambdaMapp - Context.lambda_sun;
@@ -673,7 +693,9 @@ public class AstroComputer {
     }
 
     public static synchronized void setDeltaT(double deltaT) {
-        System.out.println("...DeltaT set to " + deltaT);
+        if ("true".equals(System.getProperty("astro.verbose"))) {
+            System.out.println("...DeltaT set to " + deltaT);
+        }
         AstroComputer.deltaT = deltaT;
     }
 
