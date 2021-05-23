@@ -172,7 +172,7 @@ From the `mn` directory (make sure proxies are off in Docker's settings):
 ```
 then
 ```
-$ docker run --rm -p 8080:8080 almanac
+$ docker run --rm -p 8081:8081 almanac
 ```
 ... And the exact same `curl` command as before should work!
 
@@ -190,7 +190,7 @@ $ docker run --rm -p 8080:8080 almanac
 
 To reach a Micronaut server running a machine, try
 ```
-curl -X GET http://192.168.42.42:8080/astro/data \
+curl -X GET http://192.168.42.42:8081/astro/data \
        -H "year: 2020" \
        -H "month: 3" \
        -H "day: 6" | jq
