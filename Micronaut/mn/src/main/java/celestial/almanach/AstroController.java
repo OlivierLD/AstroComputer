@@ -50,7 +50,7 @@ public class AstroController {
             date.set(Calendar.YEAR, Integer.parseInt(year));
             date.set(Calendar.MONTH, Integer.parseInt(month) - 1); // March = 2!
             date.set(Calendar.DAY_OF_MONTH, Integer.parseInt(day));
-            date.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour)); // and not just HOUR !!!!
+            date.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour)); // and not just Calendar.HOUR !!!!
             date.set(Calendar.MINUTE, Integer.parseInt(minute));
             date.set(Calendar.SECOND, Integer.parseInt(second));
         }

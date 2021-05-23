@@ -49,6 +49,8 @@ $ curl -X GET http://localhost:8080/astro/data
 You're all set! Let's flesh it out.
 
 - Add dependencies
+
+    <!--
     - Publish `common-utils` to your local Maven repo (or anywhere you want, as long as you can reach it):
     ```
      $ cd common-utils
@@ -66,7 +68,18 @@ You're all set! Let's flesh it out.
     In the `dependencies`:
     ```
     implementation 'oliv.raspi.coffee:common-utils:1.0'
-    ```  
+    ``` 
+    -->
+    Compile and archive the required Java classes, from the `AstroComputer` folder, run a 
+    ```
+    ./gradlew shadowJar
+    ```
+    Make sure you've added the dependencies in the `build.gradle` in the `Micronaut/mn` directory:
+    ```
+    compile fileTree(dir: '../../build/libs', include: ['*.jar'])
+    ```
+
+
 > Important: See the `values.deltaT` value in `application.yml`
 >  
 
@@ -79,7 +92,7 @@ $ ./gradlew run
 ```
 Then from another terminal:
 ```
-$ curl -X GET http://localhost:8080/astro/data \
+$ curl -X GET http://localhost:8081/astro/data \
        -H "year: 2020" \
        -H "month: 3" \
        -H "day: 6" | jq
@@ -175,13 +188,13 @@ $ docker run --rm -p 8080:8080 almanac
 > RUN apt-get install -y openjdk-11-jdk
 > ```
 
-To reach a Micronaut server running a Raspberry Pi, try
+To reach a Micronaut server running a machine, try
 ```
 curl -X GET http://192.168.42.42:8080/astro/data \
        -H "year: 2020" \
        -H "month: 3" \
        -H "day: 6" | jq
 ```
-where `192.168.42.42` is the IP address of the Raspberry Pi. 
+where `192.168.42.42` is the IP address of the machine. 
 
 ---

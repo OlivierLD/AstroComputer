@@ -9,5 +9,5 @@ FROM openjdk:14-alpine
 # RUN java -version
 #
 COPY build/libs/mn-*-all.jar mn.jar
-EXPOSE 8080
+EXPOSE 8081
 CMD ["java", "-Dcom.sun.management.jmxremote", "-Xmx128m", "-jar", "mn.jar"]
