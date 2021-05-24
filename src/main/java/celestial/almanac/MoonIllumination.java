@@ -9,7 +9,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 /**
- * Another example.
+ * Another quick example.
  * Run the main.
  */
 public class MoonIllumination {
@@ -22,7 +22,7 @@ public class MoonIllumination {
     public static void main(String... args) {
 
         boolean now = true;
-        boolean csv = Arrays.stream(args).filter(arg -> "--csv".equals(arg)).findFirst().isPresent();
+        boolean csv = Arrays.stream(args).anyMatch(arg -> "--csv".equals(arg));
 
         Calendar date = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC")); // Now
         date.set(Calendar.MINUTE, 0);
@@ -44,7 +44,7 @@ public class MoonIllumination {
         AstroComputer.setDeltaT(deltaT);
 
         if (csv) {
-            System.out.println("Date\tMoon Illumination (%)");
+            System.out.println("Date\tMoon Illumination (%)\tMoon Phase (\272)");
         }
 
         Calendar until = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC")); // End date.
@@ -59,10 +59,17 @@ public class MoonIllumination {
                     date.get(Calendar.MINUTE),
                     date.get(Calendar.SECOND));
             double moonIllum = AstroComputer.getMoonIllum();
+            double moonPhase = AstroComputer.getMoonPhase();
             if (csv) {
-                System.out.println(String.format("%s\t%05.02f", SDF_UTC.format(date.getTime()), moonIllum));
+                System.out.println(String.format("%s\t%05.02f\t%06.02f",
+                        SDF_UTC.format(date.getTime()),
+                        moonIllum,
+                        moonPhase));
             } else {
-                System.out.println(String.format("%s - Moon Illumination: %05.02f%%", SDF_UTC.format(date.getTime()), moonIllum));
+                System.out.println(String.format("%s - Moon Illumination: %05.02f%% - Phase %06.02f\272",
+                        SDF_UTC.format(date.getTime()),
+                        moonIllum,
+                        moonPhase));
             }
             // Increment by 1 hour
             date.add(Calendar.HOUR_OF_DAY, 1);

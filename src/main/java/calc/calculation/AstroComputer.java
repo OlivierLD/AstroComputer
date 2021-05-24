@@ -207,7 +207,9 @@ public class AstroComputer {
     }
 
     /**
-     * Time are UTC
+     * Time are UTC.
+     * <br/>
+     * This method can be invoked without having invoked the {@link AstroComputer#calculate()} before.
      *
      * @param y  year
      * @param m  Month. Attention: Jan=1, Dec=12 !!!! Does NOT start with 0.

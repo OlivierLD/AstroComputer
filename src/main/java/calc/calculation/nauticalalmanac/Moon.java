@@ -185,51 +185,54 @@ public class Moon {
 			sumB += f2 * coeffs2 * Utils.sind(fD2 * D + fM2 * Msm + fMm2 * Mmm + fF2 * F);
 		}
 
-		//Corrections
-		sumL = sumL + 3958 * Utils.sind(A1) + 1962 * Utils.sind(Lmm - F) + 318 * Utils.sind(A2);
-		sumB = sumB - 2235 * Utils.sind(Lmm) + 382 * Utils.sind(A3) + 175 * Utils.sind(A1 - F) + 175 * Utils.sind(A1 + F) + 127 * Utils.sind(Lmm - Mmm) - 115 * Utils.sind(Lmm + Mmm);
+		// Corrections
+		sumL = sumL + 3_958 * Utils.sind(A1) + 1_962 * Utils.sind(Lmm - F) + 318 * Utils.sind(A2);
+		sumB = sumB - 2_235 * Utils.sind(Lmm) + 382 * Utils.sind(A3) + 175 * Utils.sind(A1 - F) + 175 * Utils.sind(A1 + F) + 127 * Utils.sind(Lmm - Mmm) - 115 * Utils.sind(Lmm + Mmm);
 
-		//Longitude of the moon
-		double lambdaMm = Utils.trunc(Lmm + sumL / 1000000D);
+		// Longitude of the moon
+		double lambdaMm = Utils.trunc(Lmm + sumL / 1_000_000D);
 
-		//Latitude of the moon
-		double betaM = sumB / 1000000D;
+		// Latitude of the moon
+		double betaM = sumB / 1_000_000D;
 
-		//Distance earth-moon
-		double dEM = 385000.56 + sumR / 1000D;
+		// Distance earth-moon
+		double dEM = 385_000.56 + sumR / 1_000D;
 
-		//Apparent longitude of the moon
+		// Apparent longitude of the moon
 		Context.lambdaMapp = lambdaMm + Context.delta_psi;
 
-		//Right ascension of the moon, apparent
+		// Right ascension of the moon, apparent
 		Context.RAmoon = Math.toDegrees(Utils.trunc2(Math.atan2((Utils.sind(Context.lambdaMapp) * Utils.cosd(Context.eps) - Utils.tand(betaM) * Utils.sind(Context.eps)), Utils.cosd(Context.lambdaMapp))));
 
-		//Declination of the moon
+		// Declination of the moon
 		Context.DECmoon = Math.toDegrees(Math.asin(Utils.sind(betaM) * Utils.cosd(Context.eps) + Utils.cosd(betaM) * Utils.sind(Context.eps) * Utils.sind(Context.lambdaMapp)));
 
-		//GHA of the moon
+		// GHA of the moon
 		Context.GHAmoon = Utils.trunc(Context.GHAAtrue - Context.RAmoon);
 
-		//Horizontal parallax of the moon
-		Context.HPmoon = Math.toDegrees(3600D * Math.asin(6378.14 / dEM));
+		// Horizontal parallax of the moon
+		Context.HPmoon = Math.toDegrees(3_600D * Math.asin(6_378.14 / dEM));
 
-		//Semidiameter of the moon
-		Context.SDmoon = Math.toDegrees(3600D * Math.asin(1738 / dEM));
+		// Semi-diameter of the moon
+		Context.SDmoon = Math.toDegrees(3_600D * Math.asin(1_738 / dEM));
 
-		//Geocentric angular distance between moon and sun
+		// Geocentric angular distance between moon and sun
 		Context.LDist = Math.toDegrees(Math.acos(Utils.sind(Context.DECmoon) * Utils.sind(Context.DECsun) + Utils.cosd(Context.DECmoon) * Utils.cosd(Context.DECsun) * Utils.cosd(Context.RAmoon - Context.RAsun)));
 
-		//Phase angle
-		double i = Math.atan2(Context.dES * Utils.sind(Context.LDist), (dEM - Context.dES * Utils.cosd(Context.LDist)));
+		// Phase angle
+		double radianPhase = Math.atan2(Context.dES * Utils.sind(Context.LDist), (dEM - Context.dES * Utils.cosd(Context.LDist)));
+		Context.moonPhase = Math.toDegrees(radianPhase);
 
-		Context.moonPhase = Math.toDegrees(i);
-
-		//Illumination of the moon's disk
-		double k = 100D * (1 + Math.cos(i)) / 2D;
+		// Illumination of the moon's disk
+		double k = 100D * (1 + Math.cos(radianPhase)) / 2D;
 		Context.k_moon = k; // Math.round(10D * k) / 10D;
 
-		Context.moonEoT = 4 * Context.GHAmoon + 720 - 1440 * Context.dayfraction;
-		if (Context.moonEoT > 20) Context.moonEoT -= 1440;
-		if (Context.moonEoT < -20) Context.moonEoT += 1440;
+		Context.moonEoT = 4 * Context.GHAmoon + 720 - 1_440 * Context.dayfraction;
+		if (Context.moonEoT > 20) {
+			Context.moonEoT -= 1_440;
+		}
+		if (Context.moonEoT < -20) {
+			Context.moonEoT += 1_440;
+		}
 	}
 }

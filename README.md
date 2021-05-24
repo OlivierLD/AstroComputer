@@ -7,11 +7,11 @@ in several other languages.
 > _Note_:   
 > This is actually an interesting exercise. Those celestial calculations involve **_a lot_** of code (more than **20K** lines of code, for each language presented here).
 > It is always interesting to consider the following aspects:
-> - Productivity (once you know what you want, how long does it takes to write the _right_ code, with and without an IDE - when it exists)
+> - Productivity (once you know what you want, how long does it take to write the _right_ code, with and without an IDE - when it exists)
 > - Readability (do you still understand what you wrote two weeks before? 🤓 )
 > - Speed of execution (C is probably the fastest, but how far behind are the others?)
 > - Debugging (local, remote, ...)  
-> - Maintainability (can someone who did not write it add feature(s) or maintain the code)
+> - Maintainability (can someone who did not write it add features or maintain the code)
 > 
 > _To keep in mind:_ An extra detail, the code presented here can run _**in standalone**_ on a single machine. It does not need to communicate
 > with any other resources (on the net, in the cloud, wherever) to reach its goals, to do its job, to complete its work.
@@ -20,7 +20,7 @@ in several other languages.
 > _Note-2_:  
 > Those calculations rely on a parameter called `DeltaT`, that can (could) be obtained
 > from the [US Naval Oceanography Portal](https://www.usno.navy.mil/USNO/earth-orientation/eo-products/long-term).
-> This (official) web site is undergoing some upgrade..., if it is down, it will
+> This (official) website is undergoing some upgrade..., if it is down, it will
 > come back to life soon. Last known value of `DeltaT` is `69.2201` sec.
 > > Aug 2020, it's back up! <http://maia.usno.navy.mil/ser7/deltat.preds>  
 > > ...and down.  
@@ -33,13 +33,13 @@ in several other languages.
 > it is more than **_20,000_** lines of code each time). Interestingly, this is the kind of computation the training of an AI model requires...
 
 Beside Java, we (will) have
-- [ES6](./ES6/README.md)
+- [ES6](./ES6/README.md) (aka JavaScript)
 - [C & C++, (Arduino?)](./arduino.cpp/README.md)
     > Note: This is **_way too demanding_** for an Arduino (mostly because of the _volume_ of the code, mentioned above), but it works OK for C & C++. 
 - [Python](./Python/README.md)
 - [Golang](./src/main/go/Celest/README.md)
 - [Scala](#from-scala)
-- and more when possible (Kotlin,...)
+- ... and more when possible (Kotlin,...)
 
 ### Integrated Development Environment (IDE)
 Here is a quick list of some IDEs I use. They _all_ have a free version.
@@ -201,7 +201,7 @@ Followed by a
 ```
 ./main
 ```
-> `go run .` and `./main` will produce the same output, but `./main` is much faster.
+> Commands `go run .` and `./main` will produce the same output, but `./main` is much faster.
 
 ```
 Let's get started!
