@@ -109,7 +109,10 @@ public class MoonIllumination {
                } catch (NumberFormatException nfe) {
                    throw new RuntimeException(String.format("Bad value [%s]", nvPair[0]), nfe);
                }
-               Optional<SupportedInterval> first = Arrays.asList(SupportedInterval.values()).stream().filter(val -> nvPair[1].equals(val.toString())).findFirst();
+               Optional<SupportedInterval> first = Arrays.asList(SupportedInterval.values())
+                       .stream()
+                       .filter(val -> nvPair[1].equals(val.toString()))
+                       .findFirst();
                if (!first.isPresent()) {
                    throw new RuntimeException(String.format("Bad value [%s]", nvPair[1]));
                } else {
@@ -126,7 +129,10 @@ public class MoonIllumination {
                } catch (NumberFormatException nfe) {
                    throw new RuntimeException(String.format("Bad value [%s]", nvPair[0]), nfe);
                }
-               Optional<SupportedInterval> first = Arrays.asList(SupportedInterval.values()).stream().filter(val -> nvPair[1].equals(val.toString())).findFirst();
+               Optional<SupportedInterval> first = Arrays.asList(SupportedInterval.values())
+                       .stream()
+                       .filter(val -> nvPair[1].equals(val.toString()))
+                       .findFirst();
                if (!first.isPresent()) {
                    throw new RuntimeException(String.format("Bad value [%s]", nvPair[1]));
                } else {
