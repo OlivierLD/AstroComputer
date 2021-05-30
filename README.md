@@ -364,6 +364,6 @@ it exposes all the computed data through HTTP REST requests.
 ### Jupyter Notebooks
 Jupyter Notebooks exist for pretty much all the languages having a REPL (Read Execute Print Loop).  
 
-Look into the `notebooks` folder...
+Look into the [`notebooks`](./notebooks) folder...
 
 ---
