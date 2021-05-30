@@ -360,4 +360,10 @@ Very trending.
 It is based on the Java implementation of the Celestial Almanac, and
 it exposes all the computed data through HTTP REST requests.
 
+
+### Jupyter Notebooks
+Jupyter Notebooks exist for pretty much all the languages having a REPL (Read Execute Print Loop).  
+
+Look into the `notebooks` folder...
+
 ---
