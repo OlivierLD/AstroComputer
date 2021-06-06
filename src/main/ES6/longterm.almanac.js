@@ -1235,7 +1235,7 @@ function getY(year, month) {
  * @return
  */
 export function calculateDeltaT(year, month) {
-	if (year < -1_999 || year > 3_000) {
+	if (year < -1999 || year > 3000) {
 		throw new Error("Year must be in [-1999, 3000]");
 	}
 	if (month < 1 || month > 12) {
