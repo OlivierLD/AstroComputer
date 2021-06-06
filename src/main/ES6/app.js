@@ -46,3 +46,4 @@ export function sampleMain(userDataObject) {
 }
 
 window.sampleMain = sampleMain;
+
