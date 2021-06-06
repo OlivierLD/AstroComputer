@@ -15,8 +15,8 @@
     "celestial",
     "astro",
     "starts",
-		"planet",
-		"ES6 module"
+    "planet",
+    "ES6 module"
   ],
   "XXdependencies": {
     "utilities": "latest"

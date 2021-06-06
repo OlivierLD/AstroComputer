@@ -1,4 +1,8 @@
 <!DOCTYPE html>
+<!--
+ | All the skill in the "compute" function below,
+ | invoked on click.
+ +-->
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -67,8 +71,12 @@
 					</div>
 					<div>
 						<input type="checkbox" id="no-planet"><small>Skip planets calculations</small>
+						<input type="checkbox" id="verbose" onchange="verbose(this);"><small>Console Verbose</small>
 					</div>
-					<button onclick="compute();">Compute</button>
+					<button id="compute" onclick="compute();">Compute</button>
+					<div>
+						<input type="checkbox" id="auto-refresh" onchange="autoRefresh(this);"><small>Auto Refresh</small>
+					</div>
 				</td>
 				<td>
 					<div id="moon-phase-div"></div>
@@ -84,7 +92,9 @@
 	</body>
 	<script type="text/javascript">
 
-const DELTA_T = 69.2201;
+const DELTA_T = 69.2201; // Will be re-calculated
+
+let consoleVerbose = false;
 
 function compute() {
 
@@ -99,9 +109,11 @@ function compute() {
 		noPlanets: document.getElementById('no-planet').checked
 	};
 
-	let testResult = sampleMain(sampleData);
-	console.log("Calculation done %d-%d-%d %d:%d:%d UTC :", sampleData.utcyear, sampleData.utcmonth, sampleData.utcday, sampleData.utchour, sampleData.utcminute, sampleData.utcsecond);
-	console.log("Result:\n", JSON.stringify(testResult, null, 2));
+	let testResult = sampleMain(sampleData); // in app.js
+	if (consoleVerbose) {
+		console.log("Calculation done %d-%d-%d %d:%d:%d UTC :", sampleData.utcyear, sampleData.utcmonth, sampleData.utcday, sampleData.utchour, sampleData.utcminute, sampleData.utcsecond);
+		console.log("Result:\n", JSON.stringify(testResult, null, 2));
+	}
 
 	document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(testResult, null, 2) + '</pre>';
 	// More here, ...
@@ -129,7 +141,9 @@ function compute() {
 		if (testResult.moon.phase.phaseAngle !== undefined) {
 			let phaseIndex = Math.floor(testResult.moon.phase.phaseAngle / (360 / 28.5)) + 1;
 			let phaseImageName = `moon/phase${ (phaseIndex < 10 ? '0' : '') + phaseIndex }.gif`;
-			console.log('Loading ', phaseImageName);
+			if (consoleVerbose) {
+				console.log('Loading ', phaseImageName);
+			}
 			document.getElementById('moon-phase-div').innerHTML =
 					`<img src='${phaseImageName}' alt='${testResult.moon.phase.phaseAngle}' title='${testResult.moon.phase.phaseAngle + '&deg'}'>`;
 		}
@@ -138,17 +152,42 @@ function compute() {
 	}
 }
 
-window.onload = () => {
-
-	console.log('On Load, ready.');
-
+function updateUTCDate() {
 	let now = new Date();
 	document.getElementById('UTC-day').value = now.getUTCDate();
 	document.getElementById('UTC-month').value = now.getUTCMonth() + 1;
 	document.getElementById('UTC-year').value = now.getUTCFullYear();
-	document.getElementById('UTC-hour').value = now.getUTCHours();
-	document.getElementById('UTC-minute').value = now.getUTCMinutes();
-	document.getElementById('UTC-second').value = now.getUTCSeconds();
+	document.getElementById('UTC-hour').value = (now.getUTCHours().toString().length < 2 ? "0" : "") + now.getUTCHours();
+	document.getElementById('UTC-minute').value = (now.getUTCMinutes().toString().length < 2 ? "0" : "") + now.getUTCMinutes();
+	document.getElementById('UTC-second').value = (now.getUTCSeconds().toString().length < 2 ? "0" : "") + now.getUTCSeconds();
+}
+
+let interval = undefined;
+const INTERVAL = 1000;
+
+function autoRefresh(cb) {
+	document.getElementById('compute').disabled = cb.checked;
+	if (cb.checked) {
+		interval = window.setInterval(() => {
+			updateUTCDate();
+			compute();
+		}, INTERVAL);
+	} else {
+		window.clearInterval(interval);
+	}
+}
+
+function verbose(cb) {
+	consoleVerbose = cb.checked;
+}
+
+// Set default date values
+window.onload = () => {
+
+	console.log('On Load, ready.');
+	updateUTCDate();
+	console.log('On Load, done.');
+
 };
 	</script>
 </html>
