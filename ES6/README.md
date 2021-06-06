@@ -28,7 +28,7 @@ Then from a browser, load `http://localhost:8080/index.html` and follow the inst
 
 You should get a JSON object like this:
 <table><tr><td style="max-height: 120px;">
-```json
+<pre>
 {
   "sun": {
     "GHA": {
@@ -213,7 +213,7 @@ You should get a JSON object like this:
   },
   "dayOfWeek": "TUE"
 }
-```
+</pre>
 </td></tr></table>
 
 
