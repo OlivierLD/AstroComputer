@@ -26,9 +26,8 @@ Then from a browser, load `http://localhost:8080/index.html` and follow the inst
 
 > > To come: A WebComponent version.
 
-You should get a JSON object like this:
-<table style="margin: auto; width: 98%; height: 120px; max-height: 120px;"><tr><td style="max-height: 120px;">
-<pre>
+You should get a `JSON` object like this:
+```json
 {
   "sun": {
     "GHA": {
@@ -213,9 +212,7 @@ You should get a JSON object like this:
   },
   "dayOfWeek": "TUE"
 }
-</pre>
-</td></tr></table>
-
+```
 
 As you would see, it returns the celestial configuration for the current UTC date.
 
