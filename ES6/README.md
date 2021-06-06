@@ -24,12 +24,10 @@ Then from a browser, load `http://localhost:8080/index.html` and follow the inst
 > Or Mac or Linux, just run the script `./start.sh`, in the `ES6` folder. It will start the server, and open the right page in your default browser.  
 > Use `./stop.sh` to kill the server.
 
-> _Note_: `index.html` may not require a server to be running. You can just load it in your browser from the file system, it could work.  
-> Some CORS error may show up though...
 > > To come: A WebComponent version.
 
 You should get a JSON object like this:
-```json   
+<pre style="max-height: 160px;"> 
 {
   "sun": {
     "GHA": {
@@ -214,7 +212,7 @@ You should get a JSON object like this:
   },
   "dayOfWeek": "TUE"
 }
-```
+</pre>
 
 As you would see, it returns the celestial configuration for the current UTC date.
 

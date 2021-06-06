@@ -96,7 +96,7 @@ const DELTA_T = 69.2201; // Will be re-calculated
 
 let consoleVerbose = false;
 
-function compute() {
+let compute = () => {
 
 	let sampleData = {
 		utcyear: parseInt(document.getElementById('UTC-year').value),
@@ -152,7 +152,7 @@ function compute() {
 	}
 }
 
-function updateUTCDate() {
+let updateUTCDate = () => {
 	let now = new Date();
 	document.getElementById('UTC-day').value = now.getUTCDate();
 	document.getElementById('UTC-month').value = now.getUTCMonth() + 1;
@@ -160,12 +160,12 @@ function updateUTCDate() {
 	document.getElementById('UTC-hour').value = (now.getUTCHours().toString().length < 2 ? "0" : "") + now.getUTCHours();
 	document.getElementById('UTC-minute').value = (now.getUTCMinutes().toString().length < 2 ? "0" : "") + now.getUTCMinutes();
 	document.getElementById('UTC-second').value = (now.getUTCSeconds().toString().length < 2 ? "0" : "") + now.getUTCSeconds();
-}
+};
 
 let interval = undefined;
 const INTERVAL = 1000;
 
-function autoRefresh(cb) {
+let autoRefresh = (cb) => {
 	document.getElementById('compute').disabled = cb.checked;
 	if (cb.checked) {
 		interval = window.setInterval(() => {
@@ -175,11 +175,11 @@ function autoRefresh(cb) {
 	} else {
 		window.clearInterval(interval);
 	}
-}
+};
 
-function verbose(cb) {
+let verbose = (cb) => {
 	consoleVerbose = cb.checked;
-}
+};
 
 // Set default date values
 window.onload = () => {
