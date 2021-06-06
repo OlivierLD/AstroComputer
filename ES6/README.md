@@ -21,9 +21,10 @@ Wed Feb 12 2020 09:32:54 GMT-0800 (PST): Server is listening on port 8080
 ```
 Then from a browser, load `http://localhost:8080/index.html` and follow the instructions on the page.
 
-> Or on a Mac, just run the script `start.sh`, in the `ES6` folder. It will start the server, and open the right page in your default browser.
+> Or Mac or Linux, just run the script `start.sh`, in the `ES6` folder. It will start the server, and open the right page in your default browser.
 
-> _Note_: `index.html` does not require a server to be running. You can just load it in your browser from the file system, it should work.
+> _Note_: `index.html` may not require a server to be running. You can just load it in your browser from the file system, it could work.  
+> Some CORS error may show up though...
 > > To come: A WebComponent version.
 
 You should get a JSON object like this:
