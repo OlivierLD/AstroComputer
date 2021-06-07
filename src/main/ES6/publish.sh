@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# Requires yarn (sudo npm install [--force] --global yarn)
+#
 echo -e "--- npm config ---"
 npm config list
 #

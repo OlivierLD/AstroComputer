@@ -257,5 +257,4 @@ invoke the `calculate` function to get the `JSON` object featured above.
 The script `publish.sh` uses `WebPack` to produce the required artifacts in a `lib` sub-folder.
 The resource to point to from `app.js` would be `./lib/celestial-computer.min.js`.
 
-
 ---

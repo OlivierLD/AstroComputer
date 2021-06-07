@@ -9,12 +9,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Plopix/ganzhi.git"
+    "url": "https://github.com/OlivierLD/AstroComputer.git"
   },
   "keywords": [
     "celestial",
     "astro",
-    "starts",
+    "stars",
     "planet",
     "ES6 module"
   ],
@@ -24,9 +24,9 @@
   "author": "Olivier LeDiouris",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Plopix/ganzhi/issues"
+    "url": "https://github.com/OlivierLD/AstroComputer/issues"
   },
-  "homepage": "https://github.com/Plopix/ganzhi",
+  "homepage": "https://github.com/OlivierLD/AstroComputer",
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.1",

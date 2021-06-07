@@ -20,7 +20,7 @@ if (Math.toDegrees === undefined) {
 	};
 }
 
-import * as  Utils from './utils.js';
+import * as Utils from './utils.js';
 
 import * as Earth from './earth.js';
 import * as Venus from './venus.js';

@@ -101,7 +101,7 @@ let handler = (req, res) => {
 	if (req.url.startsWith("/verbose=")) {
 		if (req.method === "GET") {
 			verbose = (req.url.substring("/verbose=".length) === 'on');
-			res.end(JSON.stringify({verbose: verbose?'on':'off'}));
+			res.end(JSON.stringify({verbose: verbose ? 'on' : 'off'}));
 		}
 	} else if (req.url.startsWith("/")) { // Assuming static resource
 		if (req.method === "GET") {
