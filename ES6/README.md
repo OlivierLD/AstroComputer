@@ -17,14 +17,13 @@ Your working directory: ...
 ----------------------------------------------------
 Wed Feb 12 2020 09:32:54 GMT-0800 (PST): Starting server on port 8080
 Wed Feb 12 2020 09:32:54 GMT-0800 (PST): Server is listening on port 8080
-
 ```
 Then from a browser, load `http://localhost:8080/index.html` and follow the instructions on the page.
 
 > Or Mac or Linux, just run the script `./start.sh`, in the `ES6` folder. It will start the server, and open the right page in your default browser.  
 > Use `./stop.sh` to kill the server.
 
-> > To come: A WebComponent version.
+> > To come: A WebComponent version?
 
 You should get a `JSON` object like this:
 ```json
@@ -256,5 +255,8 @@ invoke the `calculate` function to get the `JSON` object featured above.
 ## Production
 The script `publish.sh` uses `WebPack` to produce the required artifacts in a `lib` sub-folder.
 The resource to point to from `app.js` would be `./lib/celestial-computer.min.js`.
+
+## On-line
+See an on-line example at <https://olivierld.github.io/web.stuff/astro/index.html>
 
 ---

@@ -5,7 +5,7 @@
  * https://www.celnav.de/
  * http://www.titulosnauticos.net/astro/
  *
- * DeltaT can be found at http://maia.usno.navy.mil/ (will be back to life in 2020)
+ * DeltaT can be found at http://maia.usno.navy.mil/ (will be back to life in 2020... in your dreams)
  */
 
 if (Math.toRadians === undefined) {
@@ -13,6 +13,7 @@ if (Math.toRadians === undefined) {
 		return deg * (Math.PI / 180);
 	};
 }
+
 
 if (Math.toDegrees === undefined) {
 	Math.toDegrees = (rad) => {
@@ -30,13 +31,13 @@ import * as Saturn from './saturn.js';
 
 // Global Variables
 let T, T2, T3, T4, T5, TE, TE2, TE3, TE4, TE5, Tau, Tau2, Tau3, Tau4, Tau5, deltaT,
-		eps0, eps, deltaPsi, deltaEps, Le, Be, Re, kappa, pi0, e, lambdaSun, RASun, DECSun,
-		GHASun, SDSun, HPSun, EoT, fmtEoT, EoE, EoEout, Lsun_true, Lsun_prime, dES, dayFraction, GHAAmean,
-		RAVenus, DECVenus, GHAVenus, SDVenus, HPVenus, RAMars, DECMars, GHAMars, SDMars, HPMars,
-		RAJupiter, DECJupiter, GHAJupiter, SDJupiter, HPJupiter, RASaturn, DECSaturn, GHASaturn, SDSaturn, HPSaturn,
-		RAMoon, DECMoon, GHAMoon, SDMoon, HPMoon, RAPol, DECPol, GHAPol, OoE, tOoE, LDist,
-		JD0h, JD, JDE, lambdaMapp, SidTm, GHAAtrue, SidTa,
-		moonPhaseAngle = 0, moonPhase = "", DoW = "", illumMoon, illumVenus, illumMars, illumJupiter, illumSaturn;
+	eps0, eps, deltaPsi, deltaEps, Le, Be, Re, kappa, pi0, e, lambdaSun, RASun, DECSun,
+	GHASun, SDSun, HPSun, EoT, fmtEoT, EoE, EoEout, Lsun_true, Lsun_prime, dES, dayFraction, GHAAmean,
+	RAVenus, DECVenus, GHAVenus, SDVenus, HPVenus, RAMars, DECMars, GHAMars, SDMars, HPMars,
+	RAJupiter, DECJupiter, GHAJupiter, SDJupiter, HPJupiter, RASaturn, DECSaturn, GHASaturn, SDSaturn, HPSaturn,
+	RAMoon, DECMoon, GHAMoon, SDMoon, HPMoon, RAPol, DECPol, GHAPol, OoE, tOoE, LDist,
+	JD0h, JD, JDE, lambdaMapp, SidTm, GHAAtrue, SidTa,
+	moonPhaseAngle = 0, moonPhase = "", DoW = "", illumMoon, illumVenus, illumMars, illumJupiter, illumSaturn;
 
 /**
  * Main function

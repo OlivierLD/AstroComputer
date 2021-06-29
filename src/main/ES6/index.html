@@ -43,14 +43,14 @@
     </style>
 </head>
 <body>
-<h1>This is a test</h1>
+<h1>This is a Celestial Computer test</h1>
 <table>
     <tr>
         <td style="vertical-align: top;">
             <small>Enter UTC date and time, then click the Compute button.</small>
             <div>
-                <input class="day" type="number" id="UTC-day" placeholder="day" min="1" max="31">
-                <select class="month" id="UTC-month">
+                <input class="day" type="number" id="UTC-day" placeholder="day" min="1" max="31" title="Day of the Month">
+                <select class="month" id="UTC-month" title="Month of the year">
                     <option value="1">Jan</option>
                     <option value="2">Feb</option>
                     <option value="3">Mar</option>
@@ -64,18 +64,19 @@
                     <option value="11">Nov</option>
                     <option value="12">Dec</option>
                 </select>
-                <input class="year" type="number" id="UTC-year" placeholder="year" min="0">
-            </div>
-            <div>
-                <input class="day" type="number" id="UTC-hour" placeholder="hours" min="0" max="23">:
-                <input class="day" type="number" id="UTC-minute" placeholder="minutes" min="0" max="59">:
-                <input class="day" type="number" id="UTC-second" placeholder="seconds" min="0" max="59">
+                <input class="year" type="number" id="UTC-year" placeholder="year" min="0" title="year">
+                at
+                <input class="day" type="number" id="UTC-hour" placeholder="hours" min="0" max="23" title="Hour of the day [0..23]">:
+                <input class="day" type="number" id="UTC-minute" placeholder="minutes" min="0" max="59" title="minutes">:
+                <input class="day" type="number" id="UTC-second" placeholder="seconds" min="0" max="59" title="seconds"> UTC
             </div>
             <div>
                 <input type="checkbox" id="no-planet"><small>Skip planets calculations</small>
                 <input type="checkbox" id="verbose" onchange="verbose(this);"><small>Console Verbose</small>
             </div>
-            <button id="compute" onclick="compute();">Compute</button>&nbsp;<input type="checkbox" id="auto-refresh" onchange="autoRefresh(this);"><small>Auto Refresh</small>
+            <button id="now" onclick="updateUTCDate();">Now</button>&nbsp;
+            <button id="compute" onclick="compute();">Compute</button>&nbsp;
+            <input type="checkbox" id="auto-refresh" onchange="autoRefresh(this);"><small>Auto Refresh</small>
         </td>
         <td>
             <div id="moon-phase-div"></div>
@@ -97,7 +98,7 @@
 
     let compute = () => {
 
-        let sampleData = {
+        let calculationData = {
             utcyear: parseInt(document.getElementById('UTC-year').value),
             utcmonth: parseInt(document.getElementById('UTC-month').value),
             utcday: parseInt(document.getElementById('UTC-day').value),
@@ -108,9 +109,9 @@
             noPlanets: document.getElementById('no-planet').checked
         };
 
-        let testResult = sampleMain(sampleData); // in app.js
+        let testResult = sampleMain(calculationData); // in app.js
         if (consoleVerbose) {
-            console.log("Calculation done %d-%d-%d %d:%d:%d UTC :", sampleData.utcyear, sampleData.utcmonth, sampleData.utcday, sampleData.utchour, sampleData.utcminute, sampleData.utcsecond);
+            console.log("Calculation done %d-%d-%d %d:%d:%d UTC :", calculationData.utcyear, calculationData.utcmonth, calculationData.utcday, calculationData.utchour, calculationData.utcminute, calculationData.utcsecond);
             console.log("Result:\n", JSON.stringify(testResult, null, 2));
         }
 
@@ -166,6 +167,7 @@
 
     let autoRefresh = (cb) => {
         document.getElementById('compute').disabled = cb.checked;
+        document.getElementById('now').disabled = cb.checked;
         if (cb.checked) {
             interval = window.setInterval(() => {
                 updateUTCDate();
