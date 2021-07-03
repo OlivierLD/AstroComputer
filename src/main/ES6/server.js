@@ -81,6 +81,7 @@ if (process.argv.length > 2) {
 console.log("----------------------------------------------------");
 console.log("Your working directory:", workDir);
 console.log("----------------------------------------------------");
+console.log("  Try http://localhost:8080/index.html");
 
 /**
  * Small Simple and Stupid little web server.

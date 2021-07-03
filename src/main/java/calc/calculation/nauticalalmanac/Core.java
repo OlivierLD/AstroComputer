@@ -212,10 +212,10 @@ public class Core {
 			lambdastar2 += par_lambda;
 			betastar2 += par_beta;
 
-			//Nutation in longitude
+			// Nutation in longitude
 			lambdastar2 += Math.toRadians(Context.delta_psi);
 
-			//Aberration
+			// Aberration
 //    double kappa = Math.toRadians(20.49552) / 3600D;
 //    double pi0 = Math.toRadians(102.93735 + 1.71953 * Context.TE + 0.00046 * Context.TE2);
 //    double e = 0.016708617 - 0.000042037 * Context.TE - 0.0000001236 * Context.TE2;
@@ -226,14 +226,14 @@ public class Core {
 			lambdastar2 += dlambdastar;
 			betastar2 += dbetastar;
 
-			//Transformation back to equatorial coordinates in radians
+			// Transformation back to equatorial coordinates in radians
 			double RAstar2 = Math.atan2((Math.sin(lambdastar2) * Utils.cosd(Context.eps) - Math.tan(betastar2) * Utils.sind(Context.eps)), Math.cos(lambdastar2));
 			double DECstar2 = Math.asin(Math.sin(betastar2) * Utils.cosd(Context.eps) + Math.cos(betastar2) * Utils.sind(Context.eps) * Math.sin(lambdastar2));
 
 			//Lunar distance of star
 			Context.starMoonDist = Math.toDegrees(Math.acos(Utils.sind(Context.DECmoon) * Math.sin(DECstar2) + Utils.cosd(Context.DECmoon) * Math.cos(DECstar2) * Utils.cosd(Context.RAmoon - Math.toDegrees(RAstar2))));
 
-			//Finals
+			// Finals
 			Context.GHAstar = Utils.trunc(Context.GHAAtrue - Math.toDegrees(RAstar2));
 			Context.SHAstar = Utils.trunc(360 - Math.toDegrees(RAstar2));
 			Context.DECstar = Math.toDegrees(DECstar2);

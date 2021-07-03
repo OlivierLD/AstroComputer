@@ -166,13 +166,13 @@ public class Anomalies {
       */
 
 		// Nutation in longitude
-		Context.delta_psi = dp / 36000000D;
+		Context.delta_psi = dp / 36_000_000D;
 
 		// Nutation in obliquity
-		Context.delta_eps = de / 36000000D;
+		Context.delta_eps = de / 36_000_000D;
 
 		// Mean obliquity of the ecliptic
-		Context.eps0 = (84381.448 - 46.815 * Context.TE - 0.00059 * Context.TE2 + 0.001813 * Context.TE3) / 3600D;
+		Context.eps0 = (84_381.448 - 46.815 * Context.TE - 0.00059 * Context.TE2 + 0.001813 * Context.TE3) / 3_600D;
 
 		// True obliquity of the ecliptic
 		Context.eps = Context.eps0 + Context.delta_eps;
