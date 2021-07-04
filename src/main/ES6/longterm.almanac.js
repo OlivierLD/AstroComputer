@@ -712,7 +712,7 @@ function calculateMars() {
 	// Declination of Mars, apparent
 	DECMars = Math.toDegrees(Math.asin(Math.sin(beta) * Utils.cosd(eps) + Math.cos(beta) * Utils.sind(eps) * Math.sin(lambda)));
 
-//GHA of Mars
+	//GHA of Mars
 	GHAMars = Utils.norm360Deg(GHAAtrue - RAMars);
 
 	// Semi-diameter of Mars
@@ -1502,7 +1502,7 @@ function gatherOutput(noPlanets=false, withStars=false) {
 
 	outForm.deltaT = deltaT;
 
-    let aries = {};
+    let aries = {}; // Aries RA = 0, by definition.
     aries.GHA = {
         raw: GHAAtrue,
         fmt: outHA(GHAAtrue)
