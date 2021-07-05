@@ -520,6 +520,46 @@ public class AstroComputer {
         return new double[]{he, z};
     }
 
+    /**
+     * Note: The calculate() method must have been invoked before.
+     * <p>
+     * TODO: Fine tune (by checking the elevation) after this calculation, which is not 100% accurate...
+     *
+     * @param latitude
+     * @return the time of rise and set of the body (Sun in that case).
+     * @see <http://aa.usno.navy.mil/data/docs/RS_OneYear.php>
+     * @see <http://www.jgiesen.de/SunMoonHorizon/>
+     * @deprecated Use #sunRiseAndSetEpoch
+     */
+    public static synchronized double[] sunRiseAndSet(double latitude, double longitude) {
+        //  out.println("Sun HP:" + Context.HPsun);
+        //  out.println("Sun SD:" + Context.SDsun);
+        double h0 = (Context.HPsun / 3_600d) - (Context.SDsun / 3_600d); // - (34d / 60d);
+//  System.out.println(">>> DEBUG >>> H0:" + h0 + ", Sin Sun H0:" + Math.sin(Math.toRadians(h0)));
+        double cost = Math.sin(Math.toRadians(h0)) - (Math.tan(Math.toRadians(latitude)) * Math.tan(Math.toRadians(Context.DECsun)));
+        double t = Math.acos(cost);
+        double lon = longitude;
+
+//  while (lon < -180D)
+//    lon += 360D;
+        //  out.println("Lon:" + lon + ", Eot:" + Context.EoT + " (" + (Context.EoT / 60D) + ")" + ", t:" + Math.toDegrees(t));
+        double utRise = 12D - (Context.EoT / 60D) - (lon / 15D) - (Math.toDegrees(t) / 15D);
+        double utSet = 12D - (Context.EoT / 60D) - (lon / 15D) + (Math.toDegrees(t) / 15D);
+
+        // Based on http://en.wikipedia.org/wiki/Sunrise_equation
+        //double phi = Math.toRadians(latitude);
+        //double delta = Math.toRadians(Context.DECsun);
+        //double omega = Math.acos(- Math.tan(phi) * Math.tan(delta));
+        //utRise = 12D - (Context.EoT / 60D) - (lon / 15D) - (Math.toDegrees(omega) / 15D);
+        //utSet  = 12D - (Context.EoT / 60D) - (lon / 15D) + (Math.toDegrees(omega) / 15D);
+
+        double Z = Math.acos((Math.sin(Math.toRadians(Context.DECsun)) + (0.0145 * Math.sin(Math.toRadians(latitude)))) /
+                (0.9999 * Math.cos(Math.toRadians(latitude))));
+        Z = Math.toDegrees(Z);
+
+        return new double[]{utRise, utSet, Z, 360d - Z};
+    }
+
     public static synchronized EpochAndZ[] sunRiseAndSetEpoch(double latitude, double longitude) {
 
         double h0 = (Context.HPsun / 3_600d) - (Context.SDsun / 3_600d); // - (34d / 60d);
