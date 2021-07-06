@@ -1,6 +1,5 @@
 import * as CelestialComputer from './longterm.almanac.js';
 // import * as CelestialComputer from './lib/celestial-computer.min.js';
-
 // let CelestialComputer = require('./longterm.almanac.js');
 
 export function sampleMain(userDataObject) {
@@ -46,4 +45,4 @@ export function sampleMain(userDataObject) {
 }
 
 window.sampleMain = sampleMain;
-
+window.gridSquare = CelestialComputer.gridSquare;
