@@ -13,6 +13,12 @@ public class SRUTest {
                 false,
                 true);
         System.out.println("Correction: " + (corr * 60d) + "' (minutes)");
+
+        SightReductionUtil sightReductionUtil = new SightReductionUtil(80d, 22d, 37.5, -122.3);
+        sightReductionUtil.calculate();
+        double he = sightReductionUtil.getHe();
+        double z = sightReductionUtil.getZ();
+        System.out.printf("Alt: %.02f\272, Z: %.01f\272 \n", he, z);
     }
 
 }

@@ -1,4 +1,5 @@
 import * as CelestialComputer from './longterm.almanac.js';
+import { sightReduction } from './utils.js';
 // import * as CelestialComputer from './lib/celestial-computer.min.js';
 // let CelestialComputer = require('./longterm.almanac.js');
 
@@ -46,3 +47,7 @@ export function sampleMain(userDataObject) {
 
 window.sampleMain = sampleMain;
 window.gridSquare = CelestialComputer.gridSquare;
+window.sightReduction = CelestialComputer.sightReduction;
+
+// console.log("SRU Test:" + JSON.stringify(sightReduction(37.5,-122.3, 80, 22)));
+
