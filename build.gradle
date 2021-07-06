@@ -32,6 +32,7 @@ tasks.withType(JavaCompile) {
 dependencies {
     compile 'org.scala-lang:scala-library:2.12.5'
     compile "org.scala-lang:scala-compiler:2.12.5"
+    testCompile 'junit:junit:4.13.1'
 }
 
 repositories {
@@ -40,6 +41,10 @@ repositories {
     maven { url "http://www.datanucleus.org/downloads/maven2" }
     maven { url "https://oss.sonatype.org/content/groups/public" }
 }
+
+//gradle.beforeSettings {
+//    println 'Before project'
+//}
 
 // Try using ../gradlew run --args="--now"
 mainClassName = "celestial.almanac.JavaSample"

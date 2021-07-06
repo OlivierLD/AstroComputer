@@ -60,7 +60,17 @@ Here is a quick list of some IDEs I use. They _all_ have a free version.
 > We've put some timestamps in the code, to see the time the actual calculation takes.
 
 #### From Java 
-From this module's root
+From this module's root.
+> _**Important Note**_: If you run this project in standalone (i.e. _NOT_ as a git submodule), do set the version for the `shadowJar` plugin in `build.gradle`.  
+> Make sure that
+>```
+>  id 'com.github.johnrengelman.shadow' // version '6.0.0'
+>```
+> becomes
+>```
+>  id 'com.github.johnrengelman.shadow' version '6.0.0'
+>```
+
 ```
 $ ../gradlew clean shadowJar
 $ java -cp build/libs/astro.computer-1.0-all.jar celestial.almanac.JavaSample
