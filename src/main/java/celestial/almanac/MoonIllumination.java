@@ -160,6 +160,7 @@ public class MoonIllumination {
 
         Calendar until = (Calendar)date.clone(); // End date.
         until.add(lengthType.get(), lengthValue.get());
+
         if (verbose) {
             System.out.println(String.format("Calculations from %s to %s",
                     SDF_UTC.format(date.getTime()),
@@ -177,7 +178,7 @@ public class MoonIllumination {
                 lastQuarter = false;
 
         String exactPhase = "";
-        while (date.before(until)) {
+        while (!date.after(until)) {
             // All calculations here
             // TODO Set/Reset DeltaT here ?
             AstroComputer.calculate(
