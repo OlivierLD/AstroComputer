@@ -79,6 +79,14 @@ export function gridSquare(lat, lng) {
     return gridSquare;
 };
 
+/**
+ * Returns altitude and azimuth of a body based on observer's position and body's coordinates (GHA & D)
+ * @param {*} lat Latitude as a float
+ * @param {*} lng Longitude as a float
+ * @param {*} ahg Greenwich Hour Angle (Agnle Horaire Greenwich in French) as a float
+ * @param {*} dec Declination, as a float
+ * @returns a JSON Object, { alt: XX.XX, Z: XX.XX }
+ */
 export function sightReduction(lat, lng, ahg, dec) {
 	let AHL = ahg + lng;
 	while (AHL < 0.0) {
@@ -92,7 +100,7 @@ export function sightReduction(lat, lng, ahg, dec) {
 	let cosAHL = Math.cos(Math.toRadians(AHL));
 
 	let sinHe = (sinL * sinD) + (cosL * cosD * cosAHL);
-	let He = Math.toDegrees(Math.asin(sinHe));
+	let He = Math.toDegrees(Math.asin(sinHe)); // He stands for Hauteur Estimee (that's french)
 //  console.log("Estimated Altitude : " + He);
 
 	// Formula to solve : tg Z = sin P / cos L tan D - sin L cos P
@@ -103,16 +111,16 @@ export function sightReduction(lat, lng, ahg, dec) {
 	let tanZ = sinP / ((cosL * tanD) - (sinL * cosP));
 	let Z = Math.toDegrees(Math.atan(tanZ));
 
-	if (AHL < 180.0) { // vers l'West
-		if (Z < 0.0) { // sud vers nord
+	if (AHL < 180.0) { // to West
+		if (Z < 0.0) { // South to North
 			Z = 180.0 - Z;
-		} else {         // Nord vers Sud
+		} else {         // North to South
 			Z = 360.0 - Z;
 		}
-	} else {           // vers l'Est
-		if (Z < 0.0) { // sud vers nord
+	} else {           // to East
+		if (Z < 0.0) { // South to North
 			Z = 180.0 + Z;
-//    } else {       // nord vers sud
+//    } else {       // North to South
 //      Z = Z;
 		}
 	}

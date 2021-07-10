@@ -441,16 +441,16 @@ public class AstroComputer {
         // deltaT="AUTO" or "AUTO:2020-06", for other almanac than the current (aka now) one.
         String deltaTStr = System.getProperty("deltaT", String.valueOf(deltaT)); // Default, see above... Careful.
         if (deltaTStr.equals(AUTO) || deltaTStr == null || deltaTStr.trim().isEmpty() ) {
-            Calendar now = GregorianCalendar.getInstance();
+            Calendar now = GregorianCalendar.getInstance(); // Current time.
             deltaT = TimeUtil.getDeltaT(now.get(Calendar.YEAR), now.get(Calendar.MONTH) + 1);
-        } else if (deltaTStr.startsWith(AUTO_PREFIX)) {
+        } else if (deltaTStr.startsWith(AUTO_PREFIX)) {     // AUTO at a given time (month-year)
             String value = deltaTStr.substring(AUTO_PREFIX.length());
             String[] splitted = value.split("-");
             int intYear = Integer.parseInt(splitted[0]);
             int intMonth = Integer.parseInt(splitted[1]);
             deltaT = TimeUtil.getDeltaT(intYear, intMonth);
         } else if (deltaTStr != null && !deltaTStr.isEmpty()) {
-            deltaT = Double.parseDouble(deltaTStr);
+            deltaT = Double.parseDouble(deltaTStr);         // Provided by the user
         }
 
 //		System.out.println(String.format("Using DeltaT: %f", deltaT));
