@@ -108,6 +108,11 @@ $
 ```
 
 #### From Scala
+If not done before, do a 
+```
+$ ../gradlew clean shadowJar
+```
+
 ```
 $ java -cp ./build/libs/astro.computer-1.0-all.jar astro.SampleMain
 Calculations for 2020-03-28 16:50:20 UTC (not now)
