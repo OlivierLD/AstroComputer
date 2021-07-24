@@ -167,39 +167,39 @@ public class AstroComputerV2 {
 
     // Updated after the calculate invocation.
     public synchronized double getDeltaT() {
-        return deltaT;
+        return this.deltaT;
     }
 
     public synchronized void setDateTime(int y, int m, int d, int h, int mi, int s) {
-        year = y;
-        month = m;
-        day = d;
-        hour = h;
-        minute = mi;
-        second = s;
+        this.year = y;
+        this.month = m;
+        this.day = d;
+        this.hour = h;
+        this.minute = mi;
+        this.second = s;
     }
 
     public synchronized void setDateTime(long epoch) {
         Calendar calcDate = GregorianCalendar.getInstance();
         calcDate.setTimeZone(TimeZone.getTimeZone("etc/UTC"));
         calcDate.setTimeInMillis(epoch);
-        year = calcDate.get(Calendar.YEAR);
-        month = calcDate.get(Calendar.MONTH);
-        day = calcDate.get(Calendar.DAY_OF_MONTH);
-        hour = calcDate.get(Calendar.HOUR_OF_DAY);
-        minute = calcDate.get(Calendar.MINUTE);
-        second = calcDate.get(Calendar.SECOND);
+        this.year = calcDate.get(Calendar.YEAR);
+        this.month = calcDate.get(Calendar.MONTH);
+        this.day = calcDate.get(Calendar.DAY_OF_MONTH);
+        this.hour = calcDate.get(Calendar.HOUR_OF_DAY);
+        this.minute = calcDate.get(Calendar.MINUTE);
+        this.second = calcDate.get(Calendar.SECOND);
     }
 
     public synchronized Calendar getCalculationDateTime() {
         Calendar calcDate = GregorianCalendar.getInstance();
-        calcDate.set(Calendar.YEAR, year);
-        calcDate.set(Calendar.MONTH, month - 1);
-        calcDate.set(Calendar.DAY_OF_MONTH, day);
+        calcDate.set(Calendar.YEAR, this.year);
+        calcDate.set(Calendar.MONTH, this.month - 1);
+        calcDate.set(Calendar.DAY_OF_MONTH, this.day);
 
-        calcDate.set(Calendar.HOUR_OF_DAY, hour);
-        calcDate.set(Calendar.MINUTE, minute);
-        calcDate.set(Calendar.SECOND, second);
+        calcDate.set(Calendar.HOUR_OF_DAY, this.hour);
+        calcDate.set(Calendar.MINUTE, this.minute);
+        calcDate.set(Calendar.SECOND, this.second);
 
         return calcDate;
     }
@@ -218,16 +218,15 @@ public class AstroComputerV2 {
      * @return Phase in Degrees
      */
     public synchronized double getMoonPhase(int y, int m, int d, int h, int mi, int s) {
-        double phase = 0f;
-        year = y;
-        month = m;
-        day = d;
-        hour = h;
-        minute = mi;
-        second = s;
+        this.year = y;
+        this.month = m;
+        this.day = d;
+        this.hour = h;
+        this.minute = mi;
+        this.second = s;
 
-        calculate();
-        phase = context.lambdaMapp - context.lambda_sun;
+        this.calculate();
+        double phase = this.context.lambdaMapp - this.context.lambda_sun;
         while (phase < 0d) {
             phase += 360d;
         }
@@ -240,7 +239,7 @@ public class AstroComputerV2 {
      * @return moon phase in degrees [0..360]
      */
     public synchronized double getMoonPhase() {
-        double phase = context.lambdaMapp - context.lambda_sun;
+        double phase = this.context.lambdaMapp - this.context.lambda_sun;
         while (phase < 0d) {
             phase += 360d;
         }
@@ -320,7 +319,7 @@ public class AstroComputerV2 {
         double alpha = Math.toDegrees(Math.atan2(deltaElev, deltaZ)); // atan2 from -Pi to Pi
 
         if ("true".equals(System.getProperty("astro.verbose"))) {
-            System.out.println(String.format("At %d %02d %02d - %02d:%02d:%02d UTC:", year, month, day, hour, minute, second));
+            System.out.println(String.format("At %d %02d %02d - %02d:%02d:%02d UTC:", this.year, this.month, this.day, this.hour, this.minute, this.second));
             System.out.println(String.format("0 - Z: %.03f, El: %.03f", z0, alt0));
             System.out.println(String.format("1 - Z: %.03f, El: %.03f", z1, alt1));
             // Full Moon-Sun path
@@ -383,7 +382,7 @@ public class AstroComputerV2 {
         }
 
         if ("true".equals(System.getProperty("astro.verbose"))) {
-            System.out.println(String.format("V2 - At %d %02d %02d - %02d:%02d:%02d UTC:", year, month, day, hour, minute, second));
+            System.out.println(String.format("V2 - At %d %02d %02d - %02d:%02d:%02d UTC:", this.year, this.month, this.day, this.hour, this.minute, this.second));
             System.out.println(String.format("V2 - Moon Z: %.03f, El: %.03f", moonZ, moonAlt));
             System.out.println(String.format("V2 - Sun  Z: %.03f, El: %.03f", sunZ, sunAlt));
         }
@@ -412,8 +411,8 @@ public class AstroComputerV2 {
      * @param s  Seconds [0..59], no milli-sec.
      */
     public synchronized void calculate(int y, int m, int d, int h, int mi, int s) {
-        setDateTime(y, m, d, h, mi, s);
-        calculate();
+        this.setDateTime(y, m, d, h, mi, s);
+        this.calculate();
     }
 
     private final static String AUTO = "AUTO";
@@ -421,13 +420,13 @@ public class AstroComputerV2 {
 
     public synchronized void calculate() {
 
-        if (year == -1 && month == -1 && day == -1 &&
-                hour == -1 && minute == -1 && second == -1) {  // Then use current system date
+        if (this.year == -1 && this.month == -1 && this.day == -1 &&
+                this.hour == -1 && this.minute == -1 && this.second == -1) {  // Then use current system date
             if ("true".equals(System.getProperty("astro.verbose"))) {
                 System.out.println("Using System Time");
             }
             Calendar date = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC")); // Now
-            setDateTime(date.get(Calendar.YEAR),
+            this.setDateTime(date.get(Calendar.YEAR),
                     date.get(Calendar.MONTH) + 1,
                     date.get(Calendar.DAY_OF_MONTH),
                     date.get(Calendar.HOUR_OF_DAY), // and not just HOUR !!!!
@@ -453,7 +452,7 @@ public class AstroComputerV2 {
 
 //		System.out.println(String.format("Using DeltaT: %f", deltaT));
 
-        Core.julianDate(this.context, year, month, day, hour, minute, second, deltaT);
+        Core.julianDate(this.context, this.year, this.month, this.day, this.hour, this.minute, this.second, deltaT);
         Anomalies.nutation(this.context);
         Anomalies.aberration(this.context);
 
@@ -467,8 +466,8 @@ public class AstroComputerV2 {
         Jupiter.compute(this.context);
         Saturn.compute(this.context);
         Core.polaris(this.context);
-        moonPhase = Core.moonPhase(this.context);
-        dow = WEEK_DAYS[Core.weekDay(this.context)];
+        this.moonPhase = Core.moonPhase(this.context);
+        this.dow = WEEK_DAYS[Core.weekDay(this.context)];
     }
 
     public final static int UTC_RISE_IDX = 0;
@@ -513,9 +512,9 @@ public class AstroComputerV2 {
                 lat,
                 lng);
         sru.calculate();
-        double he = sru.getHe().doubleValue();
-        double z = sru.getZ().doubleValue();
-        return new double[]{he, z};
+        double he = sru.getHe();
+        double z = sru.getZ();
+        return new double[] {he, z};
     }
 
     /**
@@ -530,28 +529,28 @@ public class AstroComputerV2 {
      * @deprecated Use #sunRiseAndSetEpoch
      */
     public synchronized double[] sunRiseAndSet(double latitude, double longitude) {
-        //  out.println("Sun HP:" + context.HPsun);
-        //  out.println("Sun SD:" + context.SDsun);
-        double h0 = (context.HPsun / 3_600d) - (context.SDsun / 3_600d); // - (34d / 60d);
+        //  out.println("Sun HP:" + this.context.HPsun);
+        //  out.println("Sun SD:" + this.context.SDsun);
+        double h0 = (this.context.HPsun / 3_600d) - (this.context.SDsun / 3_600d); // - (34d / 60d);
 //  System.out.println(">>> DEBUG >>> H0:" + h0 + ", Sin Sun H0:" + Math.sin(Math.toRadians(h0)));
-        double cost = Math.sin(Math.toRadians(h0)) - (Math.tan(Math.toRadians(latitude)) * Math.tan(Math.toRadians(context.DECsun)));
+        double cost = Math.sin(Math.toRadians(h0)) - (Math.tan(Math.toRadians(latitude)) * Math.tan(Math.toRadians(this.context.DECsun)));
         double t = Math.acos(cost);
         double lon = longitude;
 
 //  while (lon < -180D)
 //    lon += 360D;
-        //  out.println("Lon:" + lon + ", Eot:" + context.EoT + " (" + (context.EoT / 60D) + ")" + ", t:" + Math.toDegrees(t));
-        double utRise = 12D - (context.EoT / 60D) - (lon / 15D) - (Math.toDegrees(t) / 15D);
-        double utSet = 12D - (context.EoT / 60D) - (lon / 15D) + (Math.toDegrees(t) / 15D);
+        //  out.println("Lon:" + lon + ", Eot:" + this.context.EoT + " (" + (this.context.EoT / 60D) + ")" + ", t:" + Math.toDegrees(t));
+        double utRise = 12D - (this.context.EoT / 60D) - (lon / 15D) - (Math.toDegrees(t) / 15D);
+        double utSet = 12D - (this.context.EoT / 60D) - (lon / 15D) + (Math.toDegrees(t) / 15D);
 
         // Based on http://en.wikipedia.org/wiki/Sunrise_equation
         //double phi = Math.toRadians(latitude);
-        //double delta = Math.toRadians(context.DECsun);
+        //double delta = Math.toRadians(this.context.DECsun);
         //double omega = Math.acos(- Math.tan(phi) * Math.tan(delta));
-        //utRise = 12D - (context.EoT / 60D) - (lon / 15D) - (Math.toDegrees(omega) / 15D);
-        //utSet  = 12D - (context.EoT / 60D) - (lon / 15D) + (Math.toDegrees(omega) / 15D);
+        //utRise = 12D - (this.context.EoT / 60D) - (lon / 15D) - (Math.toDegrees(omega) / 15D);
+        //utSet  = 12D - (this.context.EoT / 60D) - (lon / 15D) + (Math.toDegrees(omega) / 15D);
 
-        double Z = Math.acos((Math.sin(Math.toRadians(context.DECsun)) + (0.0145 * Math.sin(Math.toRadians(latitude)))) /
+        double Z = Math.acos((Math.sin(Math.toRadians(this.context.DECsun)) + (0.0145 * Math.sin(Math.toRadians(latitude)))) /
                 (0.9999 * Math.cos(Math.toRadians(latitude))));
         Z = Math.toDegrees(Z);
 
@@ -560,15 +559,15 @@ public class AstroComputerV2 {
 
     public synchronized EpochAndZ[] sunRiseAndSetEpoch(double latitude, double longitude) {
 
-        double h0 = (context.HPsun / 3_600d) - (context.SDsun / 3_600d); // - (34d / 60d);
-        double cost = Math.sin(Math.toRadians(h0)) - (Math.tan(Math.toRadians(latitude)) * Math.tan(Math.toRadians(context.DECsun)));
+        double h0 = (this.context.HPsun / 3_600d) - (this.context.SDsun / 3_600d); // - (34d / 60d);
+        double cost = Math.sin(Math.toRadians(h0)) - (Math.tan(Math.toRadians(latitude)) * Math.tan(Math.toRadians(this.context.DECsun)));
         double t = Math.acos(cost);
         double lon = longitude;
 
-        double utRise = 12D - (context.EoT / 60D) - (lon / 15D) - (Math.toDegrees(t) / 15D);
-        double utSet = 12D - (context.EoT / 60D) - (lon / 15D) + (Math.toDegrees(t) / 15D);
+        double utRise = 12D - (this.context.EoT / 60D) - (lon / 15D) - (Math.toDegrees(t) / 15D);
+        double utSet = 12D - (this.context.EoT / 60D) - (lon / 15D) + (Math.toDegrees(t) / 15D);
 
-        double Z = Math.acos((Math.sin(Math.toRadians(context.DECsun)) + (0.0145 * Math.sin(Math.toRadians(latitude)))) /
+        double Z = Math.acos((Math.sin(Math.toRadians(this.context.DECsun)) + (0.0145 * Math.sin(Math.toRadians(latitude)))) /
                 (0.9999 * Math.cos(Math.toRadians(latitude))));
         Z = Math.toDegrees(Z);
 
@@ -581,9 +580,9 @@ public class AstroComputerV2 {
 
         TimeUtil.DMS dms = TimeUtil.decimalToDMS(utRise);
 
-        rise.set(Calendar.YEAR, year);
-        rise.set(Calendar.MONTH, month - 1);
-        rise.set(Calendar.DAY_OF_MONTH, day);
+        rise.set(Calendar.YEAR, this.year);
+        rise.set(Calendar.MONTH, this.month - 1);
+        rise.set(Calendar.DAY_OF_MONTH, this.day);
 
         rise.set(Calendar.HOUR_OF_DAY, dms.getHours());
         rise.set(Calendar.MINUTE, dms.getMinutes());
@@ -592,32 +591,32 @@ public class AstroComputerV2 {
 //		System.out.println("Rise:" + new Date(rise.getTimeInMillis()));
 
         // Fine tuning
-        double[] riseTest = testSun(rise, latitude, longitude);
+        double[] riseTest = this.testSun(rise, latitude, longitude);
         if ("true".equals(System.getProperty("astro.verbose"))) {
-            System.out.println(String.format(">>>> 1st estimation: H rise (%s): %02f", new Date(rise.getTimeInMillis()).toString(), riseTest[0]));
+            System.out.println(String.format(">>>> 1st estimation: H rise (%s): %02f", new Date(rise.getTimeInMillis()), riseTest[0]));
         }
         if (riseTest[0] != 0) { // Elevation not 0, then adjust
             while (riseTest[0] > 0) {
                 rise.add(Calendar.SECOND, -10);
-                riseTest = testSun(rise, latitude, longitude);
+                riseTest = this.testSun(rise, latitude, longitude);
             }
             // Starting tuning
             while (riseTest[0] < 0) {
                 rise.add(Calendar.SECOND, 1);
-                riseTest = testSun(rise, latitude, longitude);
+                riseTest = this.testSun(rise, latitude, longitude);
             }
             zRise = riseTest[1];
             if ("true".equals(System.getProperty("astro.verbose"))) {
-                System.out.println(String.format(">> Tuned: Rising at %s, h:%f, z=%02f\272", new Date(rise.getTimeInMillis()).toString(), riseTest[0], riseTest[1]));
+                System.out.println(String.format(">> Tuned: Rising at %s, h:%f, z=%02f\272", new Date(rise.getTimeInMillis()), riseTest[0], riseTest[1]));
             }
         }
         long epochRise = rise.getTimeInMillis();
 
         dms = TimeUtil.decimalToDMS(utSet);
 
-        set.set(Calendar.YEAR, year);
-        set.set(Calendar.MONTH, month - 1);
-        set.set(Calendar.DAY_OF_MONTH, day);
+        set.set(Calendar.YEAR, this.year);
+        set.set(Calendar.MONTH, this.month - 1);
+        set.set(Calendar.DAY_OF_MONTH, this.day);
 
         set.set(Calendar.HOUR_OF_DAY, dms.getHours());
         set.set(Calendar.MINUTE, dms.getMinutes());
@@ -625,21 +624,21 @@ public class AstroComputerV2 {
         // Fine tuning
         riseTest = testSun(set, latitude, longitude);
         if ("true".equals(System.getProperty("astro.verbose"))) {
-            System.out.println(String.format(">>>> 1st estimation: H set (%s): %02f", new Date(set.getTimeInMillis()).toString(), riseTest[0]));
+            System.out.println(String.format(">>>> 1st estimation: H set (%s): %02f", new Date(set.getTimeInMillis()), riseTest[0]));
         }
         if (riseTest[0] != 0) { // Elevation not 0, then adjust
             while (riseTest[0] < 0) {
                 set.add(Calendar.SECOND, -10);
-                riseTest = testSun(set, latitude, longitude);
+                riseTest = this.testSun(set, latitude, longitude);
             }
             // Starting tuning
             while (riseTest[0] > 0) {
                 set.add(Calendar.SECOND, 1);
-                riseTest = testSun(set, latitude, longitude);
+                riseTest = this.testSun(set, latitude, longitude);
             }
             zSet = riseTest[1];
             if ("true".equals(System.getProperty("astro.verbose"))) {
-                System.out.println(String.format(">> Tuned: Setting at %s, h:%f, z=%02f\272", new Date(set.getTimeInMillis()).toString(), riseTest[0], riseTest[1]));
+                System.out.println(String.format(">> Tuned: Setting at %s, h:%f, z=%02f\272", new Date(set.getTimeInMillis()), riseTest[0], riseTest[1]));
             }
         }
         long epochSet = set.getTimeInMillis();
@@ -658,7 +657,7 @@ public class AstroComputerV2 {
      * @return meridian passage time in decimal hours.
      */
     public double getSunMeridianPassageTime(double latitude, double longitude) {
-        double t = (12d - (context.EoT / 60d));
+        double t = (12d - (this.context.EoT / 60d));
         double deltaG = longitude / 15D;
         return t - deltaG;
     }
@@ -670,7 +669,7 @@ public class AstroComputerV2 {
      */
     public long getSunTransitTime(double latitude, double longitude) {
         Calendar cal = GregorianCalendar.getInstance(TimeZone.getTimeZone("etc/UTC"));
-        double inHours = getSunMeridianPassageTime(latitude, longitude);
+        double inHours = this.getSunMeridianPassageTime(latitude, longitude);
         TimeUtil.DMS dms = TimeUtil.decimalToDMS(inHours);
         cal.set(Calendar.HOUR_OF_DAY, dms.getHours());
         cal.set(Calendar.MINUTE, dms.getMinutes());
@@ -681,7 +680,7 @@ public class AstroComputerV2 {
 
     // TODO - Cleanup
     public double getSunElevAtTransit(double latitude, double longitude) {
-        long sunTransitTime = this.getSunTransitTime(latitude, longitude);
+        long sunTransitTime = this.getSunTransitTime(latitude, longitude); // TODO Look into that one.
         // double sunTransitTime2 = getSunMeridianPassageTime(latitude, longitude);
 
         // Requires another instance of the AstroComputer to calculate situation at transit time.
@@ -710,13 +709,13 @@ public class AstroComputerV2 {
     }
 
     public synchronized double[] sunRiseAndSet_wikipedia(double latitude, double longitude) {
-        double cost = Math.tan(Math.toRadians(latitude)) * Math.tan(Math.toRadians(context.DECsun));
+        double cost = Math.tan(Math.toRadians(latitude)) * Math.tan(Math.toRadians(this.context.DECsun));
         double t = Math.acos(cost);
         double lon = longitude;
-        double utRise = 12D - (context.EoT / 60D) - (lon / 15D) - (Math.toDegrees(t) / 15D);
-        double utSet = 12D - (context.EoT / 60D) - (lon / 15D) + (Math.toDegrees(t) / 15D);
+        double utRise = 12D - (this.context.EoT / 60D) - (lon / 15D) - (Math.toDegrees(t) / 15D);
+        double utSet = 12D - (this.context.EoT / 60D) - (lon / 15D) + (Math.toDegrees(t) / 15D);
 
-        double Z = Math.acos((Math.sin(Math.toRadians(context.DECsun)) + (0.0145 * Math.sin(Math.toRadians(latitude)))) /
+        double Z = Math.acos((Math.sin(Math.toRadians(this.context.DECsun)) + (0.0145 * Math.sin(Math.toRadians(latitude)))) /
                 (0.9999 * Math.cos(Math.toRadians(latitude))));
         Z = Math.toDegrees(Z);
 
@@ -729,25 +728,25 @@ public class AstroComputerV2 {
      * See http://www.jgiesen.de/SunMoonHorizon/
      */
     public synchronized double[] moonRiseAndSet(double latitude, double longitude) {
-        //  out.println("Moon HP:" + (context.HPmoon / 60) + "'");
-        //  out.println("Moon SD:" + (context.SDmoon / 60) + "'");
-        double h0 = (context.HPmoon / 3_600d) - (context.SDmoon / 3_600d) - (34d / 60d);
+        //  out.println("Moon HP:" + (this.context.HPmoon / 60) + "'");
+        //  out.println("Moon SD:" + (this.context.SDmoon / 60) + "'");
+        double h0 = (this.context.HPmoon / 3_600d) - (this.context.SDmoon / 3_600d) - (34d / 60d);
         //  out.println("Moon H0:" + h0);
-        double cost = Math.sin(Math.toRadians(h0)) - (Math.tan(Math.toRadians(latitude)) * Math.tan(Math.toRadians(context.DECmoon)));
+        double cost = Math.sin(Math.toRadians(h0)) - (Math.tan(Math.toRadians(latitude)) * Math.tan(Math.toRadians(this.context.DECmoon)));
         double t = Math.acos(cost);
         double lon = longitude;
         while (lon < -180D) {
             lon += 360D;
         }
-        //  out.println("Moon Eot:" + context.moonEoT + " (" + (context.moonEoT / 60D) + ")" + ", t:" + Math.toDegrees(t));
-        double utRise = 12D - (context.moonEoT / 60D) - (lon / 15D) - (Math.toDegrees(t) / 15D);
+        //  out.println("Moon Eot:" + context.moonEoT + " (" + (this.context.moonEoT / 60D) + ")" + ", t:" + Math.toDegrees(t));
+        double utRise = 12D - (this.context.moonEoT / 60D) - (lon / 15D) - (Math.toDegrees(t) / 15D);
         while (utRise < 0) {
             utRise += 24;
         }
         while (utRise > 24) {
             utRise -= 24;
         }
-        double utSet = 12D - (context.moonEoT / 60D) - (lon / 15D) + (Math.toDegrees(t) / 15D);
+        double utSet = 12D - (this.context.moonEoT / 60D) - (lon / 15D) + (Math.toDegrees(t) / 15D);
         while (utSet < 0) {
             utSet += 24;
         }
@@ -759,7 +758,7 @@ public class AstroComputerV2 {
     }
 
     public synchronized double getMoonIllum() {
-        return context.k_moon;
+        return this.context.k_moon;
     }
 
     public synchronized void setDeltaT(double deltaT) {
@@ -769,11 +768,11 @@ public class AstroComputerV2 {
         this.deltaT = deltaT;
     }
 
-    public static final synchronized double getTimeZoneOffsetInHours(TimeZone tz) {
+    public static synchronized double getTimeZoneOffsetInHours(TimeZone tz) {
         return getTimeZoneOffsetInHours(tz, new Date());
     }
 
-    public static final synchronized double getTimeZoneOffsetInHours(TimeZone tz, Date when) {
+    public static synchronized double getTimeZoneOffsetInHours(TimeZone tz, Date when) {
         double d = 0;
         if (false) {
             SimpleDateFormat sdf = new SimpleDateFormat("Z");
@@ -792,7 +791,7 @@ public class AstroComputerV2 {
         return d;
     }
 
-    public static final synchronized double getTimeOffsetInHours(String timeOffset) {
+    public static synchronized double getTimeOffsetInHours(String timeOffset) {
 //  System.out.println("Managing:" + timeOffset);
         double d = 0d;
         String[] hm = timeOffset.split(":");
@@ -815,32 +814,32 @@ public class AstroComputerV2 {
 
     public synchronized double[] getSunMoon(int y, int m, int d, int h, int mi, int s, double lat, double lng) {
         double[] values = new double[5];
-        year = y;
-        month = m;
-        day = d;
-        hour = h;
-        minute = mi;
-        second = s;
+        this.year = y;
+        this.month = m;
+        this.day = d;
+        this.hour = h;
+        this.minute = mi;
+        this.second = s;
 
-        calculate();
+        this.calculate();
         SightReductionUtil sru = new SightReductionUtil();
         sru.setL(lat);
         sru.setG(lng);
 
         // Sun
-        sru.setAHG(context.GHAsun);
-        sru.setD(context.DECsun);
+        sru.setAHG(this.context.GHAsun);
+        sru.setD(this.context.DECsun);
         sru.calculate();
         values[SUN_ALT_IDX] = sru.getHe();
         values[SUN_Z_IDX] = sru.getZ();
         // Moon
-        sru.setAHG(context.GHAmoon);
-        sru.setD(context.DECmoon);
+        sru.setAHG(this.context.GHAmoon);
+        sru.setD(this.context.DECmoon);
         sru.calculate();
         values[MOON_ALT_IDX] = sru.getHe();
         values[MOON_Z_IDX] = sru.getZ();
 
-        double ahl = context.GHAAtrue + lng;
+        double ahl = this.context.GHAAtrue + lng;
         while (ahl < 0.0) {
             ahl += 360.0;
         }
@@ -854,21 +853,21 @@ public class AstroComputerV2 {
 
     public synchronized double getSunAlt(int y, int m, int d, int h, int mi, int s, double lat, double lng) {
         double value = 0d;
-        year = y;
-        month = m;
-        day = d;
-        hour = h;
-        minute = mi;
-        second = s;
+        this.year = y;
+        this.month = m;
+        this.day = d;
+        this.hour = h;
+        this.minute = mi;
+        this.second = s;
 
-        calculate();
+        this.calculate();
         SightReductionUtil sru = new SightReductionUtil();
         sru.setL(lat);
         sru.setG(lng);
 
         // Sun
-        sru.setAHG(context.GHAsun);
-        sru.setD(context.DECsun);
+        sru.setAHG(this.context.GHAsun);
+        sru.setD(this.context.DECsun);
         sru.calculate();
         value = sru.getHe();
 
@@ -877,21 +876,21 @@ public class AstroComputerV2 {
 
     public synchronized double getMoonAlt(int y, int m, int d, int h, int mi, int s, double lat, double lng) {
         double value = 0d;
-        year = y;
-        month = m;
-        day = d;
-        hour = h;
-        minute = mi;
-        second = s;
+        this.year = y;
+        this.month = m;
+        this.day = d;
+        this.hour = h;
+        this.minute = mi;
+        this.second = s;
 
-        calculate();
+        this.calculate();
         SightReductionUtil sru = new SightReductionUtil();
         sru.setL(lat);
         sru.setG(lng);
 
         // Moon
-        sru.setAHG(context.GHAmoon);
-        sru.setD(context.DECmoon);
+        sru.setAHG(this.context.GHAmoon);
+        sru.setD(this.context.DECmoon);
         sru.calculate();
         value = sru.getHe();
 
@@ -922,33 +921,33 @@ public class AstroComputerV2 {
      */
     public synchronized double[] getSunMoonAltDecl(int y, int m, int d, int h, int mi, int s, double lat, double lng) {
         double[] values = new double[5];
-        year = y;
-        month = m;
-        day = d;
-        hour = h;
-        minute = mi;
-        second = s;
+        this.year = y;
+        this.month = m;
+        this.day = d;
+        this.hour = h;
+        this.minute = mi;
+        this.second = s;
 
 //  System.out.println(y + "-" + month + "-" + day + " " + h + ":" + mi + ":" + s);
 
-        calculate();
+        this.calculate();
         SightReductionUtil sru = new SightReductionUtil();
         sru.setL(lat);
         sru.setG(lng);
 
         // Sun
-        sru.setAHG(context.GHAsun);
-        sru.setD(context.DECsun);
+        sru.setAHG(this.context.GHAsun);
+        sru.setD(this.context.DECsun);
         sru.calculate();
         values[HE_SUN_IDX] = sru.getHe();
         // Moon
-        sru.setAHG(context.GHAmoon);
-        sru.setD(context.DECmoon);
+        sru.setAHG(this.context.GHAmoon);
+        sru.setD(this.context.DECmoon);
         sru.calculate();
         values[HE_MOON_IDX] = sru.getHe();
 
-        values[DEC_SUN_IDX] = context.DECsun;
-        values[DEC_MOON_IDX] = context.DECmoon;
+        values[DEC_SUN_IDX] = this.context.DECsun;
+        values[DEC_MOON_IDX] = this.context.DECmoon;
 
         double moonPhase = getMoonPhase(y, m, d, h, m, s);
         values[MOON_PHASE_IDX] = moonPhase;
@@ -962,161 +961,161 @@ public class AstroComputerV2 {
      * @return
      */
     public synchronized double getSunDecl() {
-        return context.DECsun;
+        return this.context.DECsun;
     }
 
     public synchronized double getSunGHA() {
-        return context.GHAsun;
+        return this.context.GHAsun;
     }
 
     public synchronized double getSunRA() {
-        return context.RAsun;
+        return this.context.RAsun;
     }
 
     public synchronized double getSunSd() {
-        return context.SDsun;
+        return this.context.SDsun;
     }
 
     public synchronized double getSunHp() {
-        return context.HPsun;
+        return this.context.HPsun;
     }
 
     public synchronized double getAriesGHA() {
-        return context.GHAAtrue;
+        return this.context.GHAAtrue;
     }
 
     public synchronized double getMoonDecl() {
-        return context.DECmoon;
+        return this.context.DECmoon;
     }
 
     public synchronized double getMoonGHA() {
-        return context.GHAmoon;
+        return this.context.GHAmoon;
     }
 
     public synchronized double getMoonRA() {
-        return context.RAmoon;
+        return this.context.RAmoon;
     }
 
     public synchronized double getMoonSd() {
-        return context.SDmoon;
+        return this.context.SDmoon;
     }
 
     public synchronized double getMoonHp() {
-        return context.HPmoon;
+        return this.context.HPmoon;
     }
 
     public synchronized double getVenusDecl() {
-        return context.DECvenus;
+        return this.context.DECvenus;
     }
 
     public synchronized double getVenusGHA() {
-        return context.GHAvenus;
+        return this.context.GHAvenus;
     }
 
     public synchronized double getVenusRA() {
-        return context.RAvenus;
+        return this.context.RAvenus;
     }
 
     public synchronized double getVenusSd() {
-        return context.SDvenus;
+        return this.context.SDvenus;
     }
 
     public synchronized double getVenusHp() {
-        return context.HPvenus;
+        return this.context.HPvenus;
     }
 
     public synchronized double getMarsDecl() {
-        return context.DECmars;
+        return this.context.DECmars;
     }
 
     public synchronized double getMarsGHA() {
-        return context.GHAmars;
+        return this.context.GHAmars;
     }
 
     public synchronized double getMarsRA() {
-        return context.RAmars;
+        return this.context.RAmars;
     }
 
     public synchronized double getMarsSd() {
-        return context.SDmars;
+        return this.context.SDmars;
     }
 
     public synchronized double getMarsHp() {
-        return context.HPmars;
+        return this.context.HPmars;
     }
 
     public synchronized double getJupiterDecl() {
-        return context.DECjupiter;
+        return this.context.DECjupiter;
     }
 
     public synchronized double getJupiterGHA() {
-        return context.GHAjupiter;
+        return this.context.GHAjupiter;
     }
 
     public synchronized double getJupiterRA() {
-        return context.RAjupiter;
+        return this.context.RAjupiter;
     }
 
     public synchronized double getJupiterSd() {
-        return context.SDjupiter;
+        return this.context.SDjupiter;
     }
 
     public synchronized double getJupiterHp() {
-        return context.HPjupiter;
+        return this.context.HPjupiter;
     }
 
     public synchronized double getSaturnDecl() {
-        return context.DECsaturn;
+        return this.context.DECsaturn;
     }
 
     public synchronized double getSaturnGHA() {
-        return context.GHAsaturn;
+        return this.context.GHAsaturn;
     }
 
     public synchronized double getSaturnRA() {
-        return context.RAsaturn;
+        return this.context.RAsaturn;
     }
 
     public synchronized double getSaturnSd() {
-        return context.SDsaturn;
+        return this.context.SDsaturn;
     }
 
     public synchronized double getSaturnHp() {
-        return context.HPsaturn;
+        return this.context.HPsaturn;
     }
 
     public synchronized double getPolarisDecl() {
-        return context.DECpol;
+        return this.context.DECpol;
     }
 
     public synchronized double getPolarisGHA() {
-        return context.GHApol;
+        return this.context.GHApol;
     }
 
     public synchronized double getPolarisRA() {
-        return context.RApol;
+        return this.context.RApol;
     }
 
     public synchronized double getEoT() {
-        return context.EoT;
+        return this.context.EoT;
     }
 
     public synchronized double getLDist() {
-        return context.LDist;
+        return this.context.LDist;
     }
 
     public synchronized String getWeekDay() {
-        return dow;
+        return this.dow;
     }
 
     public synchronized String getMoonPhaseStr() {
-        return moonPhase;
+        return this.moonPhase;
     }
 
     // Etc. Whatever is needed
 
     public synchronized double getMeanObliquityOfEcliptic() {
-        return context.eps0;
+        return this.context.eps0;
     }
 
     public synchronized double ghaToLongitude(double gha) {
@@ -1145,60 +1144,60 @@ public class AstroComputerV2 {
         Map<String, Object> fullMap = new HashMap<>();
 
         Map<String, Object> contextMap = new HashMap<>();
-        contextMap.put("year", year);
-        contextMap.put("month", month);
-        contextMap.put("day", day);
-        contextMap.put("hour", hour);
-        contextMap.put("minute", minute);
-        contextMap.put("second", second);
-        contextMap.put("delta-t", deltaT);
+        contextMap.put("year", this.year);
+        contextMap.put("month", this.month);
+        contextMap.put("day", this.day);
+        contextMap.put("hour", this.hour);
+        contextMap.put("minute", this.minute);
+        contextMap.put("second", this.second);
+        contextMap.put("delta-t", this.deltaT);
 
         Map<String, Object> sunMap = new HashMap<>();
-        sunMap.put("dec", context.DECsun);
-        sunMap.put("gha", context.GHAsun);
-        sunMap.put("ra", context.RAsun);
-        sunMap.put("sd", context.SDsun);
-        sunMap.put("hp", context.HPsun);
+        sunMap.put("dec", this.context.DECsun);
+        sunMap.put("gha", this.context.GHAsun);
+        sunMap.put("ra", this.context.RAsun);
+        sunMap.put("sd", this.context.SDsun);
+        sunMap.put("hp", this.context.HPsun);
 
         Map<String, Object> moonMap = new HashMap<>();
-        moonMap.put("dec", context.DECmoon);
-        moonMap.put("gha", context.GHAmoon);
-        moonMap.put("ra", context.RAmoon);
-        moonMap.put("sd", context.SDmoon);
-        moonMap.put("hp", context.HPmoon);
+        moonMap.put("dec", this.context.DECmoon);
+        moonMap.put("gha", this.context.GHAmoon);
+        moonMap.put("ra", this.context.RAmoon);
+        moonMap.put("sd", this.context.SDmoon);
+        moonMap.put("hp", this.context.HPmoon);
 
         Map<String, Object> venusMap = new HashMap<>();
-        venusMap.put("dec", context.DECvenus);
-        venusMap.put("gha", context.GHAvenus);
-        venusMap.put("ra", context.RAvenus);
-        venusMap.put("sd", context.SDvenus);
-        venusMap.put("hp", context.HPvenus);
+        venusMap.put("dec", this.context.DECvenus);
+        venusMap.put("gha", this.context.GHAvenus);
+        venusMap.put("ra", this.context.RAvenus);
+        venusMap.put("sd", this.context.SDvenus);
+        venusMap.put("hp", this.context.HPvenus);
 
         Map<String, Object> marsMap = new HashMap<>();
-        marsMap.put("dec", context.DECmars);
-        marsMap.put("gha", context.GHAmars);
-        marsMap.put("ra", context.RAmars);
-        marsMap.put("sd", context.SDmars);
-        marsMap.put("hp", context.HPmars);
+        marsMap.put("dec", this.context.DECmars);
+        marsMap.put("gha", this.context.GHAmars);
+        marsMap.put("ra", this.context.RAmars);
+        marsMap.put("sd", this.context.SDmars);
+        marsMap.put("hp", this.context.HPmars);
 
         Map<String, Object> jupiterMap = new HashMap<>();
-        jupiterMap.put("dec", context.DECjupiter);
-        jupiterMap.put("gha", context.GHAjupiter);
-        jupiterMap.put("ra", context.RAjupiter);
-        jupiterMap.put("sd", context.SDjupiter);
-        jupiterMap.put("hp", context.HPjupiter);
+        jupiterMap.put("dec", this.context.DECjupiter);
+        jupiterMap.put("gha", this.context.GHAjupiter);
+        jupiterMap.put("ra", this.context.RAjupiter);
+        jupiterMap.put("sd", this.context.SDjupiter);
+        jupiterMap.put("hp", this.context.HPjupiter);
 
         Map<String, Object> saturnMap = new HashMap<>();
-        saturnMap.put("dec", context.DECsaturn);
-        saturnMap.put("gha", context.GHAsaturn);
-        saturnMap.put("ra", context.RAsaturn);
-        saturnMap.put("sd", context.SDsaturn);
-        saturnMap.put("hp", context.HPsaturn);
+        saturnMap.put("dec", this.context.DECsaturn);
+        saturnMap.put("gha", this.context.GHAsaturn);
+        saturnMap.put("ra", this.context.RAsaturn);
+        saturnMap.put("sd", this.context.SDsaturn);
+        saturnMap.put("hp", this.context.HPsaturn);
 
         Map<String, Object> polarisMap = new HashMap<>();
-        polarisMap.put("dec", context.DECpol);
-        polarisMap.put("gha", context.GHApol);
-        polarisMap.put("ra", context.RApol);
+        polarisMap.put("dec", this.context.DECpol);
+        polarisMap.put("gha", this.context.GHApol);
+        polarisMap.put("ra", this.context.RApol);
 
         fullMap.put("context", contextMap);
 
@@ -1210,13 +1209,13 @@ public class AstroComputerV2 {
         fullMap.put("saturn", saturnMap);
         fullMap.put("polaris", polarisMap);
 
-        fullMap.put("aries-gha", context.GHAAtrue);
+        fullMap.put("aries-gha", this.context.GHAAtrue);
 
-        fullMap.put("eot", context.EoT);
-        fullMap.put("lunar-dist", context.LDist);
-        fullMap.put("day-of-week", dow);
-        fullMap.put("moon-phase", context.moonPhase);
-        fullMap.put("mean-obliquity-of-ecliptic", context.eps0);
+        fullMap.put("eot", this.context.EoT);
+        fullMap.put("lunar-dist", this.context.LDist);
+        fullMap.put("day-of-week", this.dow);
+        fullMap.put("moon-phase", this.context.moonPhase);
+        fullMap.put("mean-obliquity-of-ecliptic", this.context.eps0);
 
         // More if needed!
 

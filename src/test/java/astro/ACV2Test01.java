@@ -1,7 +1,6 @@
 package astro;
 
 import calc.GeomUtil;
-import calc.calculation.AstroComputer;
 import calc.calculation.AstroComputerV2;
 import calc.calculation.SightReductionUtil;
 
@@ -95,9 +94,9 @@ public class ACV2Test01 {
 
         System.out.println("\nWith epochs");
         System.out.println(String.format("Rise Date: %s (Z:%.02f\272)\nSet Date: %s (Z:%.02f\272)",
-                new Date(epochAndZs[0].getEpoch()).toString(),
+                new Date(epochAndZs[0].getEpoch()),
                 epochAndZs[0].getZ(),
-                new Date(epochAndZs[1].getEpoch()).toString(),
+                new Date(epochAndZs[1].getEpoch()),
                 epochAndZs[1].getZ()));
 
         // Moon tilt
