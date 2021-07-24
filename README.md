@@ -252,6 +252,8 @@ Calculation took 3676 μs (3.676 ms)
 | Scala | 64 |
 | Python | 142 |
 
+> Note: for Java & Scala, the time above also include the loading of the JVM. 
+> Subsequent executions should be much faster.
 
 #### From ES6 (JavaScript, using NodeJS as a Web server)
 ```
@@ -380,5 +382,8 @@ it exposes all the computed data through HTTP REST requests.
 Jupyter Notebooks exist for pretty much all the languages having a REPL (Read Execute Print Loop).  
 
 Look into the [`notebooks`](./notebooks) folder...
+
+## TODO
+More Unit tests (for ES6, use [Mocha](https://mochajs.org/)).
 
 ---
