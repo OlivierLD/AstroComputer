@@ -3,7 +3,7 @@ plugins {
   id 'scala'
   id 'idea'
   id 'maven'
-  id 'com.github.johnrengelman.shadow' // version '6.0.0'
+  id 'com.github.johnrengelman.shadow' // version '6.0.0' // Remove version if used in a git submodule.
   id "application"
 }
 
@@ -38,6 +38,7 @@ dependencies {
 repositories {
     mavenLocal()
     mavenCentral()
+    // maven { url "https://mvnrepository.com/artifact" }
     maven { url "http://www.datanucleus.org/downloads/maven2" }
     maven { url "https://oss.sonatype.org/content/groups/public" }
 }
