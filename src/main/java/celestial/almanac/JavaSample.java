@@ -83,24 +83,26 @@ public class JavaSample {
 
 //		double defaultDeltaT = AstroComputer.getDeltaT();
 //		System.out.printf("Using deltaT: %f\n", defaultDeltaT);
-		// Recalculate
-		long before = System.currentTimeMillis();
-		double deltaT = TimeUtil.getDeltaT(date.get(Calendar.YEAR), date.get(Calendar.MONTH) + 1);
+		for (int i=0; i<10; i++) { // Any variation across the time?
+			long before = System.currentTimeMillis();
+			// Recalculate DeltaT
+			double deltaT = TimeUtil.getDeltaT(date.get(Calendar.YEAR), date.get(Calendar.MONTH) + 1);
 //		System.out.printf(">> deltaT: %f s\n", deltaT);
-		AstroComputer.setDeltaT(deltaT);
+			AstroComputer.setDeltaT(deltaT);
 
-		// All calculations here
-		AstroComputer.calculate(
-				date.get(Calendar.YEAR),
-				date.get(Calendar.MONTH) + 1, // Jan: 1, Dec: 12.
-				date.get(Calendar.DAY_OF_MONTH),
-				date.get(Calendar.HOUR_OF_DAY), // and not just Calendar.HOUR !!!!
-				date.get(Calendar.MINUTE),
-				date.get(Calendar.SECOND));
-		long after = System.currentTimeMillis();
+			// All calculations here
+			AstroComputer.calculate(
+					date.get(Calendar.YEAR),
+					date.get(Calendar.MONTH) + 1, // Jan: 1, Dec: 12.
+					date.get(Calendar.DAY_OF_MONTH),
+					date.get(Calendar.HOUR_OF_DAY), // and not just Calendar.HOUR !!!!
+					date.get(Calendar.MINUTE),
+					date.get(Calendar.SECOND));
+			long after = System.currentTimeMillis();
 
-		// Done with calculations, now display
-		System.out.println(String.format(">>> Calculations done for %s, in %d ms <<<", SDF_UTC.format(date.getTime()), (after - before)));
+			// Done with calculations, now display
+			System.out.println(String.format(">>> Calculations done for %s, in %d ms <<<", SDF_UTC.format(date.getTime()), (after - before)));
+		}
 
 		System.out.println(String.format("Sun data:\tDecl.: %s, GHA: %s, RA: %s, sd: %s, hp: %s",
 				lpad(GeomUtil.decToSex(AstroComputer.getSunDecl(), GeomUtil.SWING, GeomUtil.NS), 10, " "),

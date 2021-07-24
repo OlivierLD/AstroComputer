@@ -252,6 +252,23 @@ Calculation took 3676 μs (3.676 ms)
 | Scala | 64 |
 | Python | 142 |
 
+> Note: For Java and Scala, the JVM and the classes have to be loaded first. 
+> Subsequent execution should be must faster. For example, 10 consecutive java executions:
+> ```
+> Calculations for 2020-03-28 16:50:20 UTC (not now)
+>>> Calculations done for 2020-03-28 16:50:20 UTC, in 37 ms <<<
+>>> Calculations done for 2020-03-28 16:50:20 UTC, in 1 ms <<<
+>>> Calculations done for 2020-03-28 16:50:20 UTC, in 2 ms <<<
+>>> Calculations done for 2020-03-28 16:50:20 UTC, in 1 ms <<<
+>>> Calculations done for 2020-03-28 16:50:20 UTC, in 2 ms <<<
+>>> Calculations done for 2020-03-28 16:50:20 UTC, in 1 ms <<<
+>>> Calculations done for 2020-03-28 16:50:20 UTC, in 2 ms <<<
+>>> Calculations done for 2020-03-28 16:50:20 UTC, in 2 ms <<<
+>>> Calculations done for 2020-03-28 16:50:20 UTC, in 1 ms <<<
+>>> Calculations done for 2020-03-28 16:50:20 UTC, in 2 ms <<<
+> ```
+> First execution: 37ms, subsequent ones: 1 to 2ms.
+
 #### From ES6 (JavaScript, using NodeJS as a Web server)
 ```
 $ cd src/main/ES6
