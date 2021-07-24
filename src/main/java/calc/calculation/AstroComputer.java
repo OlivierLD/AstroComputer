@@ -38,6 +38,8 @@ import java.util.stream.Collectors;
  * @see <a href="http://maia.usno.navy.mil/">http://maia.usno.navy.mil/</a>
  * @see <a href="http://maia.usno.navy.mil/ser7/deltat.data">http://maia.usno.navy.mil/ser7/deltat.data</a>
  * @see <a href="https://www.usno.navy.mil/USNO/earth-orientation/eo-products/long-term">https://www.usno.navy.mil/USNO/earth-orientation/eo-products/long-term</a>
+ *
+ * TODO Use non-static methods!!
  */
 public class AstroComputer {
 
@@ -191,6 +193,18 @@ public class AstroComputer {
         hour = h;
         minute = mi;
         second = s;
+    }
+
+    public static synchronized void setDateTime(long epoch) {
+        Calendar calcDate = GregorianCalendar.getInstance();
+        calcDate.setTimeZone(TimeZone.getTimeZone("etc/UTC"));
+        calcDate.setTimeInMillis(epoch);
+        year = calcDate.get(Calendar.YEAR);
+        month = calcDate.get(Calendar.MONTH);
+        day = calcDate.get(Calendar.DAY_OF_MONTH);
+        hour = calcDate.get(Calendar.HOUR_OF_DAY);
+        minute = calcDate.get(Calendar.MINUTE);
+        second = calcDate.get(Calendar.SECOND);
     }
 
     public static synchronized Calendar getCalculationDateTime() {
@@ -657,7 +671,7 @@ public class AstroComputer {
     /**
      * @param latitude  in degrees
      * @param longitude in degrees
-     * @return meridian passage time in hours.
+     * @return meridian passage time in decimal hours.
      */
     public static double getSunMeridianPassageTime(double latitude, double longitude) {
         double t = (12d - (Context.EoT / 60d));
@@ -679,6 +693,31 @@ public class AstroComputer {
         cal.set(Calendar.SECOND, (int) Math.floor(dms.getSeconds()));
 
         return cal.getTimeInMillis();
+    }
+
+    // TODO
+    public static double getSunElevAtTransit(double latitude, double longitude) {
+        long sunTransitTime = getSunTransitTime(latitude, longitude);
+        // double sunTransitTime2 = getSunMeridianPassageTime(latitude, longitude);
+
+        // Requires another instance of the AstroComputer to calculate situation at transit time.
+        AstroComputer.setDateTime(sunTransitTime); // WARNING!  Changes all the context!!
+        AstroComputer.calculate();
+
+        SightReductionUtil sru = new SightReductionUtil();
+
+        sru.setL(latitude);
+        sru.setG(longitude);
+
+        sru.setAHG(AstroComputer.getSunGHA());
+        sru.setD(AstroComputer.getSunDecl());
+        sru.calculate();
+        double obsAlt = sru.getHe();
+        double z = sru.getZ(); // Should be 180. TODO Use assert?
+
+        System.out.printf("At transit Time %s: Elev:%f, Z:%f < should be 180.", AstroComputer.getCalculationDateTime().getTime(), obsAlt, z);
+
+        return obsAlt;
     }
 
     public static synchronized double[] sunRiseAndSet_wikipedia(double latitude, double longitude) {

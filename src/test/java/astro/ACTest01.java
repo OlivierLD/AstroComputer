@@ -81,7 +81,9 @@ public class ACTest01 {
         double obsAlt = sru.getHe();
         double z = sru.getZ();
 
-        System.out.println(String.format("Elev.: %s, Z: %.02f\272", GeomUtil.decToSex(obsAlt, GeomUtil.SWING, GeomUtil.NONE), z));
+        System.out.println(String.format("Now: Elev.: %s, Z: %.02f\272", GeomUtil.decToSex(obsAlt, GeomUtil.SWING, GeomUtil.NONE), z));
+
+        double sunElevAtTransit = AstroComputer.getSunElevAtTransit(lat, lng); // TODO Needs attention
 
         AstroComputer.EpochAndZ[] epochAndZs = AstroComputer.sunRiseAndSetEpoch(lat, lng);
 
