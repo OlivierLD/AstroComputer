@@ -253,7 +253,7 @@ Calculation took 3676 μs (3.676 ms)
 | Python | 142 |
 
 > Note: For Java and Scala, the JVM and the classes have to be loaded first. 
-> Subsequent execution should be must faster. For example, 10 consecutive java executions:
+> Subsequent executions should be must faster. For example, 10 consecutive java executions:
 > ```
 > Calculations for 2020-03-28 16:50:20 UTC (not now)
 >>> Calculations done for 2020-03-28 16:50:20 UTC, in 37 ms <<<
