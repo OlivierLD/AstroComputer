@@ -252,9 +252,6 @@ Calculation took 3676 μs (3.676 ms)
 | Scala | 64 |
 | Python | 142 |
 
-> Note: for Java & Scala, the time above also include the loading of the JVM. 
-> Subsequent executions should be much faster.
-
 #### From ES6 (JavaScript, using NodeJS as a Web server)
 ```
 $ cd src/main/ES6
@@ -269,6 +266,8 @@ $ ./start.sh
 
 You should get a `JSON` object, and some formatted output, like this:
 ![WebUI](./ES6WebUI.png)
+
+> Note: The UI above keeps evolving. Run it for yourself to see how.
 
 ## Timing
 ```
