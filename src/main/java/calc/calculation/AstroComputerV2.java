@@ -164,9 +164,17 @@ public class AstroComputerV2 {
     private String moonPhase = "";
 
     private final ContextV2 context = new ContextV2();
+    private boolean calculateHasBeenInvoked = false;
+
+    public AstroComputerV2() {
+        this.calculateHasBeenInvoked = false;
+    }
 
     // Updated after the calculate invocation.
     public synchronized double getDeltaT() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.deltaT;
     }
 
@@ -177,6 +185,7 @@ public class AstroComputerV2 {
         this.hour = h;
         this.minute = mi;
         this.second = s;
+        this.calculateHasBeenInvoked = false;
     }
 
     public synchronized void setDateTime(long epoch) {
@@ -189,6 +198,7 @@ public class AstroComputerV2 {
         this.hour = calcDate.get(Calendar.HOUR_OF_DAY);
         this.minute = calcDate.get(Calendar.MINUTE);
         this.second = calcDate.get(Calendar.SECOND);
+        this.calculateHasBeenInvoked = false;
     }
 
     public synchronized Calendar getCalculationDateTime() {
@@ -218,6 +228,9 @@ public class AstroComputerV2 {
      * @return Phase in Degrees
      */
     public synchronized double getMoonPhase(int y, int m, int d, int h, int mi, int s) {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context"); // See if feasible with annotation
+        }
         this.year = y;
         this.month = m;
         this.day = d;
@@ -239,6 +252,9 @@ public class AstroComputerV2 {
      * @return moon phase in degrees [0..360]
      */
     public synchronized double getMoonPhase() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         double phase = this.context.lambdaMapp - this.context.lambda_sun;
         while (phase < 0d) {
             phase += 360d;
@@ -254,6 +270,9 @@ public class AstroComputerV2 {
      * @return Moon tilt, in degrees
      */
     public synchronized double getMoonTilt(double obsLatitude, double obsLongitude) {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         final SightReductionUtil sru = new SightReductionUtil();
 
         double moonLongitude = this.ghaToLongitude(this.getMoonGHA());
@@ -363,6 +382,9 @@ public class AstroComputerV2 {
      * @return
      */
     public synchronized double getMoonTiltV2(double obsLatitude, double obsLongitude) {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         final SightReductionUtil sru = new SightReductionUtil();
 
 //		double moonLongitude = AstroComputer.ghaToLongitude(AstroComputer.getMoonGHA());
@@ -468,6 +490,8 @@ public class AstroComputerV2 {
         Core.polaris(this.context);
         this.moonPhase = Core.moonPhase(this.context);
         this.dow = WEEK_DAYS[Core.weekDay(this.context)];
+
+        this.calculateHasBeenInvoked = true;
     }
 
     public final static int UTC_RISE_IDX = 0;
@@ -499,6 +523,9 @@ public class AstroComputerV2 {
     }
 
     private double[] testSun(Calendar current, double lat, double lng) {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         this.setDateTime(current.get(Calendar.YEAR),
                 current.get(Calendar.MONTH) + 1,
                 current.get(Calendar.DATE),
@@ -529,6 +556,9 @@ public class AstroComputerV2 {
      * @deprecated Use #sunRiseAndSetEpoch
      */
     public synchronized double[] sunRiseAndSet(double latitude, double longitude) {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         //  out.println("Sun HP:" + this.context.HPsun);
         //  out.println("Sun SD:" + this.context.SDsun);
         double h0 = (this.context.HPsun / 3_600d) - (this.context.SDsun / 3_600d); // - (34d / 60d);
@@ -558,6 +588,9 @@ public class AstroComputerV2 {
     }
 
     public synchronized EpochAndZ[] sunRiseAndSetEpoch(double latitude, double longitude) {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
 
         double h0 = (this.context.HPsun / 3_600d) - (this.context.SDsun / 3_600d); // - (34d / 60d);
         double cost = Math.sin(Math.toRadians(h0)) - (Math.tan(Math.toRadians(latitude)) * Math.tan(Math.toRadians(this.context.DECsun)));
@@ -657,6 +690,9 @@ public class AstroComputerV2 {
      * @return meridian passage time in decimal hours.
      */
     public double getSunMeridianPassageTime(double latitude, double longitude) {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         double t = (12d - (this.context.EoT / 60d));
         double deltaG = longitude / 15.0;
         return t - deltaG;
@@ -668,6 +704,9 @@ public class AstroComputerV2 {
      * @return as an epoch (today based)
      */
     public long getSunTransitTime(double latitude, double longitude) {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         Calendar cal = GregorianCalendar.getInstance(TimeZone.getTimeZone("etc/UTC"));
         double inHours = this.getSunMeridianPassageTime(latitude, longitude);
         TimeUtil.DMS dms = TimeUtil.decimalToDMS(inHours);
@@ -678,8 +717,10 @@ public class AstroComputerV2 {
         return cal.getTimeInMillis();
     }
 
-    // TODO - Cleanup
     public double getSunElevAtTransit(double latitude, double longitude) {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         long sunTransitTime = this.getSunTransitTime(latitude, longitude); // TODO Look into that one.
         // double sunTransitTime2 = getSunMeridianPassageTime(latitude, longitude);
 
@@ -712,6 +753,9 @@ public class AstroComputerV2 {
     }
 
     public synchronized double[] sunRiseAndSet_wikipedia(double latitude, double longitude) {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         double cost = Math.tan(Math.toRadians(latitude)) * Math.tan(Math.toRadians(this.context.DECsun));
         double t = Math.acos(cost);
         double lon = longitude;
@@ -731,6 +775,9 @@ public class AstroComputerV2 {
      * See http://www.jgiesen.de/SunMoonHorizon/
      */
     public synchronized double[] moonRiseAndSet(double latitude, double longitude) {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         //  out.println("Moon HP:" + (this.context.HPmoon / 60) + "'");
         //  out.println("Moon SD:" + (this.context.SDmoon / 60) + "'");
         double h0 = (this.context.HPmoon / 3_600d) - (this.context.SDmoon / 3_600d) - (34d / 60d);
@@ -761,6 +808,9 @@ public class AstroComputerV2 {
     }
 
     public synchronized double getMoonIllum() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.k_moon;
     }
 
@@ -816,6 +866,9 @@ public class AstroComputerV2 {
     public final static int LHA_ARIES_IDX = 4;
 
     public synchronized double[] getSunMoon(int y, int m, int d, int h, int mi, int s, double lat, double lng) {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         double[] values = new double[5];
         this.year = y;
         this.month = m;
@@ -855,6 +908,9 @@ public class AstroComputerV2 {
     }
 
     public synchronized double getSunAlt(int y, int m, int d, int h, int mi, int s, double lat, double lng) {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         double value = 0d;
         this.year = y;
         this.month = m;
@@ -878,6 +934,9 @@ public class AstroComputerV2 {
     }
 
     public synchronized double getMoonAlt(int y, int m, int d, int h, int mi, int s, double lat, double lng) {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         double value = 0d;
         this.year = y;
         this.month = m;
@@ -923,6 +982,9 @@ public class AstroComputerV2 {
      * TODO Make it a Map<String, Double>
      */
     public synchronized double[] getSunMoonAltDecl(int y, int m, int d, int h, int mi, int s, double lat, double lng) {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         double[] values = new double[5];
         this.year = y;
         this.month = m;
@@ -964,160 +1026,277 @@ public class AstroComputerV2 {
      * @return
      */
     public synchronized double getSunDecl() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.DECsun;
     }
 
     public synchronized double getSunGHA() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.GHAsun;
     }
 
     public synchronized double getSunRA() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.RAsun;
     }
 
     public synchronized double getSunSd() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.SDsun;
     }
 
     public synchronized double getSunHp() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.HPsun;
     }
 
     public synchronized double getAriesGHA() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.GHAAtrue;
     }
 
     public synchronized double getMoonDecl() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.DECmoon;
     }
 
     public synchronized double getMoonGHA() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.GHAmoon;
     }
 
     public synchronized double getMoonRA() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.RAmoon;
     }
 
     public synchronized double getMoonSd() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.SDmoon;
     }
 
     public synchronized double getMoonHp() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.HPmoon;
     }
 
     public synchronized double getVenusDecl() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.DECvenus;
     }
 
     public synchronized double getVenusGHA() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.GHAvenus;
     }
 
     public synchronized double getVenusRA() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.RAvenus;
     }
 
     public synchronized double getVenusSd() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.SDvenus;
     }
 
     public synchronized double getVenusHp() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.HPvenus;
     }
 
     public synchronized double getMarsDecl() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.DECmars;
     }
 
     public synchronized double getMarsGHA() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.GHAmars;
     }
 
     public synchronized double getMarsRA() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.RAmars;
     }
 
     public synchronized double getMarsSd() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.SDmars;
     }
 
     public synchronized double getMarsHp() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.HPmars;
     }
 
     public synchronized double getJupiterDecl() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.DECjupiter;
     }
 
     public synchronized double getJupiterGHA() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.GHAjupiter;
     }
 
     public synchronized double getJupiterRA() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.RAjupiter;
     }
 
     public synchronized double getJupiterSd() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.SDjupiter;
     }
 
     public synchronized double getJupiterHp() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.HPjupiter;
     }
 
     public synchronized double getSaturnDecl() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.DECsaturn;
     }
 
     public synchronized double getSaturnGHA() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.GHAsaturn;
     }
 
     public synchronized double getSaturnRA() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.RAsaturn;
     }
 
     public synchronized double getSaturnSd() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.SDsaturn;
     }
 
     public synchronized double getSaturnHp() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.HPsaturn;
     }
 
     public synchronized double getPolarisDecl() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.DECpol;
     }
 
     public synchronized double getPolarisGHA() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.GHApol;
     }
 
     public synchronized double getPolarisRA() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.RApol;
     }
 
     public synchronized double getEoT() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.EoT;
     }
 
     public synchronized double getLDist() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.LDist;
     }
 
     public synchronized String getWeekDay() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.dow;
     }
 
     public synchronized String getMoonPhaseStr() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.moonPhase;
     }
 
     // Etc. Whatever is needed
 
     public synchronized double getMeanObliquityOfEcliptic() {
+        if (!this.calculateHasBeenInvoked) {
+            throw new RuntimeException("Calculation was never invoked in this context");
+        }
         return this.context.eps0;
     }
 
