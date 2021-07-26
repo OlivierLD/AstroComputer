@@ -658,7 +658,7 @@ public class AstroComputerV2 {
      */
     public double getSunMeridianPassageTime(double latitude, double longitude) {
         double t = (12d - (this.context.EoT / 60d));
-        double deltaG = longitude / 15D;
+        double deltaG = longitude / 15.0;
         return t - deltaG;
     }
 
@@ -692,20 +692,23 @@ public class AstroComputerV2 {
                 secondAstroComputer.getCalculationDateTime().getTime(),
                 secondAstroComputer.getSunGHA());
 
-        SightReductionUtil sru = new SightReductionUtil();
+        double declAtTransit = secondAstroComputer.getSunDecl();
+        System.out.println("\tH at Sun Transit:" + (90.0 - (latitude - declAtTransit)));
 
-        sru.setL(latitude);
-        sru.setG(longitude);
+//        SightReductionUtil sru = new SightReductionUtil();
+//
+//        sru.setL(latitude);
+//        sru.setG(longitude);
+//
+//        sru.setAHG(secondAstroComputer.getSunGHA());
+//        sru.setD(secondAstroComputer.getSunDecl());
+//        sru.calculate();
+//        double obsAlt = sru.getHe();
+//        double z = sru.getZ(); // Should be 180. TODO Use assert?
+//
+//        System.out.printf("At transit Time %s: Elev:%f, Z:%f < should be 180.\n", secondAstroComputer.getCalculationDateTime().getTime(), obsAlt, z);
 
-        sru.setAHG(secondAstroComputer.getSunGHA());
-        sru.setD(secondAstroComputer.getSunDecl());
-        sru.calculate();
-        double obsAlt = sru.getHe();
-        double z = sru.getZ(); // Should be 180. TODO Use assert?
-
-        System.out.printf("At transit Time %s: Elev:%f, Z:%f < should be 180.\n", secondAstroComputer.getCalculationDateTime().getTime(), obsAlt, z);
-
-        return obsAlt;
+        return (90.0 - (latitude - declAtTransit));
     }
 
     public synchronized double[] sunRiseAndSet_wikipedia(double latitude, double longitude) {

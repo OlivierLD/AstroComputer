@@ -42,7 +42,6 @@ public class ACV2Test01 {
 //  System.out.println("TimeOffset for " + timeZone + ":" +  d);
 
         Calendar date = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC")); // Now
-
         astroComputerV2.calculate(
                 date.get(Calendar.YEAR),
                 date.get(Calendar.MONTH) + 1,
@@ -50,6 +49,14 @@ public class ACV2Test01 {
                 date.get(Calendar.HOUR_OF_DAY), // and not just HOUR !!!!
                 date.get(Calendar.MINUTE),
                 date.get(Calendar.SECOND));
+
+//        astroComputerV2.calculate(  // At TPass
+//                2021,
+//                7,
+//                26,
+//                20,
+//                16,
+//                33);
 
         // SF Home
         double lat = 37.7489;
@@ -62,7 +69,7 @@ public class ACV2Test01 {
 
         long sunTransit = astroComputerV2.getSunTransitTime(lat, lng);
         Date tt = new Date(sunTransit);
-        System.out.println("Transit Time:" + tt.toString());
+        System.out.println("Transit Time:" + tt);
 
         double[] riseAndSet = astroComputerV2.sunRiseAndSet(lat, lng);
         System.out.println(String.format("Time Rise: %f, Time Set: %f, ZRise: %f, ZSet: %f", riseAndSet[0], riseAndSet[1], riseAndSet[2], riseAndSet[3]));
@@ -87,7 +94,7 @@ public class ACV2Test01 {
         System.out.println(String.format("Now: Elev.: %s, Z: %.02f\272", GeomUtil.decToSex(obsAlt, GeomUtil.SWING, GeomUtil.NONE), z));
 
         System.out.printf(">> BEFORE: Now is %s, Sun GHA: %f \n", astroComputerV2.getCalculationDateTime().getTime(), astroComputerV2.getSunGHA());
-        double sunElevAtTransit = astroComputerV2.getSunElevAtTransit(lat, lng); // TODO Needs attention
+        double sunElevAtTransit = astroComputerV2.getSunElevAtTransit(lat, lng); // TODO Needs attention...
         System.out.printf(">> AFTER:  And now is (still) %s, Sun GHA: %f \n", astroComputerV2.getCalculationDateTime().getTime(), astroComputerV2.getSunGHA());
 
         AstroComputerV2.EpochAndZ[] epochAndZs = astroComputerV2.sunRiseAndSetEpoch(lat, lng);
