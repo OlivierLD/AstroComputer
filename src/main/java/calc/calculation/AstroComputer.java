@@ -38,6 +38,8 @@ import java.util.stream.Collectors;
  * @see <a href="http://maia.usno.navy.mil/">http://maia.usno.navy.mil/</a>
  * @see <a href="http://maia.usno.navy.mil/ser7/deltat.data">http://maia.usno.navy.mil/ser7/deltat.data</a>
  * @see <a href="https://www.usno.navy.mil/USNO/earth-orientation/eo-products/long-term">https://www.usno.navy.mil/USNO/earth-orientation/eo-products/long-term</a>
+ *
+ * @deprecated Use AstroComputerV2 instead.
  */
 public class AstroComputer {
 

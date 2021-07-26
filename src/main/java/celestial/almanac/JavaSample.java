@@ -1,7 +1,7 @@
 package celestial.almanac;
 
 import calc.GeomUtil;
-import calc.calculation.AstroComputer;
+import calc.calculation.AstroComputerV2;
 import utils.TimeUtil;
 
 import java.text.SimpleDateFormat;
@@ -81,6 +81,7 @@ public class JavaSample {
 		}
 		System.out.println(String.format("Calculations for %s (%s)", SDF_UTC.format(date.getTime()), now ? "now" : "not now"));
 
+		AstroComputerV2 acv2 = new AstroComputerV2();
 //		double defaultDeltaT = AstroComputer.getDeltaT();
 //		System.out.printf("Using deltaT: %f\n", defaultDeltaT);
 		for (int i=0; i<10; i++) { // Any variation across the time?
@@ -88,10 +89,10 @@ public class JavaSample {
 			// Recalculate DeltaT
 			double deltaT = TimeUtil.getDeltaT(date.get(Calendar.YEAR), date.get(Calendar.MONTH) + 1);
 //		System.out.printf(">> deltaT: %f s\n", deltaT);
-			AstroComputer.setDeltaT(deltaT);
+			acv2.setDeltaT(deltaT);
 
 			// All calculations here
-			AstroComputer.calculate(
+			acv2.calculate(
 					date.get(Calendar.YEAR),
 					date.get(Calendar.MONTH) + 1, // Jan: 1, Dec: 12.
 					date.get(Calendar.DAY_OF_MONTH),
@@ -105,54 +106,54 @@ public class JavaSample {
 		}
 
 		System.out.println(String.format("Sun data:\tDecl.: %s, GHA: %s, RA: %s, sd: %s, hp: %s",
-				lpad(GeomUtil.decToSex(AstroComputer.getSunDecl(), GeomUtil.SWING, GeomUtil.NS), 10, " "),
-				lpad(GeomUtil.decToSex(AstroComputer.getSunGHA(), GeomUtil.SWING, GeomUtil.NONE), 11, " "),
-				renderRA(AstroComputer.getSunRA()),
-				lpad(renderSdHp(AstroComputer.getSunSd()), 9, " "),
-				lpad(renderSdHp(AstroComputer.getSunHp()), 9, " ")));
+				lpad(GeomUtil.decToSex(acv2.getSunDecl(), GeomUtil.SWING, GeomUtil.NS), 10, " "),
+				lpad(GeomUtil.decToSex(acv2.getSunGHA(), GeomUtil.SWING, GeomUtil.NONE), 11, " "),
+				renderRA(acv2.getSunRA()),
+				lpad(renderSdHp(acv2.getSunSd()), 9, " "),
+				lpad(renderSdHp(acv2.getSunHp()), 9, " ")));
 		System.out.println(String.format("Moon data:\tDecl.: %s, GHA: %s, RA: %s, sd: %s, hp: %s",
-				lpad(GeomUtil.decToSex(AstroComputer.getMoonDecl(), GeomUtil.SWING, GeomUtil.NS), 10, " "),
-				lpad(GeomUtil.decToSex(AstroComputer.getMoonGHA(), GeomUtil.SWING, GeomUtil.NONE), 11, " "),
-				renderRA(AstroComputer.getMoonRA()),
-				lpad(renderSdHp(AstroComputer.getMoonSd()), 9, " "),
-						lpad(renderSdHp(AstroComputer.getMoonHp()), 9, " ")));
+				lpad(GeomUtil.decToSex(acv2.getMoonDecl(), GeomUtil.SWING, GeomUtil.NS), 10, " "),
+				lpad(GeomUtil.decToSex(acv2.getMoonGHA(), GeomUtil.SWING, GeomUtil.NONE), 11, " "),
+				renderRA(acv2.getMoonRA()),
+				lpad(renderSdHp(acv2.getMoonSd()), 9, " "),
+						lpad(renderSdHp(acv2.getMoonHp()), 9, " ")));
 		System.out.println(String.format("\tMoon phase: %s, %s",
-				GeomUtil.decToSex(AstroComputer.getMoonPhase(), GeomUtil.SWING, GeomUtil.NONE),
-				AstroComputer.getMoonPhaseStr()));
-		System.out.println(String.format("\tMoon illumination %.04f%%", AstroComputer.getMoonIllum()));
+				GeomUtil.decToSex(acv2.getMoonPhase(), GeomUtil.SWING, GeomUtil.NONE),
+				acv2.getMoonPhaseStr()));
+		System.out.println(String.format("\tMoon illumination %.04f%%", acv2.getMoonIllum()));
 		System.out.println(String.format("Venus data:\tDecl.: %s, GHA: %s, RA: %s, sd: %s, hp: %s",
-				lpad(GeomUtil.decToSex(AstroComputer.getVenusDecl(), GeomUtil.SWING, GeomUtil.NS), 10, " "),
-				lpad(GeomUtil.decToSex(AstroComputer.getVenusGHA(), GeomUtil.SWING, GeomUtil.NONE), 11, " "),
-				renderRA(AstroComputer.getVenusRA()),
-				lpad(renderSdHp(AstroComputer.getVenusSd()), 9, " "),
-				lpad(renderSdHp(AstroComputer.getVenusHp()), 9, " ")));
+				lpad(GeomUtil.decToSex(acv2.getVenusDecl(), GeomUtil.SWING, GeomUtil.NS), 10, " "),
+				lpad(GeomUtil.decToSex(acv2.getVenusGHA(), GeomUtil.SWING, GeomUtil.NONE), 11, " "),
+				renderRA(acv2.getVenusRA()),
+				lpad(renderSdHp(acv2.getVenusSd()), 9, " "),
+				lpad(renderSdHp(acv2.getVenusHp()), 9, " ")));
 		System.out.println(String.format("Mars data:\tDecl.: %s, GHA: %s, RA: %s, sd: %s, hp: %s",
-				lpad(GeomUtil.decToSex(AstroComputer.getMarsDecl(), GeomUtil.SWING, GeomUtil.NS), 10, " "),
-				lpad(GeomUtil.decToSex(AstroComputer.getMarsGHA(), GeomUtil.SWING, GeomUtil.NONE), 11, " "),
-				renderRA(AstroComputer.getMarsRA()),
-				lpad(renderSdHp(AstroComputer.getMarsSd()), 9, " "),
-				lpad(renderSdHp(AstroComputer.getMarsHp()), 9, " ")));
+				lpad(GeomUtil.decToSex(acv2.getMarsDecl(), GeomUtil.SWING, GeomUtil.NS), 10, " "),
+				lpad(GeomUtil.decToSex(acv2.getMarsGHA(), GeomUtil.SWING, GeomUtil.NONE), 11, " "),
+				renderRA(acv2.getMarsRA()),
+				lpad(renderSdHp(acv2.getMarsSd()), 9, " "),
+				lpad(renderSdHp(acv2.getMarsHp()), 9, " ")));
 		System.out.println(String.format("Jupiter data:\tDecl.: %s, GHA: %s, RA: %s, sd: %s, hp: %s",
-				lpad(GeomUtil.decToSex(AstroComputer.getJupiterDecl(), GeomUtil.SWING, GeomUtil.NS), 10, " "),
-				lpad(GeomUtil.decToSex(AstroComputer.getJupiterGHA(), GeomUtil.SWING, GeomUtil.NONE), 11, " "),
-				renderRA(AstroComputer.getJupiterRA()),
-				lpad(renderSdHp(AstroComputer.getJupiterSd()), 9, " "),
-				lpad(renderSdHp(AstroComputer.getJupiterHp()), 9, " ")));
+				lpad(GeomUtil.decToSex(acv2.getJupiterDecl(), GeomUtil.SWING, GeomUtil.NS), 10, " "),
+				lpad(GeomUtil.decToSex(acv2.getJupiterGHA(), GeomUtil.SWING, GeomUtil.NONE), 11, " "),
+				renderRA(acv2.getJupiterRA()),
+				lpad(renderSdHp(acv2.getJupiterSd()), 9, " "),
+				lpad(renderSdHp(acv2.getJupiterHp()), 9, " ")));
 		System.out.println(String.format("Saturn data:\tDecl.: %s, GHA: %s, RA: %s, sd: %s, hp: %s",
-				lpad(GeomUtil.decToSex(AstroComputer.getSaturnDecl(), GeomUtil.SWING, GeomUtil.NS), 10, " "),
-				lpad(GeomUtil.decToSex(AstroComputer.getSaturnGHA(), GeomUtil.SWING, GeomUtil.NONE), 11, " "),
-				renderRA(AstroComputer.getSaturnRA()),
-				lpad(renderSdHp(AstroComputer.getSaturnSd()), 9, " "),
-				lpad(renderSdHp(AstroComputer.getSaturnHp()), 9, " ")));
+				lpad(GeomUtil.decToSex(acv2.getSaturnDecl(), GeomUtil.SWING, GeomUtil.NS), 10, " "),
+				lpad(GeomUtil.decToSex(acv2.getSaturnGHA(), GeomUtil.SWING, GeomUtil.NONE), 11, " "),
+				renderRA(acv2.getSaturnRA()),
+				lpad(renderSdHp(acv2.getSaturnSd()), 9, " "),
+				lpad(renderSdHp(acv2.getSaturnHp()), 9, " ")));
 		System.out.println();
 		System.out.println(String.format("Polaris data:\tDecl.: %s, GHA: %s, RA: %s",
-				lpad(GeomUtil.decToSex(AstroComputer.getPolarisDecl(), GeomUtil.SWING, GeomUtil.NS), 10, " "),
-				lpad(GeomUtil.decToSex(AstroComputer.getPolarisGHA(), GeomUtil.SWING, GeomUtil.NONE), 11, " "),
-				renderRA(AstroComputer.getPolarisRA())));
+				lpad(GeomUtil.decToSex(acv2.getPolarisDecl(), GeomUtil.SWING, GeomUtil.NS), 10, " "),
+				lpad(GeomUtil.decToSex(acv2.getPolarisGHA(), GeomUtil.SWING, GeomUtil.NONE), 11, " "),
+				renderRA(acv2.getPolarisRA())));
 
-		System.out.println(String.format("Equation of time: %s", renderEoT(AstroComputer.getEoT())));
-		System.out.println(String.format("Lunar Distance: %s", lpad(GeomUtil.decToSex(AstroComputer.getLDist(), GeomUtil.SWING, GeomUtil.NONE), 10, " ")));
-		System.out.println(String.format("Day of Week: %s", AstroComputer.getWeekDay()));
+		System.out.println(String.format("Equation of time: %s", renderEoT(acv2.getEoT())));
+		System.out.println(String.format("Lunar Distance: %s", lpad(GeomUtil.decToSex(acv2.getLDist(), GeomUtil.SWING, GeomUtil.NONE), 10, " ")));
+		System.out.println(String.format("Day of Week: %s", acv2.getWeekDay()));
 
 		System.out.println("Done with Java test run!");
 	}
