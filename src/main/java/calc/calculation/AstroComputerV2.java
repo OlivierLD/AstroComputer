@@ -734,19 +734,22 @@ public class AstroComputerV2 {
         double declAtTransit = secondAstroComputer.getSunDecl();
 //        System.out.println("\tH at Sun Transit:" + (90.0 - (latitude - declAtTransit)));
 
-//        SightReductionUtil sru = new SightReductionUtil();
-//
-//        sru.setL(latitude);
-//        sru.setG(longitude);
-//
-//        sru.setAHG(secondAstroComputer.getSunGHA());
-//        sru.setD(secondAstroComputer.getSunDecl());
-//        sru.calculate();
-//        double obsAlt = sru.getHe();
-//        double z = sru.getZ(); // Should be 180. TODO Use assert?
-//
-//        System.out.printf("At transit Time %s: Elev:%f, Z:%f < should be 180.\n", secondAstroComputer.getCalculationDateTime().getTime(), obsAlt, z);
+        boolean WITH_Z_CHECK = false;
 
+        if (WITH_Z_CHECK) {
+            SightReductionUtil sru = new SightReductionUtil();
+
+            sru.setL(latitude);
+            sru.setG(longitude);
+
+            sru.setAHG(secondAstroComputer.getSunGHA());
+            sru.setD(secondAstroComputer.getSunDecl());
+            sru.calculate();
+            double obsAlt = sru.getHe();
+            double z = sru.getZ(); // Should be 180.
+
+            System.out.printf("At transit Time %s: Elev:%f, Z:%f < should be 180.\n", secondAstroComputer.getCalculationDateTime().getTime(), obsAlt, z);
+        }
         return (90.0 - (latitude - declAtTransit));
     }
 
