@@ -228,9 +228,6 @@ public class AstroComputerV2 {
      * @return Phase in Degrees
      */
     public synchronized double getMoonPhase(int y, int m, int d, int h, int mi, int s) {
-        if (!this.calculateHasBeenInvoked) {
-            throw new RuntimeException("Calculation was never invoked in this context"); // See if feasible with annotation
-        }
         this.year = y;
         this.month = m;
         this.day = d;
@@ -523,9 +520,6 @@ public class AstroComputerV2 {
     }
 
     private double[] testSun(Calendar current, double lat, double lng) {
-        if (!this.calculateHasBeenInvoked) {
-            throw new RuntimeException("Calculation was never invoked in this context");
-        }
         this.setDateTime(current.get(Calendar.YEAR),
                 current.get(Calendar.MONTH) + 1,
                 current.get(Calendar.DATE),
@@ -710,6 +704,10 @@ public class AstroComputerV2 {
         Calendar cal = GregorianCalendar.getInstance(TimeZone.getTimeZone("etc/UTC"));
         double inHours = this.getSunMeridianPassageTime(latitude, longitude);
         TimeUtil.DMS dms = TimeUtil.decimalToDMS(inHours);
+        cal.set(Calendar.YEAR, this.year);
+        cal.set(Calendar.MONTH, this.month);
+        cal.set(Calendar.DAY_OF_MONTH, this.day);
+
         cal.set(Calendar.HOUR_OF_DAY, dms.getHours());
         cal.set(Calendar.MINUTE, dms.getMinutes());
         cal.set(Calendar.SECOND, (int) Math.floor(dms.getSeconds()));
@@ -729,12 +727,12 @@ public class AstroComputerV2 {
         secondAstroComputer.setDateTime(sunTransitTime); // WARNING!  Changes all the context!!
         secondAstroComputer.calculate();
 
-        System.out.printf("\tIn getSunElevAtTransit: calculation time is %s, Sun GHA: %f\n",
-                secondAstroComputer.getCalculationDateTime().getTime(),
-                secondAstroComputer.getSunGHA());
+//        System.out.printf("\tIn getSunElevAtTransit: calculation time is %s, Sun GHA: %f\n",
+//                secondAstroComputer.getCalculationDateTime().getTime(),
+//                secondAstroComputer.getSunGHA());
 
         double declAtTransit = secondAstroComputer.getSunDecl();
-        System.out.println("\tH at Sun Transit:" + (90.0 - (latitude - declAtTransit)));
+//        System.out.println("\tH at Sun Transit:" + (90.0 - (latitude - declAtTransit)));
 
 //        SightReductionUtil sru = new SightReductionUtil();
 //
@@ -866,9 +864,6 @@ public class AstroComputerV2 {
     public final static int LHA_ARIES_IDX = 4;
 
     public synchronized double[] getSunMoon(int y, int m, int d, int h, int mi, int s, double lat, double lng) {
-        if (!this.calculateHasBeenInvoked) {
-            throw new RuntimeException("Calculation was never invoked in this context");
-        }
         double[] values = new double[5];
         this.year = y;
         this.month = m;
@@ -908,9 +903,6 @@ public class AstroComputerV2 {
     }
 
     public synchronized double getSunAlt(int y, int m, int d, int h, int mi, int s, double lat, double lng) {
-        if (!this.calculateHasBeenInvoked) {
-            throw new RuntimeException("Calculation was never invoked in this context");
-        }
         double value = 0d;
         this.year = y;
         this.month = m;
@@ -934,9 +926,6 @@ public class AstroComputerV2 {
     }
 
     public synchronized double getMoonAlt(int y, int m, int d, int h, int mi, int s, double lat, double lng) {
-        if (!this.calculateHasBeenInvoked) {
-            throw new RuntimeException("Calculation was never invoked in this context");
-        }
         double value = 0d;
         this.year = y;
         this.month = m;
@@ -982,9 +971,6 @@ public class AstroComputerV2 {
      * TODO Make it a Map<String, Double>
      */
     public synchronized double[] getSunMoonAltDecl(int y, int m, int d, int h, int mi, int s, double lat, double lng) {
-        if (!this.calculateHasBeenInvoked) {
-            throw new RuntimeException("Calculation was never invoked in this context");
-        }
         double[] values = new double[5];
         this.year = y;
         this.month = m;
