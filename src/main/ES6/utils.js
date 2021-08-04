@@ -1,6 +1,5 @@
 "use strict";
 
-
 // Sine of angles in degrees
 export function sind(x) {
 	return Math.sin(Math.toRadians(x));
@@ -57,10 +56,12 @@ export function gridSquare(lat, lng) {
     let gridSquare = "";
 
     lng += 180;
-    lat += 90;
+    lat +=  90;
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    //                0         1         2
-    //                01234567890123456789012345. Useless beyond X
+    //                0         1         2  |
+    //                01234567890123456789012345. 
+	//                                       | 
+	//                                       Useless beyond X
     let first = Math.trunc(lng / 20.0);
     gridSquare += alphabet.charAt(first);
     let second = Math.trunc(lat / 10.0);
@@ -87,7 +88,7 @@ export function gridSquare(lat, lng) {
  * @param {float} lng Longitude as a float
  * @param {float} ahg Greenwich Hour Angle (Agnle Horaire Greenwich in French) as a float
  * @param {float} dec Declination, as a float
- * @returns {Object} a JSON Object, { alt: XX.XX, Z: XX.XX }
+ * @returns { alt: float, Z: float } a JSON Object, { alt: float, Z: float }
  */
 export function sightReduction(lat, lng, ahg, dec) {
 	let AHL = ahg + lng;
@@ -132,7 +133,6 @@ export function sightReduction(lat, lng, ahg, dec) {
 		Z: Z
 	};
 };
-
 
 if (Math.toRadians === undefined) {
 	Math.toRadians = (deg) => {
@@ -259,10 +259,11 @@ export function calculateGreatCircle(from, to, nbPoints) {
 };
 
 /**
- * 
+ * Will return the Initial Route Angle of the GC between Moon and Sun
  * @param { lat: float, lng: float } obs values in degrees
  * @param { gha: float, dec: float } sunCoord values in degrees
  * @param { gha: float, dec: float } moonCoord values in degrees
+ * @returns {float} the moon tilt
  */
 export function getMoonTilt(obs, sunCoord, moonCoord ) {
 
@@ -271,12 +272,13 @@ export function getMoonTilt(obs, sunCoord, moonCoord ) {
 	let skyRoute = calculateGreatCircle({lat: Math.toRadians(moonCoord.dec), lng: Math.toRadians(moonLongitude)},
 										{lat: Math.toRadians(sunCoord.dec), lng: Math.toRadians(sunLongitude)},
 										20);
-	let route = [];									
+	let route = [];
 	skyRoute.forEach(rp => {
 		let sru = sightReduction(obs.lat, obs.lng, longitudeToGHA(Math.toDegrees(rp.point.lng)), Math.toDegrees(rp.point.lat));
-		route.push({observer: obs, 
-					observed: { alt: sru.alt,
-								z: sru.Z}});
+		route.push({ observer: obs,
+					 observed: { alt: sru.alt,
+					  			 z: sru.Z }
+				   });
 	});									
 	// Take the first triangle, from the Moon.
 	let z0 = route[0].observed.z;
@@ -313,7 +315,6 @@ export function getMoonTilt(obs, sunCoord, moonCoord ) {
 			}
 		}
 	}
-
 	return alpha;
 };
 
