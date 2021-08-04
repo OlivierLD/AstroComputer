@@ -1,5 +1,12 @@
 import * as CelestialComputer from './longterm.almanac.js';
-import { sightReduction, getGCDistance, getGCDistanceDegreesNM, calculateGreatCircle, getMoonTilt } from './utils.js';
+import { 
+	sightReduction, 
+	getGCDistance, 
+	getGCDistanceDegreesNM, 
+	calculateGreatCircle, 
+	getMoonTilt 
+} from './utils.js';
+
 // import * as CelestialComputer from './lib/celestial-computer.min.js';
 // let CelestialComputer = require('./longterm.almanac.js');
 
@@ -47,29 +54,32 @@ export function sampleMain(userDataObject) {
 
 window.sampleMain = sampleMain;
 window.gridSquare = CelestialComputer.gridSquare;
-window.sightReduction = CelestialComputer.sightReduction;
+window.sightReduction = CelestialComputer.sightReduction; // Note: This is the one in utils.js
 window.getGCDistance = getGCDistance;
 window.getGCDistanceDegreesNM = getGCDistanceDegreesNM;
 window.calculateGreatCircle = calculateGreatCircle;
 window.getMoonTilt = getMoonTilt;
 
-// console.log("SRU Test:" + JSON.stringify(sightReduction(37.5,-122.3, 80, 22)));
-// console.log(`GC Dist (in miles):${ 60.0 * Math.toDegrees(getGCDistance({lat: Math.toRadians(37), lng: Math.toRadians(-122)}, {lat: Math.toRadians(47), lng: Math.toRadians(-3)}))}`);
-// console.log(`GC Dist (in miles):${ getGCDistanceDegreesNM({lat:37, lng: -122}, {lat: 47, lng: -3})}`);
+let STANDALONE = false;
+if (STANDALONE) {
+	console.log("SRU Test:" + JSON.stringify(sightReduction(37.5,-122.3, 80, 22)));
+	console.log(`GC Dist (in miles):${ 60.0 * Math.toDegrees(getGCDistance({lat: Math.toRadians(37), lng: Math.toRadians(-122)}, {lat: Math.toRadians(47), lng: Math.toRadians(-3)}))}`);
+	console.log(`GC Dist (in miles):${ getGCDistanceDegreesNM({lat:37, lng: -122}, {lat: 47, lng: -3})}`);
 
-// let from = { lat: Math.toRadians(19.0), lng: Math.toRadians(-160.0) }; // Cook
-// let to = { lat: Math.toRadians(19.0), lng: Math.toRadians(-170.0) }; // Niue
-// let route = calculateGreatCircle(from, to, 20);
-// route.forEach(rp => {
-// 	console.log(`Pt: ${Math.toDegrees(rp.point.lat)}/${Math.toDegrees(rp.point.lng)}, Z:${rp.z}`);
-// });
-// Moon tilt
-// Obs {lat: 37.7489, lng: -122.507}
-// Moon: GHA: 77.40581427333474, Dec: 11.184778568111762
-// Sun: GHA: 28.50281942727125, Dec: 17.07827750394256
-// let moonTilt = getMoonTilt({lat: 37.7489, lng: -122.507}, 
-// 							{gha: 28.50281942727125, dec: 17.07827750394256}, 
-// 							{gha: 77.40581427333474, dec: 11.184778568111762});
-// console.log(`Moon Tilt: ${moonTilt}`);
+	let from = { lat: Math.toRadians(19.0), lng: Math.toRadians(-160.0) }; // Cook
+	let to = { lat: Math.toRadians(19.0), lng: Math.toRadians(-170.0) }; // Niue
+	let route = calculateGreatCircle(from, to, 20);
+	route.forEach(rp => {
+		console.log(`Pt: ${Math.toDegrees(rp.point.lat)}/${Math.toDegrees(rp.point.lng)}, Z:${rp.z}`);
+	});
+	// Moon tilt
+	// Obs {lat: 37.7489, lng: -122.507}
+	// Moon: GHA: 77.40581427333474, Dec: 11.184778568111762
+	// Sun: GHA: 28.50281942727125, Dec: 17.07827750394256
+	let moonTilt = getMoonTilt({lat: 37.7489, lng: -122.507}, 
+								{gha: 28.50281942727125, dec: 17.07827750394256}, 
+								{gha: 77.40581427333474, dec: 11.184778568111762});
+	console.log(`Moon Tilt: ${moonTilt}`);
 
-// console.log("End of test");
+	console.log("End of test");
+}

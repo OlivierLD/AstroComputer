@@ -33,3 +33,6 @@ package-lock.json
 yarn.lock
 *.js.map
 *.min.js
+
+**/.ipynb_checkpoints/*
+**/.idea

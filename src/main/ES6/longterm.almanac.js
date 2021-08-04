@@ -14,7 +14,6 @@ if (Math.toRadians === undefined) {
 	};
 }
 
-
 if (Math.toDegrees === undefined) {
 	Math.toDegrees = (rad) => {
 		return rad * (180 / Math.PI);
