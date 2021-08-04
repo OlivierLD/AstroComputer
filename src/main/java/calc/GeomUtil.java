@@ -481,6 +481,7 @@ public final class GeomUtil {
 		System.out.println("19 00.00 N  =" + (sexToDec("19", "00.00")));
 		System.out.println("170 00.00 W =" + (-sexToDec("170", "00.00")));
 
+		System.out.println("Cook to Niue:");
 		GreatCircle gc = new GreatCircle();
 		gc.setStart(new GreatCirclePoint(Math.toRadians(sexToDec("19", "00.00")),
 				Math.toRadians((-sexToDec("160", "00.00")))));
@@ -490,6 +491,10 @@ public final class GeomUtil {
 		//  Vector route = gc.getRoute();
 		double distance = gc.getDistance();
 		System.out.println("Dist:" + (Math.toDegrees(distance) * 60) + " nm");
+		gc.getRoute().stream().forEach(pt -> {
+			System.out.println(String.format("pt: %s/%s, z:%f", Math.toDegrees(pt.getPoint().getL()), Math.toDegrees(pt.getPoint().getG()), pt.getZ()));
+		});
+
 
 		System.out.println("Tonga:");
 		System.out.println("21 10.00 N  =" + (sexToDec("21", "10.00")));

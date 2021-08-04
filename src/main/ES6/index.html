@@ -184,6 +184,12 @@ body {
 
         drawArrow('sun-azimuth', sru.Z);
         drawElevation('sun-elevation', sru.alt);
+
+        // Moon-tilt
+        let moonTilt = getMoonTilt({lat: 37.7489, lng: -122.507}, 
+							{gha: testResult.sun.GHA.raw, dec: testResult.sun.DEC.raw}, 
+							{gha: testResult.moon.GHA.raw, dec: testResult.moon.DEC.raw});
+        console.log(`Moon Tilt: ${moonTilt}`);
     };
 
     let updateUTCDate = () => {

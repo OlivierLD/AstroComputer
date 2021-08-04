@@ -257,6 +257,7 @@ public final class GreatCircle {
 			if (ari < 0.0D) {
 				ari = Math.abs(ari);
 			}
+
 			int _nsDir;
 			if (routePoint.getL() > smallStart.getL()) {
 				_nsDir = TO_NORTH;
@@ -629,7 +630,7 @@ public final class GreatCircle {
 	/**
 	 * Dead Reckoning
 	 *
-	 * @param from  GeopPoint, L &amp; G in Radians
+	 * @param from  GeoPoint, L &amp; G in Radians
 	 * @param dist  distance in nm
 	 * @param route route in degrees
 	 * @return DR Position, L &amp; G in Radians
