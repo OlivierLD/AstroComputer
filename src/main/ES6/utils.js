@@ -48,8 +48,10 @@ export function longitudeToGHA(longitude) {
 	return gha;
 };
 
-/*
+/**
  * See http://en.wikipedia.org/wiki/Maidenhead_Locator_System
+ * @param {float} lat Latitude
+ * @param {float} lng Longitude
  */
 export function gridSquare(lat, lng) {
     let gridSquare = "";
@@ -81,11 +83,11 @@ export function gridSquare(lat, lng) {
 
 /**
  * Returns altitude and azimuth of a body based on observer's position and body's coordinates (GHA & D)
- * @param {*} lat Latitude as a float
- * @param {*} lng Longitude as a float
- * @param {*} ahg Greenwich Hour Angle (Agnle Horaire Greenwich in French) as a float
- * @param {*} dec Declination, as a float
- * @returns a JSON Object, { alt: XX.XX, Z: XX.XX }
+ * @param {float} lat Latitude as a float
+ * @param {float} lng Longitude as a float
+ * @param {float} ahg Greenwich Hour Angle (Agnle Horaire Greenwich in French) as a float
+ * @param {float} dec Declination, as a float
+ * @returns {Object} a JSON Object, { alt: XX.XX, Z: XX.XX }
  */
 export function sightReduction(lat, lng, ahg, dec) {
 	let AHL = ahg + lng;
@@ -146,8 +148,8 @@ if (Math.toDegrees === undefined) {
 
 /**
  * 
- * @param {*} from { lat: xxx, lng: xxx }, values in Radians
- * @param {*} to { lat: xxx, lng: xxx }, values in Radians
+ * @param { lat: float, lng: float } from values in Radians
+ * @param { lat: float, lng: float } to values in Radians
  * Return distance in radians
  */
 export function getGCDistance(from, to) {
@@ -157,8 +159,12 @@ export function getGCDistance(from, to) {
 	return dist;
 };
 
-
-// Points coordinates in degrees, return in nautical miles.
+/**
+ * Points coordinates in degrees, return in nautical miles.
+ * @param { lat: float, lng: float } from values in degrees
+ * @param { lat: float, lng: float } to values in degrees
+ * @returns value in nautical miles
+ */
 export function getGCDistanceDegreesNM(from, to) {
 	return 60.0 * Math.toDegrees(getGCDistance(
 		{ lat: Math.toRadians(from.lat), lng: Math.toRadians(from.lng) },
@@ -173,9 +179,9 @@ const TO_WEST  = 3;
 
 /**
  * 
- * @param {*} from { lat: xxx, lng: xxx }, values in Radians
- * @param {*} to { lat: xxx, lng: xxx }, values in Radians
- * @param {*} nbPoints 
+ * @param { lat: float, lng: float } from values in Radians
+ * @param { lat: float, lng: float } to values in Radians
+ * @param { int } nbPoints 
  */
 export function calculateGreatCircle(from, to, nbPoints) {
 	let nsDir = (to.lat > from.lat) ? TO_NORTH : TO_SOUTH;
@@ -254,9 +260,9 @@ export function calculateGreatCircle(from, to, nbPoints) {
 
 /**
  * 
- * @param {*} obs { lat: xx, lng: xx } values in degrees
- * @param {*} sunCoord { gha: xx, dec: xx } values in degrees
- * @param {*} moonCoord { gha: xx, dec: xx } values in degrees
+ * @param { lat: float, lng: float } obs values in degrees
+ * @param { gha: float, dec: float } sunCoord values in degrees
+ * @param { gha: float, dec: float } moonCoord values in degrees
  */
 export function getMoonTilt(obs, sunCoord, moonCoord ) {
 
