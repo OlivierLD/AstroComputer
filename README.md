@@ -402,4 +402,9 @@ Look into the [`notebooks`](./notebooks) folder...
 ## TODO
 More Unit tests (for ES6, use [Mocha](https://mochajs.org/)).
 
+## History
+- July 2021, for the Java version, introduced `AstroComputerV2`, deprecated `AstroComputer`.
+  - Contains non-static methods, so it can handle several calculations at the same time.
+
+
 ---
