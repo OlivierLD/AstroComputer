@@ -269,21 +269,4 @@ public class Core {
 	public static int weekDay(ContextV2 context) {
 		return (int) ((context.JD0h + 1.5) - 7 * Math.floor((context.JD0h + 1.5) / 7));
 	}
-
-	public static void main(String... args) {
-		ContextV2 context = new ContextV2();
-
-		julianDate(context, 2009, 4, 20, 0, 0, 0f, 65.5);
-		System.out.println("DayFraction:" + context.dayfraction);
-		julianDate(context, 2009, 4, 20, 0, 10, 0f, 65.5);
-		System.out.println("DayFraction:" + context.dayfraction);
-		julianDate(context, 2009, 4, 20, 0, 20, 0f, 65.5);
-		System.out.println("DayFraction:" + context.dayfraction);
-		julianDate(context, 2009, 4, 20, 0, 30, 0f, 65.5);
-		System.out.println("DayFraction:" + context.dayfraction);
-		julianDate(context, 2009, 4, 20, 0, 40, 0f, 65.5);
-		System.out.println("DayFraction:" + context.dayfraction);
-		julianDate(context, 2009, 4, 20, 0, 50, 0f, 65.5);
-		System.out.println("DayFraction:" + context.dayfraction);
-	}
 }

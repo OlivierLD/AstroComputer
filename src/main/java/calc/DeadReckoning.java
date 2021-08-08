@@ -219,23 +219,6 @@ public class DeadReckoning {
 		return observedAltitude;
 	}
 
-	public static void main(String... args) {
-//  getSunCorrectionTable();
-//  getMoonCorrectionTable();
-//  getPlanetStarsCorrectionTable();
-		double corr = getAltitudeCorrection(7d,
-				2d,
-				0.1,
-				16d,
-				Double.MAX_VALUE,
-				Double.MAX_VALUE,
-				LOWER_LIMB,
-				false,
-				null,
-				true);
-		System.out.println("Correction:" + (corr * 60d) + "'");
-	}
-
 	public static void getSunCorrectionTable() {
 		double obsAltitude[] = {7D, 7.333333333333333D, 7.6666666666666599D,
 				8D, 8.3333333333333321D, 8.6666666666666607D,

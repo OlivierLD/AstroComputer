@@ -1,4 +1,4 @@
-package celestial.almanac;
+package astro.sample;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
