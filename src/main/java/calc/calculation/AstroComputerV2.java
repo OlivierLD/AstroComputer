@@ -284,7 +284,9 @@ public class AstroComputerV2 {
                     GeomUtil.decToSex(this.getSunDecl(), GeomUtil.SWING, GeomUtil.NS).trim(),
                     GeomUtil.decToSex(sunLongitude, GeomUtil.SWING, GeomUtil.EW).trim()));
         }
-        gc.calculateGreatCircle(20); // 20 points in the GC...
+        double distanceInDegrees = gc.getDistanceInDegrees();
+        int nbSteps = (distanceInDegrees < 10) ? 20 : (int)(Math.round(2 * distanceInDegrees));
+        gc.calculateGreatCircle(nbSteps);
         double finalLat = obsLatitude;
         double finalLng = obsLongitude;
         /*
