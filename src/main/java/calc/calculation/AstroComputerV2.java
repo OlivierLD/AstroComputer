@@ -423,6 +423,9 @@ public class AstroComputerV2 {
         }
     }
 
+    public synchronized void calculate(int y, int m, int d, int h, int mi, int s) {
+        this.calculate(y, m, d, h, mi, s, false);
+    }
     /**
      * @param y  Year, like 2019
      * @param m  Month, [1..12]                   <- !!! Unlike Java's Calendar, which is zero-based
@@ -431,15 +434,19 @@ public class AstroComputerV2 {
      * @param mi Minutes [0..59]
      * @param s  Seconds [0..59], no milli-sec.
      */
-    public synchronized void calculate(int y, int m, int d, int h, int mi, int s) {
+    public synchronized void calculate(int y, int m, int d, int h, int mi, int s, boolean reCalcDeltaT) {
         this.setDateTime(y, m, d, h, mi, s);
-        this.calculate();
+        this.calculate(reCalcDeltaT);
     }
 
     private final static String AUTO = "AUTO";
     private final static String AUTO_PREFIX = "AUTO:"; // Used in AUTO:2020-06, like -DdeltaT=AUTO:2020-06
 
     public synchronized void calculate() {
+        calculate(false);
+    }
+
+    public synchronized void calculate(boolean recalculateDeltaTforCalcDate) {
 
         if (this.year == -1 && this.month == -1 && this.day == -1 &&
                 this.hour == -1 && this.minute == -1 && this.second == -1) {  // Then use current system date
@@ -457,18 +464,23 @@ public class AstroComputerV2 {
 
 
         // deltaT="AUTO" or "AUTO:2020-06", for other almanac than the current (aka now) one.
-        String deltaTStr = System.getProperty("deltaT", String.valueOf(deltaT)); // Default, see above... Careful.
-        if (deltaTStr.equals(AUTO) || deltaTStr == null || deltaTStr.trim().isEmpty() ) {
-            Calendar now = GregorianCalendar.getInstance(); // Current time.
-            deltaT = TimeUtil.getDeltaT(now.get(Calendar.YEAR), now.get(Calendar.MONTH) + 1);
-        } else if (deltaTStr.startsWith(AUTO_PREFIX)) {     // AUTO at a given time (month-year)
-            String value = deltaTStr.substring(AUTO_PREFIX.length());
-            String[] splitted = value.split("-");
-            int intYear = Integer.parseInt(splitted[0]);
-            int intMonth = Integer.parseInt(splitted[1]);
-            deltaT = TimeUtil.getDeltaT(intYear, intMonth);
-        } else if (deltaTStr != null && !deltaTStr.isEmpty()) {
-            deltaT = Double.parseDouble(deltaTStr);         // Provided by the user
+        if (!recalculateDeltaTforCalcDate) {
+            String deltaTStr = System.getProperty("deltaT", String.valueOf(deltaT)); // Default, see above... Careful.
+            if (deltaTStr.equals(AUTO) || deltaTStr == null || deltaTStr.trim().isEmpty()) {
+                Calendar now = GregorianCalendar.getInstance(); // Current time.
+                deltaT = TimeUtil.getDeltaT(now.get(Calendar.YEAR), now.get(Calendar.MONTH) + 1);
+            } else if (deltaTStr.startsWith(AUTO_PREFIX)) {     // AUTO at a given time (month-year)
+                String value = deltaTStr.substring(AUTO_PREFIX.length());
+                String[] splitted = value.split("-");
+                int intYear = Integer.parseInt(splitted[0]);
+                int intMonth = Integer.parseInt(splitted[1]);
+                deltaT = TimeUtil.getDeltaT(intYear, intMonth);
+            } else if (deltaTStr != null && !deltaTStr.isEmpty()) {
+                deltaT = Double.parseDouble(deltaTStr);         // Provided by the user
+            }
+        } else {
+            Calendar calculationDateTime = this.getCalculationDateTime();
+            deltaT = TimeUtil.getDeltaT(calculationDateTime.get(Calendar.YEAR), calculationDateTime.get(Calendar.MONTH) + 1);
         }
 
 //		System.out.println(String.format("Using DeltaT: %f", deltaT));
@@ -707,7 +719,7 @@ public class AstroComputerV2 {
         double inHours = this.getSunMeridianPassageTime(latitude, longitude);
         TimeUtil.DMS dms = TimeUtil.decimalToDMS(inHours);
         cal.set(Calendar.YEAR, this.year);
-        cal.set(Calendar.MONTH, this.month);
+        cal.set(Calendar.MONTH, this.month - 1);
         cal.set(Calendar.DAY_OF_MONTH, this.day);
 
         cal.set(Calendar.HOUR_OF_DAY, dms.getHours());
