@@ -193,7 +193,7 @@ public class AstroComputerV2 {
         calcDate.setTimeZone(TimeZone.getTimeZone("etc/UTC"));
         calcDate.setTimeInMillis(epoch);
         this.year = calcDate.get(Calendar.YEAR);
-        this.month = calcDate.get(Calendar.MONTH);
+        this.month = calcDate.get(Calendar.MONTH) + 1;
         this.day = calcDate.get(Calendar.DAY_OF_MONTH);
         this.hour = calcDate.get(Calendar.HOUR_OF_DAY);
         this.minute = calcDate.get(Calendar.MINUTE);
