@@ -462,7 +462,6 @@ public class AstroComputerV2 {
                     date.get(Calendar.SECOND));
         }
 
-
         // deltaT="AUTO" or "AUTO:2020-06", for other almanac than the current (aka now) one.
         if (!recalculateDeltaTforCalcDate) {
             String deltaTStr = System.getProperty("deltaT", String.valueOf(deltaT)); // Default, see above... Careful.
