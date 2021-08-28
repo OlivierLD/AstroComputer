@@ -7,98 +7,101 @@ from mars import Mars
 from jupiter import Jupiter
 from saturn import Saturn
 
-DEBUG = False
+# from typing import Mapping, MutableMapping, Sequence, Iterable, List, Set
+from typing import List
+
+DEBUG: bool = False
 
 
 class LongTermAlmanac:
     # local variables
-    T = 0
-    T2 = 0
-    T3 = 0
-    T4 = 0
-    T5 = 0
-    TE = 0
-    TE2 = 0
-    TE3 = 0
-    TE4 = 0
-    TE5 = 0
-    Tau = 0
-    Tau2 = 0
-    Tau3 = 0
-    Tau4 = 0
-    Tau5 = 0
-    deltaT = 0
-    eps0 = 0
-    eps = 0
-    deltaPsi = 0
-    deltaEps = 0
-    Le = 0
-    Be = 0
-    Re = 0
-    kappa = 0
-    pi0 = 0
-    e = 0
-    lambdaSun = 0
-    RASun = 0
-    DECSun = 0
-    GHASun = 0
-    SDSun = 0
-    HPSun = 0
-    EoT = 0
-    fmtEoT = 0
-    EoE = 0
-    EoEout = 0
-    Lsun_true = 0
-    Lsun_prime = 0
-    dES = 0
-    dayFraction = 0
-    GHAAmean = 0
-    RAVenus = 0
-    DECVenus = 0
-    GHAVenus = 0
-    SDVenus = 0
-    HPVenus = 0
-    RAMars = 0
-    DECMars = 0
-    GHAMars = 0
-    SDMars = 0
-    HPMars = 0
-    RAJupiter = 0
-    DECJupiter = 0
-    GHAJupiter = 0
-    SDJupiter = 0
-    HPJupiter = 0
-    RASaturn = 0
-    DECSaturn = 0
-    GHASaturn = 0
-    SDSaturn = 0
-    HPSaturn = 0
-    RAMoon = 0
-    DECMoon = 0
-    GHAMoon = 0
-    SDMoon = 0
-    HPMoon = 0
-    RAPol = 0
-    DECPol = 0
-    GHAPol = 0
-    OoE = 0
-    tOoE = 0
-    LDist = 0
-    JD0h = 0
-    JD = 0
-    JDE = 0
-    lambdaMapp = 0
-    SidTm = ""
-    GHAAtrue = 0
-    SidTa = ""
-    moonPhaseAngle = 0
-    moonPhase = ""
-    DoW = ""
-    illumMoon = 0
-    illumVenus = 0
-    illumMars = 0
-    illumJupiter = 0
-    illumSaturn = 0
+    T: float = 0
+    T2: float = 0
+    T3: float = 0
+    T4: float = 0
+    T5: float = 0
+    TE: float = 0
+    TE2: float = 0
+    TE3: float = 0
+    TE4: float = 0
+    TE5: float = 0
+    Tau: float = 0
+    Tau2: float = 0
+    Tau3: float = 0
+    Tau4: float = 0
+    Tau5: float = 0
+    deltaT: float = 0
+    eps0: float = 0
+    eps: float = 0
+    deltaPsi: float = 0
+    deltaEps: float = 0
+    Le: float = 0
+    Be: float = 0
+    Re: float = 0
+    kappa: float = 0
+    pi0: float = 0
+    e: float = 0
+    lambdaSun: float = 0
+    RASun: float = 0
+    DECSun: float = 0
+    GHASun: float = 0
+    SDSun: float = 0
+    HPSun: float = 0
+    EoT: float = 0
+    fmtEoT: float = 0
+    EoE: float = 0
+    EoEout: float = 0
+    Lsun_true: float = 0
+    Lsun_prime: float = 0
+    dES: float = 0
+    dayFraction: float = 0
+    GHAAmean: float = 0
+    RAVenus: float = 0
+    DECVenus: float = 0
+    GHAVenus: float = 0
+    SDVenus: float = 0
+    HPVenus: float = 0
+    RAMars: float = 0
+    DECMars: float = 0
+    GHAMars: float = 0
+    SDMars: float = 0
+    HPMars: float = 0
+    RAJupiter: float = 0
+    DECJupiter: float = 0
+    GHAJupiter: float = 0
+    SDJupiter: float = 0
+    HPJupiter: float = 0
+    RASaturn: float = 0
+    DECSaturn: float = 0
+    GHASaturn: float = 0
+    SDSaturn: float = 0
+    HPSaturn: float = 0
+    RAMoon: float = 0
+    DECMoon: float = 0
+    GHAMoon: float = 0
+    SDMoon: float = 0
+    HPMoon: float = 0
+    RAPol: float = 0
+    DECPol: float = 0
+    GHAPol: float = 0
+    OoE: float = 0
+    tOoE: float = 0
+    LDist: float = 0
+    JD0h: float = 0
+    JD: float = 0
+    JDE: float = 0
+    lambdaMapp: float = 0
+    SidTm: str = ""
+    GHAAtrue: float = 0
+    SidTa: str = ""
+    moonPhaseAngle: float = 0
+    moonPhase: str = ""
+    DoW: str = ""
+    illumMoon: float = 0
+    illumVenus: float = 0
+    illumMars: float = 0
+    illumJupiter: float = 0
+    illumSaturn: float = 0
 
     #
     # Main function
@@ -111,7 +114,7 @@ class LongTermAlmanac:
     # @param delta_t Number, DeltaT
     #
     @staticmethod
-    def calculate(year, month, day, hour, minute, second, delta_t):
+    def calculate(year: int, month: int, day: int, hour: int, minute: int, second: int, delta_t: float) -> None:
         LongTermAlmanac.calculateJulianDate(year, month, day, hour, minute, second, delta_t)
         LongTermAlmanac.calculateNutation()
         LongTermAlmanac.calculateAberration()
@@ -128,8 +131,8 @@ class LongTermAlmanac:
         return
 
     @staticmethod
-    def isLeapYear(year):
-        ly = False
+    def isLeapYear(year: int) -> bool:
+        ly: bool = False
         if year / 4 - math.floor(year / 4) == 0:
             ly = True
         if year / 100 - math.floor(year / 100) == 0:
@@ -151,7 +154,7 @@ class LongTermAlmanac:
     # @param delta_t Number, DeltaT
     #
     @staticmethod
-    def calculateJulianDate(year, month, day, hour, minute, second, delta_t):
+    def calculateJulianDate(year: int, month: int, day: int, hour: int, minute: int, second: int, delta_t: float) -> None:
 
         LongTermAlmanac.dayFraction = (hour + minute / 60 + second / 3600) / 24
         if LongTermAlmanac.dayFraction < 0 or LongTermAlmanac.dayFraction > 1:
@@ -202,7 +205,7 @@ class LongTermAlmanac:
 
     # Output Hour Angle
     @staticmethod
-    def outHA(x):
+    def outHA(x: float) -> str:
         GHAdeg = math.floor(x)
         GHAmin = math.floor(60 * (x - GHAdeg))
         GHAsec = round(3600 * ((x - GHAdeg) - (GHAmin / 60)))
@@ -233,8 +236,8 @@ class LongTermAlmanac:
 
     # Output Right Ascension
     @staticmethod
-    def outRA(x):
-        t = x / 15
+    def outRA(x: float) -> str:
+        t: float = x / 15
         RAh = math.floor(t)
         RAmin = math.floor(60 * (t - RAh))
         RAsec = round(10 * (3600 * (t - RAh - RAmin / 60))) / 10
@@ -263,7 +266,7 @@ class LongTermAlmanac:
 
     # Equation of Time
     @staticmethod
-    def outEoT(x):
+    def outEoT(x: float) -> str:
         sign = ""
         if x < 0:
             sign = "-"
@@ -285,7 +288,7 @@ class LongTermAlmanac:
 
     # Output Obliquity of Ecliptic
     @staticmethod
-    def outECL(x):
+    def outECL(x: float) -> str:
         ECLdeg = math.floor(x)
         ECLmin = math.floor(60 * (x - ECLdeg))
         ECLsec = round(3600000 * (x - ECLdeg - ECLmin / 60)) / 1000
@@ -309,7 +312,7 @@ class LongTermAlmanac:
 
     # Output Sidereal Time
     @staticmethod
-    def outSideralTime(x):
+    def outSideralTime(x: float) -> str:
         GMSTdecimal = x / 15
         GMSTh = math.floor(GMSTdecimal)
         GMSTmdecimal = 60 * (GMSTdecimal - GMSTh)
@@ -327,7 +330,7 @@ class LongTermAlmanac:
 
     # Output Declination
     @staticmethod
-    def outDec(x):
+    def outDec(x: float) -> str:
         name = "N"
         signDEC = 0
         if x < 0:
@@ -366,7 +369,7 @@ class LongTermAlmanac:
 
     # Output SD and HP
     @staticmethod
-    def outSdHp(x):
+    def outSdHp(x: float) -> str:
         x = round(10 * x) / 10
         if x - math.floor(x) == 0:
             x = str(x) + ".0"
@@ -378,7 +381,7 @@ class LongTermAlmanac:
     #
     # Nutation, obliquity of the ecliptic
     @staticmethod
-    def calculateNutation():
+    def calculateNutation() -> None:
         # IAU 1980 calculateNutation theory:
     
         # Mean anomaly of the Moon
@@ -559,7 +562,7 @@ class LongTermAlmanac:
 
     # aberration
     @staticmethod
-    def calculateAberration():
+    def calculateAberration() -> None:
         LongTermAlmanac.kappa = math.radians(20.49552 / 3600)
         LongTermAlmanac.pi0 = math.radians(102.93735 + 1.71953 * LongTermAlmanac.TE + 0.00046 * LongTermAlmanac.TE2)
         LongTermAlmanac.e = 0.016708617 - 0.000042037 * LongTermAlmanac.TE - 0.0000001236 * LongTermAlmanac.TE2
@@ -567,7 +570,7 @@ class LongTermAlmanac:
 
     # GHA Aries, GAST, GMST, equation of the equinoxes
     @staticmethod
-    def calculateAries():
+    def calculateAries() -> None:
         # Mean GHA Aries
         LongTermAlmanac.GHAAmean = mu.norm_360_deg(280.46061837 + 360.98564736629 * (LongTermAlmanac.JD - 2451545) + 0.000387933 * LongTermAlmanac.T2 - LongTermAlmanac.T3 / 38710000)
     
@@ -589,7 +592,7 @@ class LongTermAlmanac:
 
     # Calculations for the Sun
     @staticmethod
-    def calculateSun():
+    def calculateSun() -> None:
         # Mean longitude of the Sun
         LongTermAlmanac.Lsun_mean = mu.norm_360_deg(280.4664567 + 360007.6982779 * LongTermAlmanac.Tau + 0.03032028 * LongTermAlmanac.Tau2 + LongTermAlmanac.Tau3 / 49931 - LongTermAlmanac.Tau4 / 15299 - LongTermAlmanac.Tau5 / 1988000)
     
@@ -645,7 +648,7 @@ class LongTermAlmanac:
 
     # Calculations for Venus
     @staticmethod
-    def calculateVenus():
+    def calculateVenus() -> None:
         # Heliocentric spherical coordinates
         L = Venus.l_venus(LongTermAlmanac.Tau)
         B = Venus.b_venus(LongTermAlmanac.Tau)
@@ -720,7 +723,7 @@ class LongTermAlmanac:
 
     # Calculations for Mars
     @staticmethod
-    def calculateMars():
+    def calculateMars() -> None:
         # Heliocentric coordinates
         L = Mars.l_mars(LongTermAlmanac.Tau)
         B = Mars.b_mars(LongTermAlmanac.Tau)
@@ -795,7 +798,7 @@ class LongTermAlmanac:
 
     # Calculations for Jupiter
     @staticmethod
-    def calculateJupiter():
+    def calculateJupiter() -> None:
         # Heliocentric coordinates
         L = Jupiter.l_jupiter(LongTermAlmanac.Tau)
         B = Jupiter.b_jupiter(LongTermAlmanac.Tau)
@@ -870,7 +873,7 @@ class LongTermAlmanac:
 
     # Calculations for Saturn
     @staticmethod
-    def calculateSaturn():
+    def calculateSaturn() -> None:
         # Heliocentric coordinates
         L = Saturn.l_saturn(LongTermAlmanac.Tau)
         B = Saturn.b_saturn(LongTermAlmanac.Tau)
@@ -944,7 +947,7 @@ class LongTermAlmanac:
 
     # Calculations for the moon
     @staticmethod
-    def calculateMoon():
+    def calculateMoon() -> None:
         # Mean longitude of the moon
         Lmm = mu.norm_360_deg(218.3164591 + 481267.88134236 * LongTermAlmanac.TE - 0.0013268 * LongTermAlmanac.TE2 + LongTermAlmanac.TE3 / 538841 - LongTermAlmanac.TE4 / 65194000)
     
@@ -1192,7 +1195,7 @@ class LongTermAlmanac:
 
     # Ephemerides of Polaris
     @staticmethod
-    def calculatePolaris():
+    def calculatePolaris() -> None:
         # Equatorial coordinates of Polaris at 2000.0 (mean equinox and equator 2000.0)
         RApol0 = 37.95293333
         DECpol0 = 89.26408889
@@ -1247,7 +1250,7 @@ class LongTermAlmanac:
 
     # Calculation of the phase of the Moon
     @staticmethod
-    def calculateMoonPhase():
+    def calculateMoonPhase() -> None:
         x = LongTermAlmanac.lambdaMapp - LongTermAlmanac.lambdaSun
         x = mu.norm_360_deg(x)
         x = round(10 * x) / 10
@@ -1278,11 +1281,11 @@ class LongTermAlmanac:
 
         return
 
-    DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
+    DAYS: List[str] = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
 
     # Day of the week
     @staticmethod
-    def calculateWeekDay():
+    def calculateWeekDay() -> None:
         LongTermAlmanac.JD0h += 1.5
         res = LongTermAlmanac.JD0h - 7 * math.floor(LongTermAlmanac.JD0h / 7)
         LongTermAlmanac.DoW = LongTermAlmanac.DAYS[int(res)]
@@ -1293,7 +1296,7 @@ class LongTermAlmanac:
     # @param month in [1..12]
     #
     @staticmethod
-    def getY(year, month):
+    def getY(year: int, month: int) -> float:
         if year < -1999 or year > 3000:
             raise ValueError("Year must be in [-1999, 3000]")
         else:
@@ -1312,13 +1315,13 @@ class LongTermAlmanac:
     # @return
     #
     @staticmethod
-    def calculateDeltaT(year, month):
+    def calculateDeltaT(year: int, month: int) -> float:
         if year < -1999 or year > 3000:
             raise ValueError("Year must be in [-1999, 3000]")
         if month < 1 or month > 12:
             raise ValueError("Month must be in [1, 12]")
 
-        deltaT = 0
+        deltaT: float = 0
         y = LongTermAlmanac.getY(year, month)
 
         if year < -500:
