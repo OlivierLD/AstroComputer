@@ -189,7 +189,7 @@ ComputedData * calculate(int year, int month, int day, int hour, int minute, int
   calculateMoonPhase();
   calculateWeekDay();
 
-  return data;
+  return data; // declared above
 }
 
 /**

@@ -147,7 +147,7 @@ object Core {
     var quarter = ""
     var x = context.lambdaMapp - context.lambda_sun
     x = MathUtils.trunc(x)
-    x = Math.round(10 * x) / 10
+    x = Math.round(10 * x).toDouble / 10
     if (x == 0) quarter = " New"
     if (x > 0 && x < 90) quarter = " +cre"
     if (x == 90) quarter = " FQ"
