@@ -4,12 +4,14 @@ import calc.GeomUtil;
 import calc.GreatCircle;
 import calc.GreatCirclePoint;
 import calc.GreatCircleWayPoint;
+import org.junit.Test;
 
 import java.util.Vector;
 
 public class GCTest01 {
 
-    public static void main(String... args) {
+    @Test  // Execution test
+    public void test01() {
         GreatCirclePoint start = new GreatCirclePoint(Math.toRadians(GeomUtil.sexToDec("37", "38")), Math.toRadians(-GeomUtil.sexToDec("122", "46")));
 //  GeoPoint p = dr(start, 30D, 230D);
         GreatCirclePoint p = new GreatCirclePoint(Math.toRadians(GeomUtil.sexToDec("20", "00")), Math.toRadians(-GeomUtil.sexToDec("150", "00")));
