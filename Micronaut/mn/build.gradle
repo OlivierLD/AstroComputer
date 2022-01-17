@@ -37,7 +37,7 @@ dependencies {
     testImplementation("io.micronaut.test:micronaut-test-junit5")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 
-    compile fileTree(dir: '../../build/libs', include: ['*.jar'])
+    implementation fileTree(dir: '../../build/libs', include: ['*.jar'])
     // implementation 'oliv.raspi.coffee:common-utils:1.0' // Java Celestial Almanac
 
 }
