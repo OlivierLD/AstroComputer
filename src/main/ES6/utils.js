@@ -319,6 +319,8 @@ export function getMoonTilt(obs, sunCoord, moonCoord ) {
 };
 
 /*
+ * This would be for NodeJS *
+ *
 exports.sind = sind;
 exports.cosd = cosd;
 exports.tand = tand;
