@@ -4,7 +4,7 @@
  * EARTH
  */
 
-import * as  Utils from './utils.js';
+import * as Utils from './utils.js';
 
 // Heliocentric longitude of Earth
 export function lEarth(x) {
