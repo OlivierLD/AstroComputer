@@ -55,7 +55,7 @@ let T, T2, T3, T4, T5, TE, TE2, TE3, TE4, TE5, Tau, Tau2, Tau3, Tau4, Tau5, delt
  */
 export function calculate(year, month, day, hour, minute, second, delta_t, noPlanets=false, withStars=true) {
 
-	epoch = new Date(`${year}-${month}-${day} ${hour}:${minute}:${second} GMT+0000`).getTime();
+	epoch = new Date(`${year}-${lpad(month, '0', 2)}-${lpad(day, '0', 2)} ${lpad(hour, '0', 2)}:${lpad(minute, '0', 2)}:${lpad(second, '0', 2)} GMT+0000`).getTime();
 
 	calculateJulianDate(year, month, day, hour, minute, second, delta_t);
 	calculateNutation();
@@ -146,7 +146,6 @@ function calculateJulianDate(year, month, day, hour, minute, second, delta_t) {
 	Tau4 = Tau * Tau3;
 	Tau5 = Tau * Tau4;
 }
-
 
 // Output Hour Angle
 function outHA(x) {
@@ -1734,6 +1733,195 @@ function gatherOutput(noPlanets=false, withStars=false) {
 
 	return outForm;
 }
+
+/**
+ * 
+ * @param {float} lat 
+ * @param {float} lng 
+ * @param {float} sunEoT 
+ * @returns decimal hours, UTC.
+ */
+ export function getSunMeridianPassageTime(latitude, longitude, sunEoT) {
+	let t = (12.0 - (sunEoT / 60.0));
+	let deltaG = longitude / 15.0;
+	return t - deltaG;
+};
+
+/**
+ * 
+ * @param {float} decimalHours 
+ * @returns a JSON object like { hours: {float}, minutes: {float}, seconds: {float} }
+ */
+export function decimalToDMS(decimalHours) {
+	let hours = Math.floor(decimalHours);
+	let min = (decimalHours - hours) * 60;
+	let sec = (min - Math.floor(min)) * 60;
+	return {
+		hours: hours,
+		minutes: Math.floor(min),
+		seconds: sec };
+};
+
+function lpad(str, pad, len) {
+    while (str.length < len) {
+        str = pad + str;
+    }
+    return str;
+}
+
+export function sunRiseAndSetEpoch(delta_t, year, month, day, latitude, longitude, decSun, hpSun, sdSun, sunEoT) {
+	let h0 = (hpSun / 3600) - (sdSun / 3600); // - (34d / 60d);
+	let cost = Utils.sind(h0) - Utils.tand(latitude) * Utils.tand(decSun);
+	let t = Math.acos(cost);
+	let lon = longitude;
+
+	let utRise = 12.0 - (sunEoT / 60.0) - (lon / 15.0) - (Math.toDegrees(t) / 15.0);
+	let utSet  = 12.0 - (sunEoT / 60.0) - (lon / 15.0) + (Math.toDegrees(t) / 15.0);
+
+	let Z = Math.acos((Utils.sind(decSun) + (0.0145 * Utils.sind(latitude))) / (0.9999 * Utils.cosd(latitude)));
+	Z = Math.toDegrees(Z);
+
+	let zRise = Z;
+	let zSet = (360.0 - Z);
+
+	// Sun rise
+	let dms = decimalToDMS(utRise);
+	// let rise = new Date(`${year}-${lpad(month, '0', 2)}-${lpad(day, '0', 2)} ${lpad(dms.hours, '0', 2)}:${lpad(dms.minutes, '0', 2)}:${lpad(Math.floor(dms.seconds), '0', 2)} GMT+0000`);
+	let rise = new Date(`${year}-${lpad(month, '0', 2)}-${lpad(day, '0', 2)} 00:00:00 GMT+0000`);
+	let riseEpoch = rise.getTime() + (dms.hours * 3600 * 1000) + (dms.minutes * 60 * 1000) + (dms.seconds * 1000);
+	rise.setTime(riseEpoch);
+	// epoch: rise.getTime();
+	// let resultForRise = calculate(year, month, day, dms.hours, dms.minutes, dms.seconds, delta_t, true, false);
+	let resultForRise = calculate(rise.getUTCFullYear(), rise.getUTCMonth() + 1, rise.getUTCDate(), rise.getUTCHours(), rise.getUTCMinutes(), rise.getUTCSeconds(), delta_t, true, false);
+	// Fine tuning
+	// console.log(`Before fine tune: Sun GHA: ${resultForRise.sun.GHA.raw}, DEC: ${resultForRise.sun.DEC.raw}`);
+	let sr = Utils.sightReduction(latitude, longitude, resultForRise.sun.GHA.raw, resultForRise.sun.DEC.raw);
+
+	if (sr.alt !== 0) { // Elevation not 0, then adjust
+		while (sr.alt > 0) {
+			
+			// console.log(`From ${rise}, alt ${sr.alt}`);
+
+			let _epoch = rise.getTime() - (10 * 1000);
+			rise.setTime(_epoch);
+			
+			// console.log(`Decreasing date to ${rise}`);
+			// console.log(`Set as: ${rise.getUTCFullYear()}, ${rise.getUTCMonth() + 1}, ${rise.getUTCDate()}, ${rise.getUTCHours()}, ${rise.getUTCMinutes()}, ${rise.getUTCSeconds()}`);
+
+			resultForRise = calculate(rise.getUTCFullYear(), 
+									  rise.getUTCMonth() + 1, 
+			                          rise.getUTCDate(), 
+									  rise.getUTCHours(), 
+									  rise.getUTCMinutes(), 
+									  rise.getUTCSeconds(), 
+									  delta_t, true, false);
+			// console.log(`Fine tuning (1): Sun GHA: ${resultForRise.sun.GHA.raw}, DEC: ${resultForRise.sun.DEC.raw}`);
+			sr = Utils.sightReduction(latitude, longitude, resultForRise.sun.GHA.raw, resultForRise.sun.DEC.raw);
+		}
+		// Starting tuning
+		while (sr.alt < 0) {
+			
+			// console.log(`From ${rise}, alt ${sr.alt}`);
+
+			let _epoch = rise.getTime() + (1 * 1000);
+			rise.setTime(_epoch);
+			
+			// console.log(`Increasing date to ${rise}`);
+			// console.log(`Set as: ${rise.getUTCFullYear()}, ${rise.getUTCMonth() + 1}, ${rise.getUTCDate()}, ${rise.getUTCHours()}, ${rise.getUTCMinutes()}, ${rise.getUTCSeconds()}`);
+
+			resultForRise = calculate(rise.getUTCFullYear(), 
+									  rise.getUTCMonth() + 1, 
+			                          rise.getUTCDate(), 
+									  rise.getUTCHours(), 
+									  rise.getUTCMinutes(), 
+									  rise.getUTCSeconds(), 
+									  delta_t, true, false);
+
+			// console.log(`Fine tuning (2): Sun GHA: ${resultForRise.sun.GHA.raw}, DEC: ${resultForRise.sun.DEC.raw}`);
+			sr = Utils.sightReduction(latitude, longitude, resultForRise.sun.GHA.raw, resultForRise.sun.DEC.raw);
+
+			// console.log(`Now From ${rise}, alt ${sr.alt}`);
+		}
+		zRise = sr.Z;
+
+		// console.log(`Z: ${sr.Z}, elev: ${sr.alt}`)
+	}
+
+	// Sun set
+	dms = decimalToDMS(utSet);
+	// let set = new Date(`${year}-${lpad(month, '0', 2)}-${lpad(day, '0', 2)} ${lpad(dms.hours, '0', 2)}:${lpad(dms.minutes, '0', 2)}:${lpad(Math.floor(dms.seconds), '0', 2)} GMT+0000`);
+	let set = new Date(`${year}-${lpad(month, '0', 2)}-${lpad(day, '0', 2)} 00:00:00 GMT+0000`);
+	let setEpoch = rise.getTime() + (dms.hours * 3600 * 1000) + (dms.minutes * 60 * 1000) + (dms.seconds * 1000);
+	set.setTime(setEpoch);
+	// epoch: set.getTime();
+	// let resultForSet = calculate(year, month, day, dms.hours, dms.minutes, dms.seconds, delta_t, true, false);
+	let resultForSet = calculate(set.getUTCFullYear(), set.getUTCMonth() + 1, set.getUTCDate(), set.getUTCHours(), set.getUTCMinutes(), set.getUTCSeconds(), delta_t, true, false);
+
+	// Fine tuning
+	// console.log(`Before fine tune: Sun GHA: ${resultForSet.sun.GHA.raw}, DEC: ${resultForSet.sun.DEC.raw}`);
+	sr = Utils.sightReduction(latitude, longitude, resultForSet.sun.GHA.raw, resultForSet.sun.DEC.raw);
+
+	if (sr.alt !== 0) { // Elevation not 0, then adjust
+		while (sr.alt < 0) {
+			
+			// console.log(`From ${set}, alt ${sr.alt}`);
+
+			let _epoch = set.getTime() - (10 * 1000);
+			set.setTime(_epoch);
+			
+			// console.log(`Decreasing date to ${set}`);
+			// console.log(`Set as: ${set.getUTCFullYear()}, ${set.getUTCMonth() + 1}, ${set.getUTCDate()}, ${set.getUTCHours()}, ${set.getUTCMinutes()}, ${set.getUTCSeconds()}`);
+
+			resultForSet = calculate(set.getUTCFullYear(), 
+									 set.getUTCMonth() + 1, 
+									 set.getUTCDate(), 
+									 set.getUTCHours(), 
+									 set.getUTCMinutes(), 
+									 set.getUTCSeconds(), 
+									 delta_t, true, false);
+			// console.log(`Fine tuning (1): Sun GHA: ${resultForSet.sun.GHA.raw}, DEC: ${resultForSet.sun.DEC.raw}`);
+			sr = Utils.sightReduction(latitude, longitude, resultForSet.sun.GHA.raw, resultForSet.sun.DEC.raw);
+		}
+		// Starting tuning
+		while (sr.alt > 0) {
+			
+			// console.log(`From ${set}, alt ${sr.alt}`);
+
+			let _epoch = set.getTime() + (1 * 1000);
+			set.setTime(_epoch);
+			
+			// console.log(`Increasing date to ${set}`);
+			// console.log(`Set as: ${set.getUTCFullYear()}, ${set.getUTCMonth() + 1}, ${set.getUTCDate()}, ${set.getUTCHours()}, ${set.getUTCMinutes()}, ${set.getUTCSeconds()}`);
+
+			resultForSet = calculate(set.getUTCFullYear(), 
+									 set.getUTCMonth() + 1, 
+			                         set.getUTCDate(), 
+									 set.getUTCHours(), 
+									 set.getUTCMinutes(), 
+									 set.getUTCSeconds(), 
+									 delta_t, true, false);
+
+			// console.log(`Fine tuning (2): Sun GHA: ${resultForSet.sun.GHA.raw}, DEC: ${resultForSet.sun.DEC.raw}`);
+			sr = Utils.sightReduction(latitude, longitude, resultForSet.sun.GHA.raw, resultForSet.sun.DEC.raw);
+
+			// console.log(`Now From ${set}, alt ${sr.alt}`);
+		}
+		zSet = sr.Z;
+		// console.log(`Z: ${sr.Z}, elev: ${sr.alt}`)
+	}
+
+	return {
+		rise: {
+			epoch: rise.getTime(),
+			z: zRise
+		},
+		set: {
+			epoch: set.getTime(),
+			z: zSet
+		}
+	};
+};
+
 
 /*
 exports.calculate = calculate;
