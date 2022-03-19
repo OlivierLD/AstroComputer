@@ -63,7 +63,7 @@ window.getSunMeridianPassageTime = CelestialComputer.getSunMeridianPassageTime;
 window.decimalToDMS = CelestialComputer.decimalToDMS;
 
 let STANDALONE = false;
-let STANDALONE_2 = false;
+let STANDALONE_2 = true;
 
 if (STANDALONE) {
 	console.log("SRU Test:" + JSON.stringify(sightReduction(37.5,-122.3, 80, 22)));
@@ -115,6 +115,7 @@ if (STANDALONE_2) {
 	console.log(`Sun HP: ${result.sun.HP.raw}, SD: ${result.sun.SD.raw}`);
 
 	// Note: that one takes time.
+	// Will be used to feed a <sun-path> web component (WiP).
 	let rs =CelestialComputer.sunRiseAndSetEpoch(delta_t, 
 												 year, 
 												 month, 

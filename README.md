@@ -274,6 +274,11 @@ Calculation took 3676 μs (3.676 ms)
 $ cd src/main/ES6
 $ node server.js
 ```
+or 
+```
+$ npm start
+```
+
 Then from a browser, load `http://localhost:8080/index.html` and follow the instructions on the page.
 
 > Or, from a Mac, just run
@@ -285,6 +290,13 @@ You should get a `JSON` object, and some formatted output, like this:
 ![WebUI](./ES6WebUI.png)
 
 > Note: The UI above keeps evolving. Run it for yourself to see how.
+
+**_Standalone, development, etc_**
+- See in `app.js`, the variables named `STANDALONE`, and `STANDALONE_2`
+- Do an `npm start`
+- Open `http://localhost:8080/index.html` in a browser
+- Look into the Console
+  - Eventually, wee want to produce what `RESTImplementation.getSunDataForAllDay` is producing.
 
 ## Timing
 ```
