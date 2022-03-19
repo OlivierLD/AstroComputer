@@ -1797,7 +1797,7 @@ export function sunRiseAndSetEpoch(delta_t, year, month, day, latitude, longitud
 	// console.log(`Before fine tune: Sun GHA: ${resultForRise.sun.GHA.raw}, DEC: ${resultForRise.sun.DEC.raw}`);
 	let sr = Utils.sightReduction(latitude, longitude, resultForRise.sun.GHA.raw, resultForRise.sun.DEC.raw);
 
-	if (sr.alt !== 0) { // Elevation not 0, then adjust
+	if (sr.alt !== 0) { // if elevation (altitude) not 0, then adjust
 		while (sr.alt > 0) {
 			
 			// console.log(`From ${rise}, alt ${sr.alt}`);
@@ -1914,8 +1914,7 @@ export function sunRiseAndSetEpoch(delta_t, year, month, day, latitude, longitud
 		rise: {
 			epoch: rise.getTime(),
 			z: zRise
-		},
-		set: {
+		}, set: {
 			epoch: set.getTime(),
 			z: zSet
 		}
