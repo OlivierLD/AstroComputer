@@ -53,6 +53,7 @@ export function sampleMain(userDataObject) {
 	return CelestialComputer.calculate(year, month, day, hour, minute, second, delta_t, noPlanets);
 }
 
+// Expose required functions
 window.sampleMain = sampleMain;
 window.gridSquare = CelestialComputer.gridSquare;
 window.sightReduction = CelestialComputer.sightReduction; // Note: This is the one in utils.js
@@ -62,6 +63,7 @@ window.calculateGreatCircle = calculateGreatCircle;
 window.getMoonTilt = getMoonTilt;
 window.getSunMeridianPassageTime = CelestialComputer.getSunMeridianPassageTime;
 window.decimalToDMS = CelestialComputer.decimalToDMS;
+window.getSunDataForAllDay = CelestialComputer.getSunDataForAllDay;
 
 let STANDALONE = false;
 let STANDALONE_2 = true;
@@ -188,6 +190,11 @@ if (STANDALONE_2) {
 	console.log(`Sun Transit: ${new Date(sunBodyData.sunTransitTime)}`);
 	console.log(`Sun Set    : ${new Date(sunBodyData.setTime)}`);
 
+	const STEP = 20; // in mminutes
+	let sunPath = getSunDataForAllDay(sunBodyData, delta_t, lat, lng, STEP, result.epoch);  // result.epoch, is the same as sunBodyData.epoch
+
+	console.log(`Sun Path: ${JSON.stringify(sunPath, null, 2)}`);
+
 	// Note: that one takes time.
 	// Will be used to feed a <sun-path> web component (WiP).
 	if (false) {
@@ -204,4 +211,5 @@ if (STANDALONE_2) {
 
 		console.log("End of Test (2)," + JSON.stringify(rs, null, 2));
 	}
+	console.log("End of Test (2).");
 }

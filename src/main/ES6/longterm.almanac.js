@@ -1978,6 +1978,47 @@ export function getSunDataForDate(delta_t,
 	return bodyData;
 };
 
+/**
+ * 
+ * @param {obj} bodyData returned by getSunDataForDate
+ * @param {float} delta_t 
+ * @param {float} latitude 
+ * @param {float} longitude 
+ * @param {number} step in minutes (default 10 used if null)
+ * @param {number} refDate epoch
+ * @returns 
+ */
+export function getSunDataForAllDay(bodyData, delta_t, latitude, longitude, step, refDate) {
+	if (bodyData === null) {
+		throw { error: 'bodyData should not be null' };
+	}
+	let from = bodyData.riseTime; // if sunTransitTime exists: from (transit-time - 12) to (transit-time + 12) ?
+	let to = bodyData.setTime;
+
+	if (bodyData.sunTransitTime !== 0) { // Parameter for the full path, or just positive elevations?
+		from = bodyData.sunTransitTime - (12 * 3_600_000);
+		to = bodyData.sunTransitTime + (12 * 3_600_000);
+	}
+	const _STEP_MINUTES = 1_000 * 60 * (step == null ? 10 : step); // In ms. Default 10 minutes.
+	let sunPath = [];
+
+	// Now calculate the Sun Path
+	for (let time=from; time<=to; time += _STEP_MINUTES) {
+		let current = new Date(time);
+		let currentResult = calculate(current.getUTCFullYear(), 
+									  current.getUTCMonth() + 1, 
+									  current.getUTCDate(), 
+									  current.getUTCHours(), 
+									  current.getUTCMinutes(), 
+									  current.getUTCSeconds(), 
+									  delta_t, true, false);
+
+		let sr = Utils.sightReduction(latitude, longitude, currentResult.sun.GHA.raw, currentResult.sun.DEC.raw);
+		sunPath.push({ epoch: time, he: sr.alt, z: sr.Z });
+	}
+	return sunPath;
+};
+
 /*
 exports.calculate = calculate;
 exports.isLeapYear = isLeapYear;
