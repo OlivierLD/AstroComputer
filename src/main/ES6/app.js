@@ -4,7 +4,8 @@ import {
 	getGCDistance, 
 	getGCDistanceDegreesNM, 
 	calculateGreatCircle, 
-	getMoonTilt
+	getMoonTilt,
+	parseDuration
 } from './utils.js';
 
 // import * as CelestialComputer from './lib/celestial-computer.min.js';
@@ -89,10 +90,16 @@ if (STANDALONE) {
 }
 
 if (STANDALONE_2) {
-	let date = "2011-02-06T14:41:42.000Z";
-	let lat = -10.761383333333333, lng = -156.24046666666666;
+	// let date = "2011-02-06T14:41:42.000Z";
+	// let lat = -10.761383333333333, lng = -156.24046666666666;
 
-	let year = 2011, month = 2, day = 6, hour = 14, minute = 41, second = 42;
+	let date = "2022-03-20T10:41:42.000Z";
+	let lat = 47.661667, lng = -2.758167;
+
+    let duration = parseDuration(date);
+
+	// let year = 2011, month = 2, day = 6, hour = 14, minute = 41, second = 42;
+	let year = duration.year, month = duration.month, day = duration.day, hour = duration.hour, minute = duration.minute, second = duration.second;
 	let delta_t = CelestialComputer.calculateDeltaT(year, month);
 
 	let userDataObject = {
@@ -114,18 +121,87 @@ if (STANDALONE_2) {
 
 	console.log(`Sun HP: ${result.sun.HP.raw}, SD: ${result.sun.SD.raw}`);
 
+    let sunBodyData = CelestialComputer.getSunDataForDate(delta_t, 
+		                                                  date, 
+														  lat, 
+														  lng, 
+														  result.epoch,
+														  result.sun.DEC.raw, 
+														  result.sun.GHA.raw,
+														  result.sun.HP.raw, 
+														  result.sun.SD.raw, 
+														  result.EOT.raw);
+    // returned by the Java equivalent
+    // let expectedReturn = {           
+	// 	"epoch" : 1297003302000,
+	// 	"lat" : -10.761383333333333,
+	// 	"lng" : -156.24046666666666,
+	// 	"body" : "Sun",
+	// 	"decl" : -15.600935281704992,
+	// 	"gha" : 36.91262094944125,
+	// 	"altitude" : -24.409078512906643,
+	// 	"z" : 112.76000558231725,
+	// 	"eot" : -14.087231881717116,
+	// 	"riseTime" : 1297009612725,
+	// 	"setTime" : 1297054265725,
+	// 	"sunTransitTime" : 1297031940719,
+	// 	"riseZ" : 105.86454561140924,
+	// 	"setZ" : 254.29796783140625
+	//   };
+
+	  let expectedReturn = {
+		"epoch" : 1647772902000,
+		"lat" : 47.661667,
+		"lng" : -2.758167,
+		"body" : "Sun",
+		"decl" : -0.08003528415023496,
+		"gha" : 338.55586541758504,
+		"altitude" : 37.82670224870528,
+		"z" : 148.73335028994708,
+		"eot" : -7.382407987207898,
+		"riseTime" : 1647757154906,
+		"setTime" : 1647800317906,
+		"sunTransitTime" : 1647778710904,
+		"riseZ" : 90.22625189343447,
+		"setZ" : 270.0677844943642
+	  };
+
+	console.log("-- Test (2),\n" + JSON.stringify(sunBodyData, null, 2));
+
+	// Value tests
+	const MAX_DIFF = 10e-6;
+	const MAX_EPOCH_DIFF = 1000;
+	const MAX_Z_DIFF = 1;
+	console.log(`Epoch is ${sunBodyData.epoch === expectedReturn.epoch ? '' : 'not '}OK`);	
+	console.log(`Decl is ${Math.abs(sunBodyData.decl - expectedReturn.decl) < MAX_DIFF ? '' : 'not '}OK`);	
+	console.log(`GHA is ${Math.abs(sunBodyData.gha - expectedReturn.gha) < MAX_DIFF ? '' : 'not '}OK`);	
+	console.log(`Elev is ${Math.abs(sunBodyData.elev - expectedReturn.altitude) < MAX_DIFF ? '' : 'not '}OK`);	
+	console.log(`Z is ${Math.abs(sunBodyData.z - expectedReturn.z) < MAX_DIFF ? '' : 'not '}OK`);	
+	console.log(`EoT is ${Math.abs(sunBodyData.eot - expectedReturn.eot) < MAX_EPOCH_DIFF ? '' : 'not '}OK`);	
+	console.log(`Rise Epoch is ${Math.abs(sunBodyData.riseTime === expectedReturn.riseTime) < MAX_EPOCH_DIFF ? '' : 'not '}OK`);	
+	console.log(`Set Epoch is ${Math.abs(sunBodyData.setTime === expectedReturn.setTime) < MAX_EPOCH_DIFF ? '' : 'not '}OK`);	
+	console.log(`TT is ${Math.abs(sunBodyData.sunTransitTime === expectedReturn.sunTransitTime) < MAX_EPOCH_DIFF ? '' : 'not '}OK`);	
+	console.log(`Rise Z is ${Math.abs(sunBodyData.riseZ - expectedReturn.riseZ) < MAX_Z_DIFF ? '' : 'not '}OK`);	
+	console.log(`Set Z is ${Math.abs(sunBodyData.setZ - expectedReturn.setZ) < MAX_Z_DIFF ? '' : 'not '}OK`);	
+
+	console.log(`Sun Rise   : ${new Date(sunBodyData.riseTime)}`);
+	console.log(`Sun Transit: ${new Date(sunBodyData.sunTransitTime)}`);
+	console.log(`Sun Set    : ${new Date(sunBodyData.setTime)}`);
+
 	// Note: that one takes time.
 	// Will be used to feed a <sun-path> web component (WiP).
-	let rs =CelestialComputer.sunRiseAndSetEpoch(delta_t, 
-												 year, 
-												 month, 
-												 day, 
-												 lat, 
-												 lng, 
-												 result.sun.DEC.raw, 
-												 result.sun.HP.raw, 
-												 result.sun.SD.raw, 
-											 	 result.EOT.raw);
+	if (false) {
+		let rs = CelestialComputer.sunRiseAndSetEpoch(delta_t, 
+													year, 
+													month, 
+													day, 
+													lat, 
+													lng, 
+													result.sun.DEC.raw, 
+													result.sun.HP.raw, 
+													result.sun.SD.raw, 
+													result.EOT.raw);
 
-	console.log("End of Test (2)," + JSON.stringify(rs, null, 2));
+		console.log("End of Test (2)," + JSON.stringify(rs, null, 2));
+	}
 }

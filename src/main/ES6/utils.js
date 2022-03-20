@@ -318,6 +318,30 @@ export function getMoonTilt(obs, sunCoord, moonCoord ) {
 	return alpha;
 };
 
+
+/**
+ * 
+ * @param {string} duration string, like "2011-02-06T14:41:42.000Z"
+ * @returns { year: {int}, month: {int}, day: {int}, hour: {int}, minute: {int}, second: {float}, tz: {string} }
+ *
+ */
+export function parseDuration(duration) {
+	let pattern = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}\.\d{3})(.*)$/gm
+
+	let result = pattern.exec(duration);
+	// console.log(`Match length: ${result.length}`);
+	// Get the groups, result[x]
+	return {
+		year: parseInt(result[1]),
+		month: parseInt(result[2]),
+		day: parseInt(result[3]),
+		hour: parseInt(result[4]),
+		minute: parseInt(result[5]),
+		second: parseFloat(result[6]),
+		tz: result[7]
+	};
+};
+
 /*
  * This would be for NodeJS *
  *

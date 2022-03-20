@@ -1921,6 +1921,62 @@ export function sunRiseAndSetEpoch(delta_t, year, month, day, latitude, longitud
 	};
 };
 
+/**
+ * Sun Data for given date and observer's position
+ * @param {float} delta_t 
+ * @param {string} duration Duration Format of current date-time
+ * @param {float} latitude 
+ * @param {float} longitude 
+ * @param {float} epoch 
+ * @param {float} decSun 
+ * @param {float} ghaSun 
+ * @param {float} hpSun 
+ * @param {float} sdSun 
+ * @param {float} sunEoT 
+ * @returns { see below... }
+ */
+export function getSunDataForDate(delta_t, 
+								  duration, 
+								  latitude, 
+								  longitude, 
+								  epoch,
+								  decSun, 
+								  ghaSun,
+								  hpSun, 
+								  sdSun, 
+								  sunEoT) {
+
+	let parsed = Utils.parseDuration(duration);
+	// let time = new Date(`${parsed.year}-${lpad(parsed.month, '0', 2)}-${lpad(parsed.day, '0', 2)} ${lpad(parsed.hour, '0', 2)}:${lpad(parsed.minute, '0', 2)}:${lpad(parseFloat(parsed.second).toFixed(0), '0', 2)} GMT+0000`); // TODO Z->GMT
+	// let epoch = time.getTime();
+
+	// Calculate Sight Reduction, Sun Transit, rise, set (epoch and Z)
+	let sr = Utils.sightReduction(latitude, longitude, ghaSun, decSun);
+	let tt = getSunMeridianPassageTime(latitude, longitude, sunEoT);
+	let dms = decimalToDMS(tt);
+	let transitTime = new Date(`${parsed.year}-${lpad(parsed.month, '0', 2)}-${lpad(parsed.day, '0', 2)} ${lpad(dms.hours, '0', 2)}:${lpad(dms.minutes, '0', 2)}:${lpad(dms.seconds.toFixed(0), '0', 2)} GMT+0000`); // TODO Z->GMT
+	let transitEpoch = transitTime.getTime();
+
+	let sunRiseAndSet = sunRiseAndSetEpoch(delta_t, parsed.year, parsed.month, parsed.day, latitude, longitude, decSun, hpSun, sdSun, sunEoT);
+
+	let bodyData = {
+		epoch: epoch,
+		lat: latitude,
+		lng: longitude,
+		body: "Sun",
+		decl: decSun,
+		gha: ghaSun,
+		elev: sr.alt,
+		z: sr.Z,
+		eot: sunEoT,
+		riseTime: sunRiseAndSet.rise.epoch,
+		setTime: sunRiseAndSet.set.epoch, 		
+		sunTransitTime: transitEpoch,  // epoch
+		riseZ: sunRiseAndSet.rise.z,
+		setZ:  sunRiseAndSet.set.z
+	};
+	return bodyData;
+};
 
 /*
 exports.calculate = calculate;
