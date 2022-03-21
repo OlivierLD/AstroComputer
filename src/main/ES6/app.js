@@ -63,7 +63,7 @@ window.calculateGreatCircle = calculateGreatCircle;
 window.getMoonTilt = getMoonTilt;
 window.getSunMeridianPassageTime = CelestialComputer.getSunMeridianPassageTime;
 window.decimalToDMS = CelestialComputer.decimalToDMS;
-window.getSunDataForAllDay = CelestialComputer.getSunDataForAllDay;
+//window.getSunDataForAllDay = CelestialComputer.getSunDataForAllDay;
 
 let STANDALONE = false;
 let STANDALONE_2 = true;
@@ -191,7 +191,7 @@ if (STANDALONE_2) {
 	console.log(`Sun Set    : ${new Date(sunBodyData.setTime)}`);
 
 	const STEP = 20; // in mminutes
-	let sunPath = getSunDataForAllDay(sunBodyData, delta_t, lat, lng, STEP, result.epoch);  // result.epoch, is the same as sunBodyData.epoch
+	let sunPath = CelestialComputer.getSunDataForAllDay(sunBodyData, delta_t, lat, lng, STEP, result.epoch);  // result.epoch, is the same as sunBodyData.epoch
 
 	console.log(`Sun Path: ${JSON.stringify(sunPath, null, 2)}`);
 

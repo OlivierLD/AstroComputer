@@ -4,7 +4,6 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 print(f"Absolute current path ${current_path}")
 sys.path.append(current_path)
 sys.path.append(current_path + "/celestial_almanac")  # This is for long_term_almanac to find its dependencies...
-
 from celestial_almanac.long_term_almanac import LongTermAlmanac as lta
 
 DELTA_T: float = 69.2201

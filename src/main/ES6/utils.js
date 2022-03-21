@@ -318,6 +318,16 @@ export function getMoonTilt(obs, sunCoord, moonCoord ) {
 	return alpha;
 };
 
+export function calcLHA(gha, longitude) {
+	let lha = gha + longitude;
+	while (lha > 360) {
+		lha -= 360;
+	}
+	while (lha < 0) {
+		lha += 360;
+	}
+	return lha;
+};
 
 /**
  * 
@@ -329,6 +339,9 @@ export function parseDuration(duration) {
 	let pattern = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}\.\d{3})(.*)$/gm
 
 	let result = pattern.exec(duration);
+	if (result === null) {
+		throw { err: `parseDuration, no match for ${duration} !` };
+	}
 	// console.log(`Match length: ${result.length}`);
 	// Get the groups, result[x]
 	return {

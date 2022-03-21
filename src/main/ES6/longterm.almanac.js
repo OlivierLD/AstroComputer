@@ -1986,7 +1986,7 @@ export function getSunDataForDate(delta_t,
  * @param {float} longitude 
  * @param {number} step in minutes (default 10 used if null)
  * @param {number} refDate epoch
- * @returns 
+ * @returns [ { epoch: {number}, he: {number}, z: {number} } ]
  */
 export function getSunDataForAllDay(bodyData, delta_t, latitude, longitude, step, refDate) {
 	if (bodyData === null) {
