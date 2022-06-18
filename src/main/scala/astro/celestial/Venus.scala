@@ -1782,7 +1782,7 @@ object Venus {
     context.HPvenus = 8.794 / d
     //Illumination of the planet's disk
     val k = 100 * (1 + ((R - context.Re * MathUtils.cosD(B) * MathUtils.cosD(L - context.Le)) / d)) / 2
-    context.k_venus = 10 * k.round / 10
+    context.k_venus = (10 * k.round / 10).toDouble
     val ghaMoon = context.GHAmoon
     val decMoon = context.DECmoon
     val sinDecPlanet = Math.sin(Math.toRadians(context.DECvenus))

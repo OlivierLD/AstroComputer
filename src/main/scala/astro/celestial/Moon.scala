@@ -183,8 +183,8 @@ object Moon {
       else f2 = 1
       sumB += f2 * coeffs2 * MathUtils.sinD(fD2 * D + fM2 * Msm + fMm2 * Mmm + fF2 * F)
     }
-    sumL = Math.round(sumL + 3958 * MathUtils.sinD(A1) + 1962 * MathUtils.sinD(Lmm - F) + 318 * MathUtils.sinD(A2))
-    sumB = Math.round(sumB - 2235 * MathUtils.sinD(Lmm) + 382 * MathUtils.sinD(A3) + 175 * MathUtils.sinD(A1 - F) + 175 * MathUtils.sinD(A1 + F) + 127 * MathUtils.sinD(Lmm - Mmm) - 115 * MathUtils.sinD(Lmm + Mmm))
+    sumL = Math.round(sumL + 3958 * MathUtils.sinD(A1) + 1962 * MathUtils.sinD(Lmm - F) + 318 * MathUtils.sinD(A2)).toDouble
+    sumB = Math.round(sumB - 2235 * MathUtils.sinD(Lmm) + 382 * MathUtils.sinD(A3) + 175 * MathUtils.sinD(A1 - F) + 175 * MathUtils.sinD(A1 + F) + 127 * MathUtils.sinD(Lmm - Mmm) - 115 * MathUtils.sinD(Lmm + Mmm)).toDouble
     //Longitude of the moon
     val lambdaMm = MathUtils.trunc(Lmm + sumL / 1000000D)
     //Latitude of the moon

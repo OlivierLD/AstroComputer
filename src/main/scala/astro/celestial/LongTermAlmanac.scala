@@ -99,7 +99,7 @@ object LongTermAlmanac {
     }
     var context = new AstroContext
     //		System.out.println(String.format("Using DeltaT: %f", deltaT));
-    Core.julianDate(year, month, day, hour, minute, second, deltaT, context)
+    Core.julianDate(year, month, day, hour, minute, second.toFloat, deltaT, context)
     Anomalies.nutation(context)
     Anomalies.aberration(context)
     Core.aries(context)
