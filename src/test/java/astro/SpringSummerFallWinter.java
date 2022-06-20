@@ -19,13 +19,79 @@ public class SpringSummerFallWinter {
         SDF_UTC.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
     }
 
+    private static AstroComputerV2 astroComputerV2 = new AstroComputerV2();
+
+    private static int[] STEPS = { Calendar.DAY_OF_MONTH, Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND };
+
+    private static Calendar narrowSpringFall(Calendar from, int stepIndex, boolean goingUp) {
+        Calendar cal = (Calendar)from.clone();
+        astroComputerV2.calculate(
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH) + 1,
+                cal.get(Calendar.DAY_OF_MONTH),
+                cal.get(Calendar.HOUR_OF_DAY), // and not just HOUR !!!!
+                cal.get(Calendar.MINUTE),
+                cal.get(Calendar.SECOND));
+        double decl = astroComputerV2.getSunDecl();
+        while ((goingUp && decl < 0) || (!goingUp && decl > 0)) {
+            cal.add(STEPS[stepIndex], 1);
+            astroComputerV2.calculate(
+                    cal.get(Calendar.YEAR),
+                    cal.get(Calendar.MONTH) + 1,
+                    cal.get(Calendar.DAY_OF_MONTH),
+                    cal.get(Calendar.HOUR_OF_DAY),
+                    cal.get(Calendar.MINUTE),
+                    cal.get(Calendar.SECOND));
+            decl = astroComputerV2.getSunDecl();
+        }
+        if (stepIndex < STEPS.length - 1) {
+            cal.add(STEPS[stepIndex], -2);
+            return narrowSpringFall(cal, stepIndex + 1, goingUp);
+        } else {
+            return cal;
+        }
+    }
+
+    private static Calendar narrowSummerWinter(Calendar from, int stepIndex, boolean goingUp) {
+        Calendar cal = (Calendar)from.clone();
+        astroComputerV2.calculate(
+                cal.get(Calendar.YEAR),
+                cal.get(Calendar.MONTH) + 1,
+                cal.get(Calendar.DAY_OF_MONTH),
+                cal.get(Calendar.HOUR_OF_DAY), // and not just HOUR !!!!
+                cal.get(Calendar.MINUTE),
+                cal.get(Calendar.SECOND));
+        double prevDecl = astroComputerV2.getSunDecl();
+        double deltaDecl = goingUp ? 1 : -1;
+        while ((goingUp && deltaDecl > 0) || (!goingUp && deltaDecl < 0)) {
+            cal.add(STEPS[stepIndex], 1);
+            astroComputerV2.calculate(
+                    cal.get(Calendar.YEAR),
+                    cal.get(Calendar.MONTH) + 1,
+                    cal.get(Calendar.DAY_OF_MONTH),
+                    cal.get(Calendar.HOUR_OF_DAY),
+                    cal.get(Calendar.MINUTE),
+                    cal.get(Calendar.SECOND));
+            double decl = astroComputerV2.getSunDecl();
+            deltaDecl = decl - prevDecl;
+            prevDecl = decl;
+        }
+        if (stepIndex < STEPS.length - 1) {
+            cal.add(STEPS[stepIndex], -2);
+            return narrowSummerWinter(cal, stepIndex + 1, goingUp);
+        } else {
+            return cal;
+        }
+    }
+
+    private final static boolean VERBOSE = false;
+
     public static void main(String... args) {
         System.setProperty("deltaT", "AUTO");
-        AstroComputerV2 astroComputerV2 = new AstroComputerV2();
 //        System.setProperty("astro.verbose", "true");
 
         Calendar date = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC")); // Now
-        int currentYear = date.get(Calendar.YEAR);
+        int currentYear = date.get(Calendar.YEAR); // Or hard-code the date you want here
         System.out.printf("Year %d\n", currentYear);
 
         Calendar cal = new GregorianCalendar();
@@ -43,6 +109,7 @@ public class SpringSummerFallWinter {
         boolean goingUp = true; // Assuming it is not spring yet, and winter behind us.
         boolean crossed = false;
         long iterations = 0L;
+        int stepIndex = 0;
         long before = System.currentTimeMillis();
         while (cal.get(Calendar.YEAR) == currentYear) {
             iterations++;
@@ -55,32 +122,48 @@ public class SpringSummerFallWinter {
                     cal.get(Calendar.SECOND));
 
             double sunDecl = astroComputerV2.getSunDecl();
-            if (goingUp && sunDecl > 0 && !crossed) {
-                System.out.println("Northern Spring/Southern Fall:\t\t" + SDF_UTC.format(new Date(cal.getTime().getTime())));
+            if (goingUp && sunDecl > 0 && !crossed) { // Equinox
+                Calendar savedCal = (Calendar)cal.clone();
+                cal.add(STEPS[stepIndex], -2);
+                cal = narrowSpringFall(cal, 1, goingUp);
+                System.out.println("Northern Spring / Southern Fall:\t" + SDF_UTC.format(new Date(cal.getTime().getTime())));
                 crossed = true;
+                cal = savedCal; // To re-start when we left
             }
-            if (!goingUp && sunDecl < 0 && !crossed) {
-                System.out.println("Northern Fall/Southern Spring:\t\t" + SDF_UTC.format(new Date(cal.getTime().getTime())));
+            if (!goingUp && sunDecl < 0 && !crossed) { // Equinox
+                Calendar savedCal = (Calendar)cal.clone();
+                cal.add(STEPS[stepIndex], -2);
+                cal = narrowSpringFall(cal, 1, goingUp);
+                System.out.println("Northern Fall / Southern Spring:\t" + SDF_UTC.format(new Date(cal.getTime().getTime())));
                 crossed = true;
+                cal = savedCal; // To re-start when we left
             }
-            if (goingUp && sunDecl < prevDecl) {
+            if (goingUp && sunDecl < prevDecl) { // Solstice
+                Calendar savedCal = (Calendar)cal.clone();
+                cal.add(STEPS[stepIndex], -2);
+                cal = narrowSummerWinter(cal, 1, goingUp);
+                // Northern Summer
+                System.out.println("Northern Summer / Southern Winter:\t" + SDF_UTC.format(new Date(cal.getTime().getTime())));
+                cal = savedCal; // To re-start when we left
                 goingUp = false;
                 crossed = false;
-                // Northern Summer
-                System.out.println("Northern Summer/Southern Winter:\t" + SDF_UTC.format(new Date(cal.getTime().getTime())));
             }
-            if (!goingUp && sunDecl > prevDecl) {
+            if (!goingUp && sunDecl > prevDecl) { // Solstice
+                Calendar savedCal = (Calendar)cal.clone();
+                cal.add(STEPS[stepIndex], -2);
+                cal = narrowSummerWinter(cal, 1, goingUp);
+                // Southern Summer
+                System.out.println("Northern Winter / Southern Summer:\t" + SDF_UTC.format(new Date(cal.getTime().getTime())));
+                cal = savedCal; // To re-start when we left
                 goingUp = true;
                 crossed = false;
-                // Southern Summer
-                System.out.println("Northern Winter/Southern Summer:\t" + SDF_UTC.format(new Date(cal.getTime().getTime())));
             }
-//            if (iterations % (3_600 * 24) == 0) {
-//                System.out.println("\tDate is now " + SDF_UTC.format(new Date(cal.getTime().getTime())));
-//            }
+            if (VERBOSE) {
+                System.out.println("\tDate is now " + SDF_UTC.format(new Date(cal.getTime().getTime())));
+            }
             prevDecl = sunDecl;
-//            cal.add(Calendar.SECOND, 1); // TODO Use dichotomy (Newton)
-            cal.add(Calendar.MINUTE, 10); // 10);
+            cal.add(STEPS[stepIndex], 1);
+//            cal.add(Calendar.MINUTE, 10); // 10);
 //            cal.add(Calendar.HOUR_OF_DAY, 1);
         }
         long after = System.currentTimeMillis();
