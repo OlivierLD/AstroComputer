@@ -4,6 +4,7 @@ import calc.GeomUtil;
 import calc.calculation.nauticalalmanac.Anomalies;
 import calc.calculation.nauticalalmanac.Context;
 import calc.calculation.nauticalalmanac.Core;
+import utils.TimeUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -21,6 +22,10 @@ public class SpringDate {
 	/**
 	 * Look for the exact time of the Spring in 2020
 	 * @param args Unused
+	 *
+	 * Should be
+	 *   Spring at 2020-03-20 03:49:36 +0000 UTC, Sun Decl: 0°00.00'N (0.0000038484366903 deg.)
+	 *   Compare to {@link astro.SpringSummerFallWinter}.
 	 */
 	public static void main(String... args) {
 
@@ -50,6 +55,10 @@ public class SpringDate {
 
 		boolean springWasFound = false;
 
+		// double deltaT = 69.2201; // 2020...
+		double deltaT = TimeUtil.getDeltaT(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1);
+		System.out.printf("Will use DeltaT for [%04d-%02d]: %f\n", cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, deltaT);
+
 		while (cal.before(march22) && sunD < 0) {
 			Calendar utc = new GregorianCalendar(TimeZone.getTimeZone("Etc/UTC"));
 			utc.setTimeInMillis(cal.getTimeInMillis());
@@ -61,7 +70,6 @@ public class SpringDate {
 			int _minute = utc.get(Calendar.MINUTE);
 			int _second = utc.get(Calendar.SECOND);
 
-			double deltaT = 69.2201; // 2020...
 			Core.julianDate(_year, _month, _day, _hour, _minute, _second, deltaT);
 			Anomalies.nutation();
 			Anomalies.aberration();

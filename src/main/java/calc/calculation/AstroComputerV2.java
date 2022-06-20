@@ -1302,7 +1302,7 @@ public class AstroComputerV2 {
         return this.context.eps0;
     }
 
-    public synchronized double ghaToLongitude(double gha) {
+    public static synchronized double ghaToLongitude(double gha) {
         double longitude = 0;
         if (gha < 180) {
             longitude = -gha;
