@@ -97,7 +97,7 @@ object LongTermAlmanac {
       setDateTime(date.get(Calendar.YEAR), date.get(Calendar.MONTH) + 1, date.get(Calendar.DAY_OF_MONTH), date.get(Calendar.HOUR_OF_DAY), // and not just HOUR !!!!
         date.get(Calendar.MINUTE), date.get(Calendar.SECOND))
     }
-    var context = new AstroContext
+    val context = new AstroContext
     //		System.out.println(String.format("Using DeltaT: %f", deltaT));
     Core.julianDate(year, month, day, hour, minute, second.toFloat, deltaT, context)
     Anomalies.nutation(context)
