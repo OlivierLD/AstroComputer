@@ -59,12 +59,12 @@ object MiscUtils {
 
       case NS =>
         s = if (signPosition == TRAILING_SIGN) s + "S"
-        else "S " + lpad(s, if ((output == HTML)) 13
+        else "S " + lpad(s, if (output == HTML) 13
         else 9)
 
       case EW =>
         s = if (signPosition == TRAILING_SIGN) s + "W"
-        else "W " + lpad(s, if ((output == HTML)) 14
+        else "W " + lpad(s, if (output == HTML) 14
         else 10)
 
     }
@@ -74,12 +74,12 @@ object MiscUtils {
 
       case NS =>
         s = if (signPosition == TRAILING_SIGN) s + "N"
-        else "N " + lpad(s, if ((output == HTML)) 13
+        else "N " + lpad(s, if (output == HTML) 13
         else 9)
 
       case EW =>
         s = if (signPosition == TRAILING_SIGN) s + "E"
-        else "E " + lpad(s, if ((output == HTML)) 14
+        else "E " + lpad(s, if (output == HTML) 14
         else 10)
 
     }
@@ -95,8 +95,10 @@ object MiscUtils {
     var formatted = ""
     val minutes = Math.floor(value / 60d).toInt
     val seconds = value - (minutes * 60)
-    if (minutes > 0) formatted = minutes + "'" + seconds.formatted("%05.02f") + "\""
-    else formatted = seconds.formatted("%05.02f") + "\""
+    if (minutes > 0) // formatted = minutes + "'" + seconds.formatted("%05.02f") + "\""
+      formatted = s"${minutes}'${seconds.formatted("%05.02f")}\""
+    else
+      formatted = s"${seconds.formatted("%05.02f")}\""
     formatted
   }
 
