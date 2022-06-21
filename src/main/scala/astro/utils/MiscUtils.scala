@@ -96,9 +96,9 @@ object MiscUtils {
     val minutes = Math.floor(value / 60d).toInt
     val seconds = value - (minutes * 60)
     if (minutes > 0) // formatted = minutes + "'" + seconds.formatted("%05.02f") + "\""
-      formatted = s"""${minutes}'${seconds.formatted("%05.02f")}\" """
+      formatted = s"${minutes}'${seconds.formatted("%05.02f")}\u201c"
     else
-      formatted = s"""${seconds.formatted("%05.02f")}\" """
+      formatted = s"${seconds.formatted("%05.02f")}\u201c"
     formatted
   }
 
