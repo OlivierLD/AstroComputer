@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
  * @see <a href="http://maia.usno.navy.mil/ser7/deltat.data">http://maia.usno.navy.mil/ser7/deltat.data</a>
  * @see <a href="https://www.usno.navy.mil/USNO/earth-orientation/eo-products/long-term">https://www.usno.navy.mil/USNO/earth-orientation/eo-products/long-term</a>
  *
- * @deprecated Use AstroComputerV2 instead.
+ * @Deprecated Use AstroComputerV2 instead.
  */
 public class AstroComputer {
 
@@ -543,7 +543,7 @@ public class AstroComputer {
      * @return the time of rise and set of the body (Sun in that case).
      * @see <http://aa.usno.navy.mil/data/docs/RS_OneYear.php>
      * @see <http://www.jgiesen.de/SunMoonHorizon/>
-     * @deprecated Use #sunRiseAndSetEpoch
+     * @Deprecated Use #sunRiseAndSetEpoch
      */
     public static synchronized double[] sunRiseAndSet(double latitude, double longitude) {
         //  out.println("Sun HP:" + Context.HPsun);
