@@ -15,9 +15,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * Another quick example.
+ * Another quick example, using AstroComputer (deprecated)
  * Run the main.
  */
+@SuppressWarnings("deprecation")
 public class MoonIllumination {
 
     private final static SimpleDateFormat SDF_UTC = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss 'UTC'");
@@ -74,14 +75,14 @@ public class MoonIllumination {
         AtomicInteger stepValue = new AtomicInteger(1);          // Default
         AtomicInteger stepType = new AtomicInteger(Calendar.HOUR_OF_DAY);  // Default
 
-        boolean help = Arrays.stream(args).anyMatch(arg -> HELP_PREFIX.equals(arg));
+        boolean help = Arrays.stream(args).anyMatch(HELP_PREFIX::equals);
         if (help) {
             displayHelp();
             System.exit(0);
         }
 
-        boolean csv = Arrays.stream(args).anyMatch(arg -> (CSV_PREFIX + "true").equals(arg));
-        boolean verbose = Arrays.stream(args).anyMatch(arg -> (VERBOSE_PREFIX + "true").equals(arg));
+        boolean csv = Arrays.stream(args).anyMatch((CSV_PREFIX + "true")::equals);
+        boolean verbose = Arrays.stream(args).anyMatch((VERBOSE_PREFIX + "true")::equals);
         Arrays.asList(args).forEach(arg -> {
            if (arg.startsWith(FROM_PREFIX)) {
                String value = arg.substring(FROM_PREFIX.length()).trim();
@@ -109,8 +110,7 @@ public class MoonIllumination {
                } catch (NumberFormatException nfe) {
                    throw new RuntimeException(String.format("Bad value [%s]", nvPair[0]), nfe);
                }
-               Optional<SupportedInterval> first = Arrays.asList(SupportedInterval.values())
-                       .stream()
+               Optional<SupportedInterval> first = Arrays.stream(SupportedInterval.values())
                        .filter(val -> nvPair[1].equals(val.toString()))
                        .findFirst();
                if (!first.isPresent()) {
@@ -129,8 +129,7 @@ public class MoonIllumination {
                } catch (NumberFormatException nfe) {
                    throw new RuntimeException(String.format("Bad value [%s]", nvPair[0]), nfe);
                }
-               Optional<SupportedInterval> first = Arrays.asList(SupportedInterval.values())
-                       .stream()
+               Optional<SupportedInterval> first = Arrays.stream(SupportedInterval.values())
                        .filter(val -> nvPair[1].equals(val.toString()))
                        .findFirst();
                if (!first.isPresent()) {
@@ -162,9 +161,9 @@ public class MoonIllumination {
         until.add(lengthType.get(), lengthValue.get());
 
         if (verbose) {
-            System.out.println(String.format("Calculations from %s to %s",
+            System.out.printf("Calculations from %s to %s\n",
                     SDF_UTC.format(date.getTime()),
-                    SDF_UTC.format(until.getTime())));
+                    SDF_UTC.format(until.getTime()));
         }
 
         if (csv) {
@@ -232,17 +231,17 @@ public class MoonIllumination {
                 }
             }
             if (csv) {
-                System.out.println(String.format("%s\t%07.04f\t%06.02f\t%s",
+                System.out.printf("%s\t%07.04f\t%06.02f\t%s\n",
                         SDF_UTC.format(date.getTime()),
                         moonIllum,
                         moonPhase,
-                        exactPhase));
+                        exactPhase);
             } else {
-                System.out.println(String.format("%s - Moon Illumination: %07.04f%% - Phase %06.02f\272 %s",
+                System.out.printf("%s - Moon Illumination: %07.04f%% - Phase %06.02f\272 %s\n",
                         SDF_UTC.format(date.getTime()),
                         moonIllum,
                         moonPhase,
-                        exactPhase));
+                        exactPhase);
             }
             // Increment by 1 hour, or another amount
 //            date.add(Calendar.HOUR_OF_DAY, 1);
