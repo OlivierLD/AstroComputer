@@ -30,7 +30,7 @@ in several other languages.
 
 > The problem presented here is Astronomical Almanac computations.  
 > This is mostly arithmetic and algebra, but the code is substantially large (do a `(find . -name '*.java' -print0 | xargs -0 cat) |  wc -l` to know how many lines of Java it takes, same for `*.scala`, `*.py`, `*.go`, `*.cpp`, `*.js`,
-> it is more than **_20,000_** lines of code each time). Interestingly, this is the kind of computation the training of an AI model requires...
+> it is more than **_20,000_** lines of code each time). Interestingly, this is the kind of computation the training of an AI model requires (there is _no_ AI involved here)...
 
 Beside Java, we (will) have
 - [ES6](./ES6/README.md) (aka JavaScript)
