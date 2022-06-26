@@ -1,6 +1,6 @@
 #!/bin/bash
 FROM_DIR=$(pwd)
-echo -e "Packaging the Astro Computer..."
+echo -e "Packaging the Astro Computer..." # Without using gradle...
 rm -rf classes
 rm -rf dist
 mkdir classes
@@ -14,10 +14,11 @@ find src/main/java -name '*.java' > sources.txt
 # cat sources.txt
 javac -Xlint:deprecation -d classes -s src/main/java @sources.txt
 mkdir dist
+# Manifest
 echo "Main-Class: celestial.almanac.JavaSample" > manifest.txt
 echo "Compile-date: $(date)" >> manifest.txt
 cd classes
-# Add -v option below for verbose
+# Add -v option to -cfm below for verbose
 jar -cfm ../dist/astro.jar ../manifest.txt *
 #
 echo -e "Done."

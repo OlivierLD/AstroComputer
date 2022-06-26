@@ -94,7 +94,7 @@ $
 ```
 Calculation took 55 ms.
 
-> Another option, just for Java:
+> Another option, just for Java (without using Gradle):
 ```
 $ ./package.java.sh 
 Packaging the Astro Computer...
@@ -166,7 +166,7 @@ $ cd src/main/python
 $ jupyter notebook
 ```
 
-#### From C++
+#### From C/C++
 > Note: The `compile.sh` script used below works for Mac & Linux (including Debian & Raspbian).
 > If you need to run this on Windows..., well, Google is your friend!
 ```
@@ -252,7 +252,7 @@ Calculation took 3676 μs (3.676 ms)
 | Scala | 64 |
 | Python | 142 |
 
-> Note: For Java and Scala, the JVM and the classes have to be loaded first. 
+> _Note_: For Java and Scala, the JVM and the classes have to be loaded first. 
 > Subsequent executions should be must faster. For example, 10 consecutive java executions:
 > ```
 > Calculations for 2020-03-28 16:50:20 UTC (not now)
