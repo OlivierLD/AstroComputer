@@ -4,8 +4,6 @@ import utils.DumpUtil;
 import utils.StringUtils;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 public final class GeomUtil {
 	public static final int HTML = 0;
@@ -356,7 +354,7 @@ public final class GeomUtil {
 	 * Note: Approximate. Should also consider equation of time at this date and location.
 	 * @param g   Longitude
 	 * @param hms UT HMS
-	 * @return
+	 * @return Solar Time (epoch)
 	 */
 	public static double getLocalSolarTime(double g, double hms) {
 		double ahh = degrees2hours(g);
