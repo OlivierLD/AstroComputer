@@ -5,7 +5,7 @@ object TimeUtils {
   /**
     * Y parameter (not year) for deltaT computing.
     *
-    * @param year
+    * @param year full year
     * @param month in [1..12]
     * @return
     */

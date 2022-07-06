@@ -132,12 +132,12 @@ public class SightReductionUtil {
 //      Z = Z;
 			}
 		}
-//  System.out.println("Azimut : " + GeomUtil.decToSex(Z));
+//  System.out.println("Azimuth : " + GeomUtil.decToSex(Z));
 		dZ = Z;
 	}
 
 	/**
-	 * Returns Hauteur estim&eacute;e after calculation.
+	 * Returns estimated elevation (Hauteur estim&eacute;e) after calculation.
 	 * This value is decimal. Use GeomUtil.decToSex(getHe()) to read it in DegMinSec.
 	 *
 	 * @see GeomUtil
@@ -269,7 +269,7 @@ public class SightReductionUtil {
 	                                      double hp,
 	                                      double sd,
 	                                      boolean verbose) {
-		/**
+		/*
 		 * With an artificial horizon.
 		 * No semi-diameter correction.
 		 * No horizon dip correction
@@ -487,14 +487,15 @@ public class SightReductionUtil {
 
 	/**
 	 * All values in degrees, in and out
-	 * Implementation of the Young's formula
+	 * Implementation of the Young's formula (1856)
+	 * See http://www.titulosnauticos.net/astro/Chapter7.pdf
 	 *
-	 * @param hMoon
-	 * @param appHMoon
-	 * @param hBody
-	 * @param appHBody
-	 * @param obsDist
-	 * @return
+	 * @param hMoon Moon's Height (elev) (in degrees)
+	 * @param appHMoon Apparent Moon's Height (corrected with index, dip, ND SD)
+	 * @param hBody Body's Height (elev) (in degrees)
+	 * @param appHBody Apparent Body's Height (corrected with index, dip, ND SD)
+	 * @param obsDist Observer Distance (degrees)
+	 * @return The lunar distance, corrected
 	 */
 	public static double clearLunarDistance(double hMoon, double appHMoon, double hBody, double appHBody, double obsDist) {
 		double cosHm_cosHb = Math.cos(Math.toRadians(hMoon)) * Math.cos(Math.toRadians(hBody));

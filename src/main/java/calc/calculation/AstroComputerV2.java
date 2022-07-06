@@ -272,17 +272,17 @@ public class AstroComputerV2 {
         }
         final SightReductionUtil sru = new SightReductionUtil();
 
-        double moonLongitude = this.ghaToLongitude(this.getMoonGHA());
-        double sunLongitude = this.ghaToLongitude(this.getSunGHA());
+        double moonLongitude = AstroComputerV2.ghaToLongitude(this.getMoonGHA());
+        double sunLongitude = AstroComputerV2.ghaToLongitude(this.getSunGHA());
         GreatCircle gc = new GreatCircle();
         gc.setStartInDegrees(new GreatCirclePoint(new GeoPoint(this.getMoonDecl(), moonLongitude)));
         gc.setArrivalInDegrees(new GreatCirclePoint(new GeoPoint(this.getSunDecl(), sunLongitude)));
         if ("true".equals(System.getProperty("astro.verbose"))) {
-            System.out.println(String.format("MoonTilt: Calculating Great Circle from %s/%s to %s/%s",
+            System.out.printf("MoonTilt: Calculating Great Circle from %s/%s to %s/%s\n",
                     GeomUtil.decToSex(this.getMoonDecl(), GeomUtil.SWING, GeomUtil.NS).trim(),
                     GeomUtil.decToSex(moonLongitude, GeomUtil.SWING, GeomUtil.EW).trim(),
                     GeomUtil.decToSex(this.getSunDecl(), GeomUtil.SWING, GeomUtil.NS).trim(),
-                    GeomUtil.decToSex(sunLongitude, GeomUtil.SWING, GeomUtil.EW).trim()));
+                    GeomUtil.decToSex(sunLongitude, GeomUtil.SWING, GeomUtil.EW).trim());
         }
         double distanceInDegrees = gc.getDistanceInDegrees();
         int nbSteps = (distanceInDegrees < 10) ? 20 : (int)(Math.round(2 * distanceInDegrees));
@@ -313,12 +313,12 @@ public class AstroComputerV2 {
 
 //		System.out.println(String.format("At %d %02d %02d - %02d:%02d:%02d UTC:", year, month, day, hour, minute, second));
         if ("true".equals(System.getProperty("astro.verbose"))) {
-            System.out.println(String.format("From (%.03f/%.03f) to (%.03f/%.03f) => Z: %f",
+            System.out.printf("From (%.03f/%.03f) to (%.03f/%.03f) => Z: %f\n",
                     route.get(0).getWpFromPos().observed.z,
                     route.get(0).getWpFromPos().observed.alt,
                     route.get(1).getWpFromPos().observed.z,
                     route.get(1).getWpFromPos().observed.alt,
-                    route.get(0).getZ()));
+                    route.get(0).getZ());
         }
 
         // Take the first triangle, from the Moon.
@@ -337,14 +337,12 @@ public class AstroComputerV2 {
         double alpha = Math.toDegrees(Math.atan2(deltaElev, deltaZ)); // atan2 from -Pi to Pi
 
         if ("true".equals(System.getProperty("astro.verbose"))) {
-            System.out.println(String.format("At %d %02d %02d - %02d:%02d:%02d UTC:", this.year, this.month, this.day, this.hour, this.minute, this.second));
-            System.out.println(String.format("0 - Z: %.03f, El: %.03f", z0, alt0));
-            System.out.println(String.format("1 - Z: %.03f, El: %.03f", z1, alt1));
+            System.out.printf("At %d %02d %02d - %02d:%02d:%02d UTC:\n", this.year, this.month, this.day, this.hour, this.minute, this.second);
+            System.out.printf("0 - Z: %.03f, El: %.03f\n", z0, alt0);
+            System.out.printf("1 - Z: %.03f, El: %.03f\n", z1, alt1);
             // Full Moon-Sun path
             System.out.println("Full Path:");
-            route.forEach(wp -> {
-                System.out.printf(" - Z %.03f, Alt %.03f => to next: %.03f%n", wp.getWpFromPos().observed.z, wp.getWpFromPos().observed.alt, wp.getZ());
-            });
+            route.forEach(wp -> System.out.printf(" - Z %.03f, Alt %.03f => to next: %.03f%n", wp.getWpFromPos().observed.z, wp.getWpFromPos().observed.alt, wp.getZ()));
             System.out.printf("\u03b4Z: %f, \u03b4El: %f => \u03b1 = %f%n", deltaZ, deltaElev, alpha);
         }
 
@@ -376,9 +374,9 @@ public class AstroComputerV2 {
     /**
      * Uses IRA. To prefer when finished.
      *
-     * @param obsLatitude
-     * @param obsLongitude
-     * @return
+     * @param obsLatitude Observer's Latitude
+     * @param obsLongitude Observer's Longitude
+     * @return The moon tilt
      */
     public synchronized double getMoonTiltV2(double obsLatitude, double obsLongitude) {
         if (!this.calculateHasBeenInvoked) {
@@ -403,9 +401,9 @@ public class AstroComputerV2 {
         }
 
         if ("true".equals(System.getProperty("astro.verbose"))) {
-            System.out.println(String.format("V2 - At %d %02d %02d - %02d:%02d:%02d UTC:", this.year, this.month, this.day, this.hour, this.minute, this.second));
-            System.out.println(String.format("V2 - Moon Z: %.03f, El: %.03f", moonZ, moonAlt));
-            System.out.println(String.format("V2 - Sun  Z: %.03f, El: %.03f", sunZ, sunAlt));
+            System.out.printf("V2 - At %d %02d %02d - %02d:%02d:%02d UTC:\n", this.year, this.month, this.day, this.hour, this.minute, this.second);
+            System.out.printf("V2 - Moon Z: %.03f, El: %.03f\n", moonZ, moonAlt);
+            System.out.printf("V2 - Sun  Z: %.03f, El: %.03f\n", sunZ, sunAlt);
         }
         if (false) { // Radians
             double alpha = GreatCircle.getInitialRouteAngle(
@@ -556,12 +554,13 @@ public class AstroComputerV2 {
      * <p>
      * TODO: Fine tune (by checking the elevation) after this calculation, which is not 100% accurate...
      *
-     * @param latitude
+     * @param latitude Observer's latitude
      * @return the time of rise and set of the body (Sun in that case).
      * @see <http://aa.usno.navy.mil/data/docs/RS_OneYear.php>
      * @see <http://www.jgiesen.de/SunMoonHorizon/>
-     * @Deprecated Use #sunRiseAndSetEpoch
+     * @deprecated Use #sunRiseAndSetEpoch
      */
+    @Deprecated
     public synchronized double[] sunRiseAndSet(double latitude, double longitude) {
         if (!this.calculateHasBeenInvoked) {
             throw new RuntimeException("Calculation was never invoked in this context");
@@ -633,7 +632,7 @@ public class AstroComputerV2 {
         // Fine tuning
         double[] riseTest = this.testSun(rise, latitude, longitude);
         if ("true".equals(System.getProperty("astro.verbose"))) {
-            System.out.println(String.format(">>>> 1st estimation: H rise (%s): %02f", new Date(rise.getTimeInMillis()), riseTest[0]));
+            System.out.printf(">>>> 1st estimation: H rise (%s): %02f\n", new Date(rise.getTimeInMillis()), riseTest[0]);
         }
         if (riseTest[0] != 0) { // Elevation not 0, then adjust
             while (riseTest[0] > 0) {
@@ -647,7 +646,7 @@ public class AstroComputerV2 {
             }
             zRise = riseTest[1];
             if ("true".equals(System.getProperty("astro.verbose"))) {
-                System.out.println(String.format(">> Tuned: Rising at %s, h:%f, z=%02f\272", new Date(rise.getTimeInMillis()), riseTest[0], riseTest[1]));
+                System.out.printf(">> Tuned: Rising at %s, h:%f, z=%02f\272\n", new Date(rise.getTimeInMillis()), riseTest[0], riseTest[1]);
             }
         }
         long epochRise = rise.getTimeInMillis();
@@ -664,7 +663,7 @@ public class AstroComputerV2 {
         // Fine tuning
         riseTest = testSun(set, latitude, longitude);
         if ("true".equals(System.getProperty("astro.verbose"))) {
-            System.out.println(String.format(">>>> 1st estimation: H set (%s): %02f", new Date(set.getTimeInMillis()), riseTest[0]));
+            System.out.printf(">>>> 1st estimation: H set (%s): %02f\n", new Date(set.getTimeInMillis()), riseTest[0]);
         }
         if (riseTest[0] != 0) { // Elevation not 0, then adjust
             while (riseTest[0] < 0) {
@@ -678,7 +677,7 @@ public class AstroComputerV2 {
             }
             zSet = riseTest[1];
             if ("true".equals(System.getProperty("astro.verbose"))) {
-                System.out.println(String.format(">> Tuned: Setting at %s, h:%f, z=%02f\272", new Date(set.getTimeInMillis()), riseTest[0], riseTest[1]));
+                System.out.printf(">> Tuned: Setting at %s, h:%f, z=%02f\272\n", new Date(set.getTimeInMillis()), riseTest[0], riseTest[1]);
             }
         }
         long epochSet = set.getTimeInMillis();
@@ -706,8 +705,8 @@ public class AstroComputerV2 {
     }
 
     /**
-     * @param latitude
-     * @param longitude
+     * @param latitude Observer's latitude
+     * @param longitude Observer's longitude
      * @return as an epoch (today based)
      */
     public long getSunTransitTime(double latitude, double longitude) {
@@ -1025,7 +1024,7 @@ public class AstroComputerV2 {
     /**
      * Warning: Context must have been initialized!
      *
-     * @return
+     * @return The Sun Declination
      */
     public synchronized double getSunDecl() {
         if (!this.calculateHasBeenInvoked) {

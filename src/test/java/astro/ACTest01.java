@@ -20,7 +20,7 @@ public class ACTest01 {
 
         System.setProperty("deltaT", "AUTO");
 
-        System.out.println(String.format("Moon phase for date %d-%d-%d %d:%d:%d: ", 2011, 8, 22, 12, 00, 00) + AstroComputer.getMoonPhase(2011, 8, 22, 12, 00, 00));
+        System.out.println(String.format("Moon phase for date %d-%d-%d %d:%d:%d: ", 2011, 8, 22, 12, 0, 0) + AstroComputer.getMoonPhase(2011, 8, 22, 12, 0, 0));
         System.out.println("TimeOffset:" + AstroComputer.getTimeOffsetInHours("-09:30"));
         String[] tz = new String[]{"Pacific/Marquesas", "America/Los_Angeles", "GMT", "Europe/Paris", "Europe/Moscow", "Australia/Sydney", "Australia/Adelaide"};
         for (int i = 0; i < tz.length; i++) {
@@ -52,23 +52,23 @@ public class ACTest01 {
         double lat = 37.7489;
         double lng = -122.5070;
 
-        System.out.println(String.format("\nFrom position %s / %s", GeomUtil.decToSex(lat, GeomUtil.SWING, GeomUtil.NS), GeomUtil.decToSex(lng, GeomUtil.SWING, GeomUtil.EW)));
+        System.out.printf("\nFrom position %s / %s\n", GeomUtil.decToSex(lat, GeomUtil.SWING, GeomUtil.NS), GeomUtil.decToSex(lng, GeomUtil.SWING, GeomUtil.EW));
 
         double sunMeridianPassageTime = AstroComputer.getSunMeridianPassageTime(lat, lng);
-        System.out.println(String.format("Sun EoT: %f", sunMeridianPassageTime));
+        System.out.printf("Sun EoT: %f\n", sunMeridianPassageTime);
 
         long sunTransit = AstroComputer.getSunTransitTime(lat, lng);
         Date tt = new Date(sunTransit);
         System.out.println("Transit Time:" + tt.toString());
 
         double[] riseAndSet = AstroComputer.sunRiseAndSet(lat, lng);
-        System.out.println(String.format("Time Rise: %f, Time Set: %f, ZRise: %f, ZSet: %f", riseAndSet[0], riseAndSet[1], riseAndSet[2], riseAndSet[3]));
+        System.out.printf("Time Rise: %f, Time Set: %f, ZRise: %f, ZSet: %f\n", riseAndSet[0], riseAndSet[1], riseAndSet[2], riseAndSet[3]);
 
-        System.out.println(String.format("Moon Phase (no specific date, current one) : %f", AstroComputer.getMoonPhase()));
+        System.out.printf("Moon Phase (no specific date, current one) : %f\n", AstroComputer.getMoonPhase());
 
-        System.out.println(String.format("Sun data:\nDeclination: %s\nGHA: %s",
+        System.out.printf("Sun data:\nDeclination: %s\nGHA: %s\n",
                 GeomUtil.decToSex(AstroComputer.getSunDecl(), GeomUtil.SWING, GeomUtil.NS),
-                GeomUtil.decToSex(AstroComputer.getSunGHA(), GeomUtil.SWING, GeomUtil.NONE)));
+                GeomUtil.decToSex(AstroComputer.getSunGHA(), GeomUtil.SWING, GeomUtil.NONE));
 
         SightReductionUtil sru = new SightReductionUtil();
 
@@ -81,26 +81,26 @@ public class ACTest01 {
         double obsAlt = sru.getHe();
         double z = sru.getZ();
 
-        System.out.println(String.format("Now: Elev.: %s, Z: %.02f\272", GeomUtil.decToSex(obsAlt, GeomUtil.SWING, GeomUtil.NONE), z));
+        System.out.printf("Now: Elev.: %s, Z: %.02f\272\n", GeomUtil.decToSex(obsAlt, GeomUtil.SWING, GeomUtil.NONE), z);
 
         AstroComputer.EpochAndZ[] epochAndZs = AstroComputer.sunRiseAndSetEpoch(lat, lng);
 
         System.out.println("\nWith epochs");
-        System.out.println(String.format("Rise Date: %s (Z:%.02f\272)\nSet Date: %s (Z:%.02f\272)",
+        System.out.printf("Rise Date: %s (Z:%.02f\272)\nSet Date: %s (Z:%.02f\272)\n",
                 new Date(epochAndZs[0].getEpoch()).toString(),
                 epochAndZs[0].getZ(),
                 new Date(epochAndZs[1].getEpoch()).toString(),
-                epochAndZs[1].getZ()));
+                epochAndZs[1].getZ());
 
         // Moon tilt
         Calendar date2 = Calendar.getInstance(TimeZone.getTimeZone("Etc/UTC")); // Now
-        System.out.println(String.format("Setting Cal Date to %d-%02d-%02d %02d:%02d:%02d",
+        System.out.printf("Setting Cal Date to %d-%02d-%02d %02d:%02d:%02d\n",
                 date2.get(Calendar.YEAR),
                 date2.get(Calendar.MONTH) + 1,
                 date2.get(Calendar.DAY_OF_MONTH),
                 date2.get(Calendar.HOUR_OF_DAY), // and not just HOUR !!!!
                 date2.get(Calendar.MINUTE),
-                date2.get(Calendar.SECOND)));
+                date2.get(Calendar.SECOND));
         AstroComputer.setDateTime(date2.get(Calendar.YEAR),
                 date2.get(Calendar.MONTH) + 1,
                 date2.get(Calendar.DAY_OF_MONTH),
@@ -111,6 +111,6 @@ public class ACTest01 {
         AstroComputer.calculate();
         double moonTilt = AstroComputer.getMoonTilt(lat, lng);
         Calendar calculationDateTime = AstroComputer.getCalculationDateTime();
-        System.out.println(String.format("At %s, Moon Tilt: %.03f", SDF_UTC.format(calculationDateTime.getTime()), moonTilt));
+        System.out.printf("At %s, Moon Tilt: %.03f\n", SDF_UTC.format(calculationDateTime.getTime()), moonTilt);
     }
 }

@@ -39,8 +39,9 @@ import java.util.stream.Collectors;
  * @see <a href="http://maia.usno.navy.mil/ser7/deltat.data">http://maia.usno.navy.mil/ser7/deltat.data</a>
  * @see <a href="https://www.usno.navy.mil/USNO/earth-orientation/eo-products/long-term">https://www.usno.navy.mil/USNO/earth-orientation/eo-products/long-term</a>
  *
- * @Deprecated Use AstroComputerV2 instead.
+ * @deprecated Use AstroComputerV2 instead.
  */
+@Deprecated()
 public class AstroComputer {
 
     public static class GP {

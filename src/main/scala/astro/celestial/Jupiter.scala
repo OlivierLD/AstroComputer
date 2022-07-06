@@ -4,7 +4,7 @@ import astro.utils.MathUtils
 
 object Jupiter {
   //Heliocentric longitude of Jupiter
-  private def lJupiter(x: Double) = {
+  private def lJupiter(x: Double): Double = {
     var L0: Double = 0
     L0 += 0.59954691495
     L0 += 0.09695898711 * MathUtils.cosT(5.06191793105 + 529.69096509460 * x)

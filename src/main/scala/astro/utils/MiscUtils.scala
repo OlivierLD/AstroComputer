@@ -37,7 +37,7 @@ object MiscUtils {
 
   def decToSex(v: Double, output: Int, displayType: Int, truncMinute: Boolean): String = decToSex(v, output, displayType, TRAILING_SIGN, truncMinute)
 
-  def decToSex(v: Double, output: Int, displayType: Int, signPosition: Int): String = decToSex(v, output, displayType, signPosition, false)
+  def decToSex(v: Double, output: Int, displayType: Int, signPosition: Int): String = decToSex(v, output, displayType, signPosition, truncMinute = false)
 
   def decToSex(v: Double, output: Int, displayType: Int, signPosition: Int, truncMinute: Boolean): String = {
     var s = ""
@@ -89,20 +89,20 @@ object MiscUtils {
   /**
     *
     * @param value in seconds of arc
-    * @return
+    * @return Formatted Semi-Diameter
     */
-  def renderSdHp(value: Double) = {
+  def renderSdHp(value: Double): String = {
     var formatted = ""
     val minutes = Math.floor(value / 60d).toInt
     val seconds = value - (minutes * 60)
     if (minutes > 0) // formatted = minutes + "'" + seconds.formatted("%05.02f") + "\""
-      formatted = s"${minutes}'${seconds.formatted("%05.02f")}\u201c"
+      formatted = s"$minutes'${seconds.formatted("%05.02f")}\u201c"
     else
       formatted = s"${seconds.formatted("%05.02f")}\u201c"
     formatted
   }
 
-  def renderRA(ra: Double) = {
+  def renderRA(ra: Double): String = {
     var formatted = ""
     val t = ra / 15d
     val raH = Math.floor(t).toInt
@@ -113,11 +113,11 @@ object MiscUtils {
   }
 
   /**
-    *
+    * Equation of Time
     * @param eot in minutes (of time)
-    * @return
+    * @return formatted EoT
     */
-  def renderEoT(eot: Double) = {
+  def renderEoT(eot: Double): String = {
     var formatted = ""
     val dEoT = Math.abs(eot)
     val eotMin = Math.floor(dEoT).toInt

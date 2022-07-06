@@ -4,7 +4,7 @@ import astro.utils.MathUtils
 
 object Saturn {
   //Heliocentric longitude of Saturn
-  private def lSaturn(x: Double) = {
+  private def lSaturn(x: Double): Double = {
     var L0: Double = 0
     L0 += 0.87401354029
     L0 += 0.11107659780 * MathUtils.cosT(3.96205090194 + 213.29909543800 * x)

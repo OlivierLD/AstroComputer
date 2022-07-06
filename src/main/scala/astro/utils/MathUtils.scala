@@ -46,8 +46,8 @@ object MathUtils {
     */
   def cosT(x: Double): Double = Math.cos(norm2PiRad(x))
 
-  def trunc(x: Double) = 360 * (x / 360 - Math.floor(x / 360))
+  def trunc(x: Double): Double = 360 * (x / 360 - Math.floor(x / 360))
 
-  def trunc2(x: Double) = (2D * Math.PI) * (x / (2D * Math.PI) - Math.floor(x / (2D * Math.PI)))
+  def trunc2(x: Double): Double = (2D * Math.PI) * (x / (2D * Math.PI) - Math.floor(x / (2D * Math.PI)))
 
 }

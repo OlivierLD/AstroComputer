@@ -4,7 +4,7 @@ import astro.utils.MathUtils
 
 object Mars {
   //Heliocentric longitude of Mars
-  private def lMars(x: Double) = {
+  private def lMars(x: Double): Double = {
     var L0: Double = 0
     L0 += 6.20347711583
     L0 += 0.18656368100 * MathUtils.cosT(5.05037100303 + 3340.61242669980 * x)
