@@ -107,9 +107,8 @@ public class SightReductionUtil {
 		double cosAHL = Math.cos(Math.toRadians(AHL));
 
 		double sinHe = (sinL * sinD) + (cosL * cosD * cosAHL);
-		double He = Math.toDegrees(Math.asin(sinHe));
+		dHe = Math.toDegrees(Math.asin(sinHe));
 //  System.out.println("Hauteur Estimee : " + GeomUtil.decToSex(He));
-		dHe = He;
 
 		// Formula to solve : tg Z = sin P / cos L tan D - sin L cos P
 		double P = (AHL < 180.0) ? AHL : (360.0 - AHL);
@@ -339,10 +338,9 @@ public class SightReductionUtil {
 		// Barometric & temp correction - stby for now
 
 		// Parallax
-		double rpa = 0.0; // Parallax in altitude, radians
-//  double pa  = 0.0;
+	//  double pa  = 0.0;
 		pa = getParallax(hp, observedAltitude);
-		rpa = Math.toRadians(pa);
+		double rpa = Math.toRadians(pa);
 		// Earth is not a sphere...
 		double ob = 0.0; // Oblate Spheroid
 	  /* Stby */
@@ -380,10 +378,8 @@ public class SightReductionUtil {
 	 * @return parallax in degrees
 	 */
 	public static double getParallax(double hp, double obsAlt) {
-		double p = 0.0;
-		p = Math.toDegrees(Math.asin(Math.sin(Math.toRadians(hp)) * Math.cos(Math.toRadians(obsAlt))));
+		return Math.toDegrees(Math.asin(Math.sin(Math.toRadians(hp)) * Math.cos(Math.toRadians(obsAlt))));
 //  p += (0.0033528 * hp * (Math.sin(Math.toRadians(2*latObs) * Math.cos(Zn) * Math.sin(Math.toRadians(obsAlt)) - Math.sin(Math.toRadians(latObs)) * Math.sin(Math.toRadians(latObs)) * Math.cos(Math.toRadians(obsAlt)))));
-		return p;
 	}
 
 	public static double observedToApparentAltitude(double obsAlt,
@@ -411,9 +407,7 @@ public class SightReductionUtil {
 	 */
 	public static double getMoonSD(double hp,
 	                               double appAlt) {
-		double calcSd = 0.0;
-		calcSd = (0.2725 * (hp / 60.0)) / (1 - (Math.sin(Math.toRadians(hp / 60.0)) * Math.sin(Math.toRadians(appAlt))));
-		return calcSd;
+		return (0.2725 * (hp / 60.0)) / (1 - (Math.sin(Math.toRadians(hp / 60.0)) * Math.sin(Math.toRadians(appAlt))));
 	}
 
 	public static double getDistance(double decBodyOne,
@@ -459,8 +453,7 @@ public class SightReductionUtil {
 		if (verbose) {
 			System.out.println("-> With Refr    :" + df.format(observedAltitude) + " (Refraction:" + df.format(refraction) + "')");
 		}
-		double pa = 0.0D;
-		pa = getParallax(hp, observedAltitude);
+		double pa = getParallax(hp, observedAltitude);
 		correction += pa;
 		observedAltitude = instrAltitude + correction;
 		if (verbose) {

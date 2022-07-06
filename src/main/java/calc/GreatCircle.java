@@ -314,8 +314,7 @@ public final class GreatCircle {
 	public static double getDistance(GreatCirclePoint from, GreatCirclePoint to) {
 		double cos = Math.sin(from.getL()) * Math.sin(to.getL()) + Math.cos(from.getL()) * 
 				Math.cos(to.getL()) * Math.cos(to.getG() - from.getG());
-		double dist = Math.acos(cos);
-		return dist;
+		return Math.acos(cos);
 	}
 
 	public double getDistanceInDegrees() {

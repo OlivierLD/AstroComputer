@@ -2,14 +2,14 @@ package calc.calculation.nauticalalmanac;
 
 public class Core {
 	/**
-	 * @param year
+	 * Set the julian date
+	 * @param year full year
 	 * @param month  1 - Jan, 2 - Feb, etc.
-	 * @param day
-	 * @param hour
-	 * @param minute
-	 * @param second
-	 * @param deltaT
-	 * @return
+	 * @param day in [1..31]
+	 * @param hour in [0..23]
+	 * @param minute in [0..59]
+	 * @param second in [0..60[
+	 * @param deltaT calculated, or provided
 	 */
 	public static void julianDate(int year, int month, int day, int hour, int minute, float second, double deltaT) {
 		//var year, month, day, hour, minute, second, Context.dayfraction, ly=0;
@@ -245,23 +245,31 @@ public class Core {
 		String quarter = "";
 		double x = Context.lambdaMapp - Context.lambda_sun;
 		x = Utils.trunc(x);
-		x = Math.round(10 * x) / 10;
-		if (x == 0)
+		x = Math.round(10 * x) / 10; // Sort of rounded...
+		if (x == 0) {
 			quarter = " New";
-		if (x > 0 && x < 90)
+		}
+		if (x > 0 && x < 90) {
 			quarter = " +cre";
-		if (x == 90)
+		}
+		if (x == 90) {
 			quarter = " FQ";
-		if (x > 90 && x < 180)
+		}
+		if (x > 90 && x < 180) {
 			quarter = " +gib";
-		if (x == 180)
+		}
+		if (x == 180) {
 			quarter = " Full";
-		if (x > 180 && x < 270)
+		}
+		if (x > 180 && x < 270) {
 			quarter = " -gib";
-		if (x == 270)
+		}
+		if (x == 270) {
 			quarter = " LQ";
-		if (x > 270 && x < 360)
+		}
+		if (x > 270 && x < 360) {
 			quarter = " -cre";
+		}
 		return quarter;
 	}
 

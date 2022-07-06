@@ -4,8 +4,8 @@ package calc;
 //      Point
 
 public class GreatCircleWayPoint {
-	private GreatCirclePoint p;
-	private Double z;
+	private final GreatCirclePoint p;
+	private final Double z;
 
 	@Override
 	public String toString() {

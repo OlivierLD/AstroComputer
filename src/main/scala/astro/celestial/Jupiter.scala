@@ -3,7 +3,7 @@ package astro.celestial
 import astro.utils.MathUtils
 
 object Jupiter {
-  //Heliocentric longitude of Jupiter
+  // Heliocentric longitude of Jupiter
   private def lJupiter(x: Double): Double = {
     var L0: Double = 0
     L0 += 0.59954691495

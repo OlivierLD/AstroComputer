@@ -137,7 +137,7 @@ public final class GeomUtil {
 			String degrees = fullString.substring(2, degSignIndex);
 			String minutes = "";
 			String seconds = "";
-			if (fullString.indexOf("\"") > -1) {
+			if (fullString.contains("\"")) {
 				minutes = fullString.substring(degSignIndex + 1, fullString.indexOf("'"));
 				seconds = fullString.substring(fullString.indexOf("'") + 1, fullString.indexOf("\""));
 			} else {

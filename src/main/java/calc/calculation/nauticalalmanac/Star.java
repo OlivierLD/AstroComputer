@@ -67,8 +67,8 @@ public class Star {
         return CATALOG.clone();
     }
 
-    private String starName = "", constellationPlace = "";
-    private double ra, dec, deltaRa, deltaDec, par;
+    private String starName, constellationPlace;
+    private final double ra, dec, deltaRa, deltaDec, par;
 
     public Star(String name,
                 String constellation,
@@ -88,9 +88,9 @@ public class Star {
 
     public static Star getStar(String name) {
         Star star = null;
-        for (int i = 0; i < CATALOG.length; i++) {
-            if (CATALOG[i].getStarName().equals(name)) {
-                star = CATALOG[i];
+        for (Star value : CATALOG) {
+            if (value.getStarName().equals(name)) {
+                star = value;
                 break;
             }
         }

@@ -224,8 +224,7 @@ public class Moon {
 		Context.moonPhase = Math.toDegrees(radianPhase);
 
 		// Illumination of the moon's disk
-		double k = 100D * (1 + Math.cos(radianPhase)) / 2D;
-		Context.k_moon = k; // Math.round(10D * k) / 10D;
+		Context.k_moon = 100D * (1 + Math.cos(radianPhase)) / 2D;
 
 		Context.moonEoT = 4 * Context.GHAmoon + 720 - 1_440 * Context.dayfraction;
 		if (Context.moonEoT > 20) {

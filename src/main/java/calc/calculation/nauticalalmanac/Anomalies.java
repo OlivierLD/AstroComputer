@@ -133,14 +133,14 @@ public class Anomalies {
 		//Reading periodic terms
 		double fMm, fM, fF, fD, f_omega, dp = 0, de = 0;
 
-		for (int x = 0; x < nut.length; x++) {
-			fMm = nut[x][0];
-			fM = nut[x][1];
-			fF = nut[x][2];
-			fD = nut[x][3];
-			f_omega = nut[x][4];
-			dp += ((nut[x][5] + Context.TE * nut[x][6]) * Math.sin(Math.toRadians(fD * D + fM * M + fMm * Mm + fF * F + f_omega * omega)));
-			de += ((nut[x][7] + Context.TE * nut[x][8]) * Math.cos(Math.toRadians(fD * D + fM * M + fMm * Mm + fF * F + f_omega * omega)));
+		for (double[] doubles : nut) {
+			fMm = doubles[0];
+			fM = doubles[1];
+			fF = doubles[2];
+			fD = doubles[3];
+			f_omega = doubles[4];
+			dp += ((doubles[5] + Context.TE * doubles[6]) * Math.sin(Math.toRadians(fD * D + fM * M + fMm * Mm + fF * F + f_omega * omega)));
+			de += ((doubles[7] + Context.TE * doubles[8]) * Math.cos(Math.toRadians(fD * D + fM * M + fMm * Mm + fF * F + f_omega * omega)));
 		}
 
     /*

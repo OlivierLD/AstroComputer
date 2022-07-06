@@ -39,8 +39,8 @@ public final class GeoPoint
 	/**
 	 * In nautical miles
 	 *
-	 * @param target
-	 * @return
+	 * @param target target point
+	 * @return distance in nm
 	 */
 	public double orthoDistanceBetween(GeoPoint target) {
 		GreatCircle gc = new GreatCircle();
@@ -54,35 +54,33 @@ public final class GeoPoint
 	/**
 	 * In nautical miles
 	 *
-	 * @param target
-	 * @return
+	 * @param target target point
+	 * @return distance in degrees
 	 */
 	public double gcDistanceBetween(GeoPoint target) {
 		GreatCirclePoint from = new GreatCirclePoint(Math.toRadians(this.getL()), Math.toRadians(this.getG()));
 		GreatCirclePoint to = new GreatCirclePoint(Math.toRadians(target.getL()), Math.toRadians(target.getG()));
-		double d = GreatCircle.getGCDistanceInDegrees(from, to);
-		return d;
+		return GreatCircle.getGCDistanceInDegrees(from, to);
 	}
 
 	/**
-	 * In nautical miles
+	 * AKA Rhumbline. In nautical miles
 	 *
-	 * @param target
-	 * @return
+	 * @param target target point
+	 * @return distance
 	 */
 	public double loxoDistanceBetween(GeoPoint target) {
 		GreatCircle gc = new GreatCircle();
 		gc.setStart(new GreatCirclePoint(Math.toRadians(this.getL()), Math.toRadians(this.getG())));
 		gc.setArrival(new GreatCirclePoint(Math.toRadians(target.getL()), Math.toRadians(target.getG())));
 		GreatCircle.RLData rlData = gc.calculateRhumbLine();
-		double d = rlData.getdLoxo();
-		return d;
+		return rlData.getdLoxo();
 	}
 
 	public String toString() {
-		String str = GeomUtil.decToSex(this.latitude, GeomUtil.SWING, GeomUtil.NS) + " / " +
-				GeomUtil.decToSex(this.longitude, GeomUtil.SWING, GeomUtil.EW);
-		return str;
+		return String.format("%s / %s",
+				GeomUtil.decToSex(this.latitude, GeomUtil.SWING, GeomUtil.NS),
+				GeomUtil.decToSex(this.longitude, GeomUtil.SWING, GeomUtil.EW));
 	}
 
 	public GeoPoint degreesToRadians() {

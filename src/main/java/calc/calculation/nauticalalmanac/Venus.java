@@ -1820,7 +1820,7 @@ public class Venus {
 
 		//Illumination of the planet's disk
 		double k = 100 * (1 + ((R - Context.Re * Utils.cosd(B) * Utils.cosd(L - Context.Le)) / d)) / 2;
-		Context.k_venus = Math.round(10 * k) / 10;
+		Context.k_venus = Math.round(10 * k) / 10; // Sort of rounded
 
 		double ghaMoon = Context.GHAmoon;
 		double decMoon = Context.DECmoon;

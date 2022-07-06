@@ -220,7 +220,7 @@ public class DeadReckoning {
 	}
 
 	public static void getSunCorrectionTable() {
-		double obsAltitude[] = {7D, 7.333333333333333D, 7.6666666666666599D,
+		double[] obsAltitude = {7D, 7.333333333333333D, 7.6666666666666599D,
 				8D, 8.3333333333333321D, 8.6666666666666607D,
 				9D, 9.3333333333333321D, 9.6666666666666607D,
 				10D, 10.33333333333333D, 10.666666666666661D,
@@ -228,7 +228,7 @@ public class DeadReckoning {
 				16D, 17D, 18D, 19D, 20D, 22D, 24D, 26D, 28D, 30D,
 				32D, 34D, 36D, 38D, 40D, 45D, 50D, 55D, 60D, 70D,
 				80D, 90D};
-		double eyeHeight[] = {0.0D, 2D, 4D, 6D, 8D, 10D, 12D, 14D, 16D, 18D, 20D, 22D, 24D};
+		double[] eyeHeight = {0.0D, 2D, 4D, 6D, 8D, 10D, 12D, 14D, 16D, 18D, 20D, 22D, 24D};
 
 		double sd = 16d;
 		double hp = 0.1;
@@ -265,7 +265,7 @@ public class DeadReckoning {
 	}
 
 	public static void getMoonCorrectionTable() {
-		double obsAltitude[] = {5d, 5.5, 6d, 6.5, 7D, 7.5, 8D, 8.5, 9D,
+		double[] obsAltitude = {5d, 5.5, 6d, 6.5, 7D, 7.5, 8D, 8.5, 9D,
 				10D, 11D, 12d, 13d, 14D, 15D, 16D, 17D, 18D, 19D,
 				20D, 21d, 22D, 23d, 24D, 25d, 26D, 27d, 28D, 29d,
 				30D, 31d, 32D, 33d, 34D, 35d, 36D, 37d, 38D, 39d,
@@ -275,10 +275,10 @@ public class DeadReckoning {
 				70D, 71d, 72d, 73d, 74d, 75d, 76d, 77d, 78d, 79d,
 				80D, 81d, 82d, 83d, 84d, 85d, 86d, 87d, 88d, 90D};
 
-		double eyeHeight[] = {0.0D, 2D, 4D, 6D, 8D, 10D, 12D, 14D, 16D, 18D, 20D, 22D, 24D};
+		double[] eyeHeight = {0.0D, 2D, 4D, 6D, 8D, 10D, 12D, 14D, 16D, 18D, 20D, 22D, 24D};
 
-		double horParallax[] = {54, 55, 55.5, 56, 56.5, 57, 57.5, 58, 58.5, 59, 59.5, 60, 61};
-		double moonDiameter[] = {29.4, 30d, 30.3, 30.6, 30.8, 31.1, 31.4, 31.7, 32d, 32.2, 32.5, 32.8, 33.3};
+		double[] horParallax = {54, 55, 55.5, 56, 56.5, 57, 57.5, 58, 58.5, 59, 59.5, 60, 61};
+		double[] moonDiameter = {29.4, 30d, 30.3, 30.6, 30.8, 31.1, 31.4, 31.7, 32d, 32.2, 32.5, 32.8, 33.3};
 
 		double sd = 0d;
 
@@ -318,7 +318,7 @@ public class DeadReckoning {
 	}
 
 	public static void getPlanetStarsCorrectionTable() {
-		double obsAltitude[] = {7D, 7.333333333333333D, 7.6666666666666599D,
+		double[] obsAltitude = {7D, 7.333333333333333D, 7.6666666666666599D,
 				8D, 8.3333333333333321D, 8.6666666666666607D,
 				9D, 9.3333333333333321D, 9.6666666666666607D,
 				10D, 10.33333333333333D, 10.666666666666661D,
@@ -326,7 +326,7 @@ public class DeadReckoning {
 				16D, 17D, 18D, 19D, 20D, 22D, 24D, 26D, 28D, 30D,
 				32D, 34D, 36D, 38D, 40D, 45D, 50D, 55D, 60D, 70D,
 				80D, 90D};
-		double eyeHeight[] = {0.0D, 2D, 4D, 6D, 8D, 10D, 12D, 14D, 16D, 18D, 20D, 22D, 24D};
+		double[] eyeHeight = {0.0D, 2D, 4D, 6D, 8D, 10D, 12D, 14D, 16D, 18D, 20D, 22D, 24D};
 
 		double sd = 0d;
 		double hp = 0d;
