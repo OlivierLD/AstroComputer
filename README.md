@@ -1,7 +1,7 @@
 # AstroComputer
 Celestial Computation, in several languages
 
-The code is based on the remarquable work done by [Henning Humland](https://celnav.de/).
+The code is based on the remarkable work done by [Henning Humland](https://celnav.de/).
 
 This was originally started in Java, and later reproduced
 in several other languages.
