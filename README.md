@@ -26,7 +26,7 @@ in several other languages.
 > come back to life soon. Last known value of `DeltaT` is `69.2201` sec.
 > > Aug 2020, it's back up! <http://maia.usno.navy.mil/ser7/deltat.preds>  
 > > ...and down.  
-> > So we now have a way to _calculate_ the DeltaT value, in all languages (Java, Python, C++, ES6, Go).
+> > So we now have a way to _calculate_ the DeltaT value, in all languages (Java, Scala, Python, C++, ES6, Go).
 
 **Hopefully, all those implementations will produce the _exact_ same result.**
 
@@ -250,9 +250,9 @@ Calculation took 3676 μs (3.676 ms)
 |:-----|-----:|
 | Go | 3.676 |
 | C | 4.412 |
-| Java | 55 |
-| Scala | 64 |
-| Python | 142 |
+| Java | 55.000 |
+| Scala | 64.000 |
+| Python | 142.000 |
 
 > _Note_: For Java and Scala, the JVM and the classes have to be loaded first. 
 > Subsequent executions should be must faster. For example, 10 consecutive java executions:
@@ -418,7 +418,7 @@ More Unit tests (for ES6, use [Mocha](https://mochajs.org/)).
 
 ## History
 - July 2021, for the Java version, introduced `AstroComputerV2`, deprecated `AstroComputer`.
-  - Contains non-static methods, so it can handle several calculations at the same time.
+  - Contains non-static methods, so it can handle several calculations at the same time, or in parallel.
 
 
 ---
